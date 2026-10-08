@@ -3,6 +3,7 @@
 //   /api/feedback            feedback and bug reports → Discord
 //   /api/newsletter/*        double opt-in email list (sign up, confirm, unsubscribe)
 //   /api/admin/*             your own tools: subscriber count, preview and send the new-game email
+//   /borderlines/s/<score>   share link: a page with that score's preview image, which forwards players to the game
 //
 // Secrets (Settings → Variables and Secrets, type Secret — not under Builds):
 //   DISCORD_WEBHOOK_URL   Discord channel webhook (feedback)
@@ -33,6 +34,7 @@ export default {
       if (p === '/api/newsletter/unsubscribe') return await unsubscribe(request, env, url);
       if (p.startsWith('/api/admin/')) return await admin(request, env, url);
       if (p.startsWith('/api/')) return json({ ok: false, error: 'not-found' }, 404);
+      if (p.startsWith('/borderlines/s/')) return shareCard(url);
     } catch (e) {
       return json({ ok: false, error: 'server' }, 500);
     }
@@ -340,4 +342,30 @@ async function admin(request, env, url) {
     return json({ ok: true, sent, remaining: queue.length - sent });
   }
   return json({ ok: false, error: 'not-found' }, 404);
+}
+
+// ---------------------------------------------------------------- Borderlines share links
+// /borderlines/s/247?d=12 → link previews show public/borderlines/og/247.png; people are sent on to the game.
+const RANKS = [[90, 'Master Cartographer'], [80, 'Royal Geographer'], [70, 'Imperial Surveyor'], [60, 'Border Commissioner'], [50, 'Frontier Scout'], [40, 'Map Apprentice'], [25, 'Lost Envoy'], [0, 'Here Be Dragons']];
+function shareCard(url) {
+  const m = url.pathname.match(/^\/borderlines\/s\/(\d{1,3})\/?$/);
+  const total = m ? Number(m[1]) : NaN;
+  if (!(total >= 0 && total <= 500)) return Response.redirect(url.origin + '/borderlines/', 302);
+  const d = Number(url.searchParams.get('d'));
+  const day = Number.isInteger(d) && d > 0 && d < 100000 ? d : 0;
+  const rank = RANKS.find(([min]) => total / 5 >= min)[1];
+  const title = `Borderlines ${day ? '#' + day : 'Practice'} · ${total}/500`;
+  const desc = `${rank}. You get a year and a realm: paint the land it ruled. Can you beat it?`;
+  const img = `${url.origin}/borderlines/og/${total}.png`;
+  const game = `${url.origin}/borderlines/`;
+  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8">
+<title>${title}</title><meta name="description" content="${desc}">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Homo Ludens">
+<meta property="og:title" content="${title}"><meta property="og:description" content="${desc}">
+<meta property="og:url" content="${url.origin}${url.pathname}${day ? '?d=' + day : ''}">
+<meta property="og:image" content="${img}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${title}"><meta name="twitter:description" content="${desc}"><meta name="twitter:image" content="${img}">
+<meta http-equiv="refresh" content="0;url=${game}"><script>location.replace(${JSON.stringify(game)})</script>
+</head><body><a href="${game}">Play Borderlines</a></body></html>`;
+  return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=86400' } });
 }

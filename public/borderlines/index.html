@@ -75,7 +75,7 @@
 html, body { height: 100%; }
 body { background: var(--sea); color: var(--ink); font-family: var(--f-body); overflow: hidden; }
 #app { position: relative; height: 100%; }
-#stage { position: absolute; inset: 0; touch-action: none; cursor: none; user-select: none; -webkit-user-select: none; }
+#stage { position: absolute; inset: 0; touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; }
 #stage.fill { cursor: cell; }
 #stage.pan { cursor: grab; }
 #stage.panning { cursor: grabbing; }
@@ -203,6 +203,7 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
   button { padding: 10px 10px; }
 }
 @media (max-width: 1100px) { .zoomctl { bottom: auto; top: 45%; } }
+@media (min-width: 641px) and (max-width: 1100px) { .zoomctl { right: auto; left: 16px; } }
 @media (max-width: 420px) { .modes { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: no-preference) {
   .truth { animation: draw-in .6s ease-out; }
@@ -893,7 +894,7 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
     $("eLine").textContent = `You averaged ${Math.round(avg)} out of 100 across five realms.`;
     $("eRounds").innerHTML = Q.map((q, i) => `<div><span class="y">${q.yearLabel}</span><span>${q.label}</span><span class="s">${state.scores[i] ?? 0}</span></div>`).join("");
     const site = (window.BORDERLINES_CONFIG || {}).siteUrl || "https://homoludens.oalpcakir.workers.dev/borderlines/";
-    $("eShare").textContent = `Borderlines ${isDaily ? "#" + (state.day + 1) : "Practice"} · ${total}/${max}\n${Q.map((q, i) => emoji(state.scores[i] ?? 0)).join("")}\n${site}`;
+    $("eShare").textContent = `Borderlines ${isDaily ? "#" + (state.day + 1) : "Practice"} · ${total}/${max}\n${Q.map((q, i) => emoji(state.scores[i] ?? 0)).join("")}\n${site}s/${total}${isDaily ? "?d=" + (state.day + 1) : ""}`;
     const st = streak();
     $("eNext").textContent = state.mode === "daily" ? `Streak: ${st} ${st === 1 ? "day" : "days"} · Next challenge in ${untilMidnight()}` : "";
     $("btnAgain").textContent = state.mode === "practice" ? "Play again" : "Practice";
