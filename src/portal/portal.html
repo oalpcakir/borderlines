@@ -80,6 +80,23 @@ section > .eyebrow { display: block; margin-bottom: 16px; }
 footer { padding-top: 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font: 12px var(--f-mono); color: var(--ink-soft); }
 footer a { color: var(--ink-soft); }
 
+.today + .today { margin-top: 12px; }
+.record { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+.record div { background: var(--card); padding: 14px 16px; display: grid; gap: 4px; align-content: start; }
+.record b { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1; }
+.record span { font: 500 11px/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.record small { font-size: 13px; color: var(--ink-soft); }
+.news { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; align-items: start; }
+.news h2 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1.05; margin: 0 0 8px; }
+.news p { margin: 0; font-size: 15px; color: var(--ink); max-width: 30em; }
+.news form { display: grid; gap: 10px; }
+.news .fieldrow { display: flex; gap: 8px; }
+.news input[type=email] { flex: 1; min-width: 0; font: 15px var(--f-body); color: var(--ink); background: var(--card); border: 1px solid var(--rule); border-radius: 2px; padding: 12px 12px; }
+.news .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.news .fine { font-size: 12.5px; color: var(--ink-soft); }
+.news .msg { font-size: 14px; min-height: 20px; }
+.news .msg.ok { color: #2c6a47; } .news .msg.err { color: #962f2a; }
+@media (max-width: 720px) { .news { grid-template-columns: 1fr; } .record { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 720px) {
   .wrap { padding-block: 28px 32px; padding-inline: 16px; }
   .games { grid-template-columns: 1fr; }
@@ -93,7 +110,7 @@ footer a { color: var(--ink-soft); }
   <header class="mast">
     <div class="topline"><span class="eyebrow">Small games about the past</span><span class="eyebrow" id="streak"></span></div>
     <h1>Homo Ludens</h1>
-    <p class="lede">Short history games you can finish over a coffee. One mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book, which argued that play is older than culture.</p>
+    <p class="lede">Short history games, from a five-minute daily puzzle to an evening at the helm of the Dutch East India Company. One mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book, which argued that play is older than culture.</p>
   </header>
 
   <section aria-labelledby="todayLabel">
@@ -106,6 +123,19 @@ footer a { color: var(--ink-soft); }
       </div>
       <a class="btn" id="dPlay" href="/borderlines/" data-from="today">Play today's</a>
     </div>
+    <div class="today" id="rvToday" hidden>
+      <div>
+        <div class="eyebrow">Retourvloot · Your company</div>
+        <h2 id="rvTitle">Your company</h2>
+        <div class="meta" id="rvMeta"></div>
+      </div>
+      <a class="btn" id="rvPlay" href="/retourvloot/" data-from="today">Continue</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="recordLabel" id="recordSec" hidden>
+    <span class="eyebrow" id="recordLabel">Your record</span>
+    <div class="record" id="record"></div>
   </section>
 
   <section aria-labelledby="gamesLabel">
@@ -143,6 +173,27 @@ footer a { color: var(--ink-soft); }
     </div>
   </section>
 
+  <section aria-labelledby="newsLabel" id="newsSec" hidden>
+    <span class="eyebrow" id="newsLabel">New games by email</span>
+    <div class="news">
+      <div>
+        <h2>One email per new game</h2>
+        <p>When a new game is out, you get a short note about it and nothing else. No tracking pixels, and you can unsubscribe with one click.</p>
+      </div>
+      <form id="newsForm" novalidate>
+        <div class="fieldrow">
+          <label class="hp" for="newsEmail">Email</label>
+          <input type="email" id="newsEmail" name="email" placeholder="you@example.com" autocomplete="email" maxlength="120" required>
+          <button class="btn" type="submit" id="newsBtn">Sign up</button>
+        </div>
+        <div class="hp" aria-hidden="true"><label>Website <input type="text" id="newsWeb" tabindex="-1" autocomplete="off"></label></div>
+        <div id="newsTs"></div>
+        <div class="msg" id="newsMsg" role="status"></div>
+        <div class="fine">We'll send a link to confirm. Your address is used only for these emails. <a href="/privacy/">Privacy</a></div>
+      </form>
+    </div>
+  </section>
+
   <section class="about" aria-labelledby="aboutLabel">
     <span class="eyebrow" id="aboutLabel">About</span>
     <div>
@@ -153,7 +204,7 @@ footer a { color: var(--ink-soft); }
 
   <footer>
     <span>© 2026 Homo Ludens</span>
-    <span>Borders: <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> · Base map: <a href="https://www.naturalearthdata.com/">Natural Earth</a></span>
+    <span>Borders: <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> · Base map: <a href="https://www.naturalearthdata.com/">Natural Earth</a> · Paintings and prints: <a href="https://www.rijksmuseum.nl/">Rijksmuseum</a> (public domain) · <a href="/privacy/">Privacy</a></span>
   </footer>
 </div>
 
@@ -192,6 +243,94 @@ footer a { color: var(--ink-soft); }
   document.querySelectorAll("a[href='/borderlines/']").forEach(function (a) {
     a.addEventListener("click", function () { track("portal_play", { game: "borderlines", from: a.getAttribute("data-from") }); });
   });
+})();
+</script>
+<script>
+(function () {
+  function get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
+  function track(name, props) { try { if (window.posthog && window.posthog.capture) window.posthog.capture(name, props || {}); } catch (e) {} }
+  function money(v) { var s = v < 0 ? "−" : ""; v = Math.abs(v); if (v >= 1e6) return s + "ƒ" + (v / 1e6).toFixed(v >= 1e7 ? 1 : 2) + "M"; if (v >= 1e3) return s + "ƒ" + Math.round(v / 1e3) + "k"; return s + "ƒ" + Math.round(v); }
+  var MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  function rvDate(t) { var d = new Date(Date.UTC(1602, 0, 1) + Math.floor(t) * 864e5); return d.getUTCDate() + " " + MONTHS[d.getUTCMonth()] + " " + d.getUTCFullYear(); }
+  function rvYear(t) { return new Date(Date.UTC(1602, 0, 1) + Math.floor(t) * 864e5).getUTCFullYear(); }
+
+  // Retourvloot: continue a company in progress
+  var S = get("retourvloot.v1"), runs = get("retourvloot.runs") || [];
+  if (S && S.v === 1 && S.t > 80) {
+    var box = document.getElementById("rvToday");
+    if (!S.ended) {
+      document.getElementById("rvTitle").textContent = "Your company · " + rvDate(S.t);
+      document.getElementById("rvMeta").innerHTML = "Treasury <b>" + money(S.cash) + "</b> · debt <b>" + money(S.debt) + "</b> · " + ((S.stats && S.stats.voyages) || 0) + " voyages sent";
+    } else {
+      document.getElementById("rvTitle").textContent = "Your company ended in " + rvYear(S.t);
+      document.getElementById("rvMeta").innerHTML = "It left <b>" + money(S.debt) + "</b> in debt to the state.";
+      document.getElementById("rvPlay").textContent = "Start a new company";
+      document.getElementById("rvPlay").classList.add("ghost");
+    }
+    box.hidden = false;
+  }
+
+  // Your record, across games
+  var tiles = [];
+  var BL = { start: "2026-09-27", days: 42 }, s0 = BL.start.split("-").map(Number), now = new Date();
+  var last = Math.min(Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(s0[0], s0[1] - 1, s0[2])) / 864e5), BL.days - 1);
+  var played = 0, best = 0, run = 0, bestRun = 0, sumScore = 0;
+  for (var d = 0; d <= last; d++) {
+    var r = get("borderlines:day:" + d);
+    if (r) { var t = (r.scores || []).reduce(function (a, b) { return a + (b || 0); }, 0); played++; sumScore += t; best = Math.max(best, t); }
+    if (r && !r.late) { run++; bestRun = Math.max(bestRun, run); } else if (d < last) run = 0;
+  }
+  if (played) {
+    tiles.push(["<b>" + played + "</b><span>Borderlines dailies</span><small>average " + Math.round(sumScore / played) + "/500</small>"]);
+    tiles.push(["<b>" + best + "</b><span>Best daily</span><small>out of 500</small>"]);
+    tiles.push(["<b>" + bestRun + "</b><span>Best streak</span><small>" + (bestRun === 1 ? "day" : "days") + " in a row</small>"]);
+  }
+  if (runs.length) {
+    var longest = runs.reduce(function (a, b) { return (b.endYear || 0) > (a.endYear || 0) ? b : a; });
+    var bestDiv = runs.reduce(function (a, b) { return (b.avgDiv || 0) > (a.avgDiv || 0) ? b : a; });
+    tiles.push(["<b>" + runs.length + "</b><span>VOC companies run</span><small>" + runs.filter(function (x) { return x.reason !== "bankrupt"; }).length + " reached 1799</small>"]);
+    tiles.push(["<b>" + longest.endYear + "</b><span>Longest-lived company</span><small>" + (longest.reason === "bankrupt" ? "until the state took over" : "to the end of the charter") + "</small>"]);
+    tiles.push(["<b>" + (bestDiv.avgDiv || 0).toFixed(1) + "%</b><span>Best average dividend</span><small>the real VOC: about 18%</small>"]);
+  }
+  if (tiles.length) {
+    document.getElementById("record").innerHTML = tiles.map(function (x) { return "<div>" + x[0] + "</div>"; }).join("");
+    document.getElementById("recordSec").hidden = false;
+  }
+  document.querySelectorAll("a[href='/retourvloot/']").forEach(function (a) {
+    a.addEventListener("click", function () { track("portal_play", { game: "retourvloot", from: a.getAttribute("data-from") }); });
+  });
+
+  // New games by email (shown only when the server side is configured)
+  var SITE_KEY = "0x4AAAAAAFRMZwiuLLLgZLqX", token = null, wid = null;
+  fetch("/api/newsletter/status").then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) {
+    if (!j || !j.enabled) return;
+    document.getElementById("newsSec").hidden = false;
+    var form = document.getElementById("newsForm"), msg = document.getElementById("newsMsg"), btn = document.getElementById("newsBtn");
+    function say(t, c) { msg.textContent = t; msg.className = "msg" + (c ? " " + c : ""); }
+    function loadTs() {
+      if (wid !== null || window.__hlNewsTs) return;
+      window.__hlNewsTs = function () { wid = window.turnstile.render("#newsTs", { sitekey: SITE_KEY, theme: "light", size: "flexible", callback: function (t) { token = t; }, "expired-callback": function () { token = null; } }); };
+      if (window.turnstile) return window.__hlNewsTs();
+      var sc = document.createElement("script"); sc.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit&onload=__hlNewsTs"; sc.async = true; document.head.appendChild(sc);
+    }
+    document.getElementById("newsEmail").addEventListener("focus", loadTs, { once: true });
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var email = document.getElementById("newsEmail").value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say("That doesn't look like an email address.", "err"); return; }
+      loadTs();
+      if (!token) { say("One moment: the spam check is still running.", "err"); return; }
+      btn.disabled = true; say("Sending…");
+      fetch("/api/newsletter/subscribe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email: email, token: token, website: document.getElementById("newsWeb").value }) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { s: r.status, j: j }; }); })
+        .then(function (res) {
+          btn.disabled = false; token = null; if (window.turnstile && wid !== null) window.turnstile.reset(wid);
+          if (res.j.ok) { say("Check your inbox for a link to confirm.", "ok"); form.reset(); track("newsletter_signup"); }
+          else if (res.s === 429) say("Too many tries. Please wait a minute.", "err");
+          else say("That didn't work. Please try again later. (" + (res.j.error || res.s) + ")", "err");
+        }).catch(function () { btn.disabled = false; say("That didn't work. Check your connection and try again.", "err"); });
+    });
+  }).catch(function () {});
 })();
 </script>
 <script src="/feedback.js" defer data-game="portal"></script>

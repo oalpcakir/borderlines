@@ -1,0 +1,20 @@
+[
+  {
+    "id": "borderlines",
+    "no": 1,
+    "title": "Borderlines",
+    "url": "/borderlines/",
+    "image": "/og-borderlines.png",
+    "short": "You get a year and a realm. Paint the land it ruled, then see how close you came. A new daily challenge every day.",
+    "announce": "You get a year and the name of a realm: the Ottoman Empire in 1530, the Inca in 1530, Aksum in 500. Paint the land you think it ruled on a world map with no modern borders, then see how close you came. Five new realms every day, from easy to hard."
+  },
+  {
+    "id": "retourvloot",
+    "no": 2,
+    "title": "Retourvloot",
+    "url": "/retourvloot/",
+    "image": "/og-retourvloot.png",
+    "short": "Run the Dutch East India Company from Amsterdam, 1602 to 1799. Letters from Batavia take a year.",
+    "announce": "You are a director of the Dutch East India Company in Amsterdam, from its founding in 1602 to its end in 1799. Equip ships, send silver east and wait a year for letters from Batavia. Chase the spice monopolies and keep the shareholders paid, while the Company slowly hollows out. Every event card shows a real painting or print from the Rijksmuseum, and the other ledger keeps count of what the trade cost. Best on a laptop or desktop; 30 to 80 minutes."
+  }
+]

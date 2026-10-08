@@ -513,6 +513,9 @@ function showAudit(a) {
 }
 function showEnd() {
   S.speed = 0; hideCoach();
+  if (!S.endTracked) {
+    try { const runs = JSON.parse(localStorage.getItem('retourvloot.runs') || '[]'); runs.push({ endYear: yearOf(S.t), reason: S.endReason || 'charter', avgDiv: +(S.stats.divPaid / NOMINAL * 100 / Math.max(1, S.stats.divYears)).toFixed(1), debt: Math.round(S.debt), monopolies: AIMS.filter(a => S.mono[a.id] > 0).length, voyages: S.stats.voyages, at: Date.now() }); localStorage.setItem('retourvloot.runs', JSON.stringify(runs.slice(-20))); } catch (e) {}
+  }
   if (!S.endTracked) { S.endTracked = true; track('game_end', { reason: S.endReason || 'charter', debt: Math.round(S.debt), cash: Math.round(S.cash), dividends: Math.round(S.stats.divPaid), monopolies: AIMS.filter(a => S.mono[a.id] > 0).length, voyages: S.stats.voyages }); }
   const yrs = Math.max(1, S.stats.divYears);
   const bankrupt = S.endReason === 'bankrupt';

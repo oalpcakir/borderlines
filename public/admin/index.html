@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · Homo Ludens</title>
+<style>
+body{margin:0;background:#f7f6f2;color:#1f2b4a;font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:860px;margin:0 auto;padding:32px 20px}
+h1{font:400 34px Georgia,serif;margin:0 0 4px}
+.k{font:500 11px system-ui;letter-spacing:.14em;text-transform:uppercase;color:#5b6478}
+section{border-top:1px solid #dcdad2;padding:18px 0}
+label{display:block;font-size:13px;color:#5b6478;margin-bottom:4px}
+input,select{font:inherit;padding:9px 10px;border:1px solid #c9c7bf;border-radius:2px;background:#fff;color:inherit}
+button{font:500 14px system-ui;padding:10px 14px;border-radius:2px;border:1px solid #1f2b4a;background:#1f2b4a;color:#f7f6f2;cursor:pointer}
+button.ghost{background:transparent;color:#1f2b4a}
+button.danger{background:#962f2a;border-color:#962f2a}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.stats{display:flex;gap:24px}.stats b{font:400 30px Georgia,serif;display:block}
+iframe{width:100%;height:720px;border:1px solid #dcdad2;background:#fff}
+#log{font:13px ui-monospace,monospace;white-space:pre-wrap;color:#4a5468}
+</style>
+</head>
+<body>
+<main>
+  <div class="k">Homo Ludens</div>
+  <h1>New-game email</h1>
+  <p>Only for you. Nothing here works without the admin token.</p>
+
+  <section>
+    <div class="row">
+      <div><label for="tok">Admin token</label><input type="password" id="tok" size="40" autocomplete="off"></div>
+      <button id="load">Load</button>
+    </div>
+  </section>
+
+  <section id="main" hidden>
+    <div class="stats" id="stats"></div>
+    <div class="row" style="margin-top:16px">
+      <div><label for="game">Game to announce</label><select id="game"></select></div>
+      <button class="ghost" id="preview">Preview</button>
+      <button class="ghost" id="test">Send test to me</button>
+    </div>
+    <div class="row" style="margin-top:16px">
+      <div><label for="confirm">Type the game id to send to everyone</label><input id="confirm" placeholder="e.g. retourvloot"></div>
+      <div><label for="max">At most (Resend free: 100/day)</label><input id="max" type="number" value="95" min="1" max="500" style="width:90px"></div>
+      <button class="danger" id="send">Send to subscribers</button>
+    </div>
+    <p id="log"></p>
+    <iframe id="frame" title="Email preview" hidden></iframe>
+  </section>
+</main>
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  try { $('tok').value = sessionStorage.getItem('hl-admin') || ''; } catch (e) {}
+  function api(path, opts) {
+    opts = opts || {};
+    opts.headers = Object.assign({ Authorization: 'Bearer ' + $('tok').value.trim() }, opts.headers || {});
+    return fetch(path, opts);
+  }
+  function log(t) { $('log').textContent = t; }
+  function load() {
+    try { sessionStorage.setItem('hl-admin', $('tok').value.trim()); } catch (e) {}
+    api('/api/admin/stats').then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.ok) { log('Error: ' + j.error); return; }
+      $('main').hidden = false;
+      $('stats').innerHTML = '<div><b>' + j.confirmed + '</b>confirmed</div><div><b>' + j.pending + '</b>waiting to confirm</div>' +
+        j.games.map(function (g) { return '<div><b>' + (j.sent[g.id] || 0) + '</b>sent ' + g.title + '</div>'; }).join('');
+      var cur = $('game').value;
+      $('game').innerHTML = j.games.map(function (g) { return '<option value="' + g.id + '">' + g.title + '</option>'; }).join('');
+      if (cur) $('game').value = cur; else $('game').selectedIndex = j.games.length - 1;
+      log('');
+    }).catch(function () { log('Could not reach the server.'); });
+  }
+  $('load').onclick = load;
+  $('preview').onclick = function () {
+    api('/api/admin/preview?game=' + encodeURIComponent($('game').value)).then(function (r) { return r.text(); }).then(function (h) { $('frame').srcdoc = h; $('frame').hidden = false; });
+  };
+  $('test').onclick = function () {
+    $('test').disabled = true; log('Sending test…');
+    api('/api/admin/announce', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game: $('game').value, mode: 'test' }) })
+      .then(function (r) { return r.json(); }).then(function (j) { $('test').disabled = false; log(j.ok ? 'Test sent to your admin address.' : 'Error: ' + j.error); });
+  };
+  $('send').onclick = function () {
+    var id = $('game').value;
+    if ($('confirm').value.trim() !== id) { log('Type "' + id + '" in the box first.'); return; }
+    $('send').disabled = true; log('Sending…');
+    api('/api/admin/announce', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ game: id, mode: 'all', confirm: id, max: Number($('max').value) }) })
+      .then(function (r) { return r.json(); }).then(function (j) {
+        $('send').disabled = false; $('confirm').value = '';
+        log(j.ok ? ('Sent ' + j.sent + '. Still to send: ' + j.remaining + (j.remaining ? ' (press Send again tomorrow).' : '. Done.')) : ('Error: ' + j.error + (j.sent != null ? ' after ' + j.sent + ' sent' : '')));
+        load();
+      });
+  };
+  if ($('tok').value) load();
+})();
+</script>
+</body>
+</html>
