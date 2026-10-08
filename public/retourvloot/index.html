@@ -1,0 +1,2381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Run the Dutch East India Company from Amsterdam, 1602 to 1799. Send silver east, wait a year for letters from Batavia, chase the spice monopolies and keep the shareholders paid.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Retourvloot">
+<meta property="og:description" content="Run the Dutch East India Company from Amsterdam, 1602 to 1799. Send silver east, wait a year for letters from Batavia, chase the spice monopolies and keep the shareholders paid.">
+<meta property="og:url" content="https://homoludens.oalpcakir.workers.dev/retourvloot/">
+<meta property="og:image" content="https://homoludens.oalpcakir.workers.dev/og-retourvloot.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://homoludens.oalpcakir.workers.dev/og-retourvloot.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2326457d'/%3E%3Cpath d='M6 20h20l-3 5H9z M15 6v13 M15 7l7 9h-7z M14 9l-6 8h6z' fill='%23e9e8e1' stroke='%23e9e8e1' stroke-width='1.2'/%3E%3C/svg%3E">
+<!-- Analytics: PostHog (US), cookieless; the game's own anonymous player id is the distinct id -->
+<script>
+  (function () {
+    var KEY = "phc_mdtcrAHaV5sKPL9TXqZrqqmBnwBE7Fq2nxoTkEK7cP5G", HOST = "https://us.i.posthog.com";
+    var pid;
+    try {
+      var p = JSON.parse(localStorage.getItem("homoludens:player") || localStorage.getItem("borderlines:player") || "null");
+      if (!p) p = { id: Math.random().toString(36).slice(2, 10) + Date.now().toString(36), firstSeen: Date.now(), visits: 0 };
+      localStorage.setItem("homoludens:player", JSON.stringify(p));
+      pid = p.id;
+    } catch (e) {}
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group get_distinct_id".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init(KEY, {
+      api_host: HOST,
+      persistence: "memory",          // no cookies
+      autocapture: false,             // only the game's own events
+      capture_pageview: true,
+      capture_pageleave: false,
+      disable_session_recording: true,
+      person_profiles: "identified_only",
+      bootstrap: pid ? { distinctID: pid } : undefined
+    });
+  })();
+</script>
+<style>html,body{margin:0}</style>
+<title>Retourvloot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@0;1&family=IM+Fell+DW+Pica+SC&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: a director's desk in the East India House — three ledger columns (Amsterdam · the sea · Batavia) under a running clock. */
+:root{
+  --paper:#e9e8e1; --paper-2:#dfded5; --chart:#dde3e4; --land:#d2ccb8; --land-edge:rgba(28,34,48,.28); --ink:#1c2230; --ink-2:#555c6b; --ink-3:#7d8392;
+  --delft:#26457d; --delft-soft:rgba(38,69,125,.12); --brass:#9a6a14; --brass-soft:rgba(154,106,20,.14);
+  --rule:rgba(38,69,125,.22); --rule-2:rgba(28,34,48,.10); --loss:#962f2a; --gain:#2c6a47; --card:#efeee8;
+  --f-display:"IM Fell DW Pica","Iowan Old Style","Palatino Linotype",Georgia,serif;
+  --f-sc:"IM Fell DW Pica SC","IM Fell DW Pica",Georgia,serif;
+  --f-body:"Spectral","Iowan Old Style",Georgia,serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#121721; --paper-2:#192030; --chart:#111a28; --land:#262d38; --land-edge:rgba(231,226,212,.22); --ink:#e7e2d4; --ink-2:#aab0bd; --ink-3:#7e8596;
+  --delft:#93b3ea; --delft-soft:rgba(147,179,234,.14); --brass:#d8a647; --brass-soft:rgba(216,166,71,.16);
+  --rule:rgba(147,179,234,.24); --rule-2:rgba(231,226,212,.09); --loss:#e6847a; --gain:#82c9a0; --card:#171e2b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#121721; --paper-2:#192030; --chart:#111a28; --land:#262d38; --land-edge:rgba(231,226,212,.22); --ink:#e7e2d4; --ink-2:#aab0bd; --ink-3:#7e8596;
+  --delft:#93b3ea; --delft-soft:rgba(147,179,234,.14); --brass:#d8a647; --brass-soft:rgba(216,166,71,.16);
+  --rule:rgba(147,179,234,.24); --rule-2:rgba(231,226,212,.09); --loss:#e6847a; --gain:#82c9a0; --card:#171e2b; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.45;padding-inline:16px;padding-block:0 32px}
+.num,table,.stat b{font-variant-numeric:tabular-nums lining-nums}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
+h1,h2,h3{font-weight:400;text-wrap:balance;margin:0}
+p{margin:0 0 .6em}
+i{font-style:italic}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:grid;grid-template-columns:1fr auto auto;gap:12px 24px;align-items:center;padding-block:14px 10px;border-bottom:3px double var(--rule);max-width:1440px;margin:0 auto}
+.brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;min-width:0}
+.brand h1{font-family:var(--f-display);font-size:30px;line-height:1;letter-spacing:.01em}
+.brand .sub{font-family:var(--f-sc);color:var(--ink-2);font-size:14px;letter-spacing:.06em}
+.mark{font-family:var(--f-sc);font-size:13px;border:1.5px solid var(--delft);color:var(--delft);padding:1px 6px 0;letter-spacing:.12em}
+.clock{text-align:right}
+.clock .d{font-family:var(--f-display);font-size:22px;line-height:1.1;white-space:nowrap}
+.clock .w{font-size:12.5px;color:var(--ink-2)}
+.clock .w b{color:var(--delft);font-weight:600}
+.speed{display:flex;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.speed button{background:none;border:0;padding:6px 11px;cursor:pointer;font-size:13px;color:var(--ink-2);border-left:1px solid var(--rule)}
+.speed button:first-child{border-left:0}
+.speed button[aria-pressed="true"]{background:var(--delft);color:var(--paper)}
+.speed button:hover:not([aria-pressed="true"]){background:var(--delft-soft)}
+
+.stats{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-bottom:1px solid var(--rule)}
+.stat{padding:10px 14px 10px 0;border-right:1px solid var(--rule-2);min-width:0}
+.stat+.stat{padding-left:14px}
+.stat:last-child{border-right:0}
+.stat span{display:block;font-family:var(--f-sc);font-size:12.5px;letter-spacing:.07em;color:var(--ink-2)}
+.stat b{display:block;font-weight:500;font-size:21px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat small{display:block;font-size:12px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.neg{color:var(--loss)} .pos{color:var(--gain)}
+
+.grid{max-width:1440px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr) minmax(0,1fr);gap:0 28px;padding-top:8px}
+.col{display:flex;flex-direction:column;min-width:0}
+.card{padding-block:14px 16px;border-bottom:1px solid var(--rule-2);min-width:0}
+.card h2{font-family:var(--f-sc);font-size:17px;letter-spacing:.05em;color:var(--delft);display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+.card h2 small{font-family:var(--f-body);font-size:12px;letter-spacing:0;color:var(--ink-3);font-style:italic}
+.note{font-size:12.5px;color:var(--ink-3);font-style:italic}
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.between{justify-content:space-between}
+label{font-size:13.5px;color:var(--ink-2)}
+input[type=range]{accent-color:var(--delft);width:100%;min-width:0}
+select{background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:4px 6px;max-width:100%}
+.btn{background:var(--delft);color:var(--paper);border:0;border-radius:3px;padding:8px 14px;cursor:pointer;font-weight:500;font-size:14px}
+.btn:hover{filter:brightness(1.1)}
+.btn:disabled{opacity:.4;cursor:not-allowed;filter:none}
+.btn.ghost{background:none;color:var(--delft);border:1px solid var(--rule)}
+.btn.ghost:hover{background:var(--delft-soft)}
+.btn.small{padding:5px 10px;font-size:13px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:3px 12px;font-size:14px}
+.kv dt{color:var(--ink-2)} .kv dd{margin:0;text-align:right;font-variant-numeric:tabular-nums}
+.stack{display:flex;flex-direction:column;gap:10px}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{font-family:var(--f-sc);font-weight:400;font-size:12.5px;letter-spacing:.05em;color:var(--ink-2);text-align:left;padding:4px 6px 4px 0;border-bottom:1px solid var(--rule)}
+td{padding:5px 6px 5px 0;border-bottom:1px solid var(--rule-2);vertical-align:middle}
+td.r,th.r{text-align:right}
+td .sub{display:block;font-size:11.5px;color:var(--ink-3)}
+.tablewrap{overflow-x:auto}
+.rel{display:grid;grid-template-columns:minmax(60px,1fr) 34px;gap:6px;align-items:center}
+.rel output{font-size:12.5px;text-align:right}
+
+.meter{height:6px;background:var(--rule-2);border-radius:3px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--brass);width:0}
+.meter.bad i{background:var(--loss)}
+canvas.spark{width:100%;height:44px;display:block}
+
+.mapwrap{position:relative;background:var(--chart);border:1px solid var(--rule);aspect-ratio:16/10;max-width:100%}
+#map{position:absolute;inset:0;width:100%;height:100%}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);margin-top:8px}
+.legend span::before{content:"";display:inline-block;width:9px;height:9px;margin-right:5px;vertical-align:-1px;border-radius:50%}
+.legend .lo::before{background:var(--delft)} .legend .lh::before{background:var(--brass)} .legend .lp::before{background:none;border:1.5px solid var(--brass)}
+
+.fleet td:first-child{font-style:italic;white-space:nowrap}
+.pill{display:inline-block;font-size:11.5px;padding:0 7px;border-radius:9px;border:1px solid var(--rule);color:var(--ink-2);white-space:nowrap}
+.pill.out{border-color:var(--delft);color:var(--delft)} .pill.home{border-color:var(--brass);color:var(--brass)} .pill.lost{border-color:var(--loss);color:var(--loss)} .pill.asia{background:var(--delft-soft);border-color:transparent;color:var(--delft)}
+.empty{font-size:13.5px;color:var(--ink-3);font-style:italic;padding:6px 0}
+
+.log{list-style:none;margin:0;padding:0;max-height:320px;overflow-y:auto;font-size:13.5px}
+.log li{padding:6px 0 6px 12px;border-bottom:1px solid var(--rule-2);position:relative}
+.log li::before{content:"";position:absolute;left:0;top:12px;width:5px;height:5px;border-radius:50%;background:var(--ink-3)}
+.log li.ship::before{background:var(--delft)} .log li.loss::before{background:var(--loss)} .log li.money::before{background:var(--brass)}
+.log time{display:block;font-size:11.5px;color:var(--ink-3);font-family:var(--f-sc);letter-spacing:.05em}
+
+.dated{font-size:12.5px;color:var(--ink-2);margin-bottom:10px;padding:6px 10px;background:var(--brass-soft);border-left:2px solid var(--brass)}
+.acts{list-style:none;padding:0;margin:8px 0 0;font-size:13px;color:var(--ink-2)}
+.acts li{padding:4px 0;border-top:1px dotted var(--rule)}
+.acts li b{font-weight:500;color:var(--ink);font-family:var(--f-sc);font-size:12px;letter-spacing:.04em;margin-right:4px}
+fieldset{border:0;padding:0;margin:0 0 10px}
+legend{font-family:var(--f-sc);font-size:13px;letter-spacing:.05em;color:var(--ink-2);margin-bottom:4px;padding:0}
+.seg{display:flex;flex-wrap:wrap;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.seg label{flex:1 1 auto;text-align:center;padding:5px 8px;cursor:pointer;font-size:13px;border-left:1px solid var(--rule);color:var(--ink-2)}
+.seg label:first-of-type{border-left:0}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg input:checked+span{color:var(--paper)}
+.seg label:has(input:checked){background:var(--delft);color:var(--paper)}
+.seg label:has(input:focus-visible){outline:2px solid var(--brass);outline-offset:-2px}
+.lstatus{font-size:12.5px;padding:7px 10px;border:1px dashed var(--rule);color:var(--ink-2)}
+.lstatus.dirty{border-color:var(--brass);color:var(--brass)}
+
+.other .counts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 14px;margin-bottom:10px}
+.other .counts div span{display:block;font-family:var(--f-sc);font-size:12px;letter-spacing:.05em;color:var(--ink-2)}
+.other .counts div b{font-size:20px;font-weight:500}
+.other ul{list-style:none;margin:0;padding:0;font-size:13px}
+.other li{padding:7px 0;border-top:1px solid var(--rule-2)}
+.other li b{display:block;font-family:var(--f-sc);font-weight:400;letter-spacing:.04em;color:var(--loss);font-size:13px}
+
+
+.eff{font-size:12.5px;color:var(--ink-2);margin:5px 0 0;line-height:1.4}
+.eff b{font-weight:600;color:var(--ink)}
+details.help{margin:-4px 0 10px;font-size:13px;color:var(--ink-2)}
+details.help summary{cursor:pointer;color:var(--delft);font-size:12.5px;list-style:none;display:inline-flex;align-items:center;gap:5px}
+details.help summary::-webkit-details-marker{display:none}
+details.help summary::before{content:"?";display:inline-grid;place-items:center;width:15px;height:15px;border-radius:50%;border:1px solid var(--delft);font-size:10.5px;font-weight:600}
+details.help[open] summary{margin-bottom:6px}
+details.help p{margin:0 0 6px}
+.notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.notes li{font-size:13.5px;padding:7px 10px 7px 12px;border-left:2px solid var(--delft);background:var(--delft-soft)}
+.notes li.warn{border-left-color:var(--loss);background:color-mix(in srgb,var(--loss) 10%,transparent)}
+.notes li.good{border-left-color:var(--gain);background:color-mix(in srgb,var(--gain) 10%,transparent)}
+.books td.r{white-space:nowrap}
+.books tr.tot td{border-top:1px solid var(--rule);font-weight:600}
+.books tr.subrow td{font-size:12.5px;color:var(--ink-2);padding-left:10px}
+canvas.bars{width:100%;height:70px;display:block;margin-top:8px}
+.aims{list-style:none;margin:0;padding:0}
+.aims li{padding:8px 0;border-bottom:1px solid var(--rule-2);display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:baseline}
+.aims li .nm{font-weight:600;font-size:14px}
+.aims li .nm small{font-weight:400;color:var(--ink-3);font-size:12px;margin-left:4px}
+.aims li .hw{grid-column:1/-1;font-size:12px;color:var(--ink-3)}
+.pill.done{background:var(--brass);border-color:var(--brass);color:var(--paper)}
+.sharebar{height:10px;background:var(--rule-2);border-radius:5px;overflow:hidden;display:flex;margin:4px 0 2px}
+.sharebar i{display:block;height:100%;background:var(--brass)}
+.coach-on{position:relative;z-index:30;box-shadow:0 0 0 3px var(--brass),0 0 0 100vmax rgba(10,14,22,.45);background:var(--paper);border-radius:3px}
+.card.coach-on{padding-inline:10px}
+.coach{position:fixed;z-index:40;width:320px;max-width:calc(100vw - 24px);background:var(--paper);color:var(--ink);border:1px solid var(--brass);box-shadow:0 14px 40px rgba(0,0,0,.35);padding:14px 16px 12px;border-radius:3px}
+.coach-n{font-family:var(--f-sc);font-size:12px;letter-spacing:.08em;color:var(--brass)}
+.coach h4{font-family:var(--f-display);font-weight:400;font-size:21px;margin:2px 0 6px;line-height:1.15}
+.coach p{font-size:14px;margin:0 0 10px}
+.coach-act{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.coach-act .btn{margin-left:auto}
+.linkbtn{background:none;border:0;padding:0;color:var(--ink-3);font-size:12.5px;text-decoration:underline;cursor:pointer}
+.small-screen{position:fixed;inset:0;z-index:50;background:var(--paper);display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+.small-screen h3{font-family:var(--f-display);font-size:28px;margin-bottom:10px}
+.small-screen p{max-width:34ch;margin:0 auto 18px}
+ul.credits{font-size:13px;padding-left:18px;margin:6px 0 0}
+ul.credits li{margin-bottom:4px}
+ul.credits a{color:var(--delft)}
+footer{max-width:1440px;margin:18px auto 0;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12.5px;color:var(--ink-3);border-top:3px double var(--rule);padding-top:10px}
+
+[hidden]{display:none!important}
+.modal{position:fixed;inset:0;z-index:20;background:rgba(10,14,22,.55);display:flex;align-items:center;justify-content:center;padding:16px}
+.sheet{background:var(--paper);color:var(--ink);max-width:620px;width:100%;max-height:calc(100% - 16px);overflow-y:auto;border:1px solid var(--rule);box-shadow:0 20px 60px rgba(0,0,0,.35);padding:26px 28px 22px}
+.plate{margin:-26px -28px 16px;background:var(--paper-2);border-bottom:1px solid var(--rule)}
+.plate img{display:block;width:100%;height:280px;object-fit:contain;object-position:center}
+.plate figcaption{font-size:11.5px;color:var(--ink-3);padding:6px 28px 8px;line-height:1.35}
+.plate figcaption a{color:var(--delft)}
+@media (max-width:760px){.plate{margin:-20px -18px 14px}.plate figcaption{padding:6px 18px 8px}}
+.sheet .when{font-family:var(--f-sc);letter-spacing:.08em;color:var(--brass);font-size:14px}
+.sheet h3{font-family:var(--f-display);font-size:30px;line-height:1.1;margin:4px 0 14px}
+.sheet .body{font-size:15.5px;max-width:62ch}
+.sheet blockquote{margin:12px 0;padding:4px 0 4px 16px;border-left:2px solid var(--brass);font-family:var(--f-display);font-style:italic;font-size:18px}
+.sheet blockquote cite{display:block;font-family:var(--f-body);font-style:normal;font-size:12.5px;color:var(--ink-3);margin-top:4px}
+.choices{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.choice{text-align:left;background:var(--card);border:1px solid var(--rule);border-radius:3px;padding:10px 14px;cursor:pointer}
+.choice:hover{border-color:var(--delft);background:var(--delft-soft)}
+.choice b{display:block;font-weight:600;font-size:15px}
+.choice span{display:block;font-size:13px;color:var(--ink-2)}
+.outcome{margin-top:14px;font-style:italic}
+.hist{margin-top:14px;padding:12px 14px;background:var(--delft-soft);font-size:14px}
+.hist b{display:block;font-family:var(--f-sc);font-weight:400;letter-spacing:.06em;color:var(--delft);font-size:13px;margin-bottom:2px}
+.sheet .actions{display:flex;justify-content:flex-end;margin-top:16px;gap:8px}
+.endgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 18px;font-size:14px;margin:10px 0}
+
+@media (max-width:1100px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.col.mid{grid-column:1/-1;order:-1}}
+@media (max-width:760px){
+  .grid{grid-template-columns:minmax(0,1fr)}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat{padding-left:0!important;border-right:0;border-bottom:1px solid var(--rule-2)}
+  .top{grid-template-columns:1fr auto}
+  .speed{grid-column:1/-1;justify-self:start}
+  .brand h1{font-size:25px}
+  .sheet{padding:20px 18px}
+}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="mark">VOC</span><h1>Retourvloot</h1><span class="sub">Kamer Amsterdam · bewindhebber</span></div>
+  <div class="clock"><div class="d" id="date">20 March 1602</div><div class="w" id="season"></div></div>
+  <div class="speed" role="group" aria-label="Game speed">
+    <button type="button" data-speed="0" aria-pressed="true" title="Pause">❚❚</button>
+    <button type="button" data-speed="5" aria-pressed="false">1×</button>
+    <button type="button" data-speed="15" aria-pressed="false">3×</button>
+    <button type="button" data-speed="50" aria-pressed="false">10×</button>
+  </div>
+</header>
+
+<section class="stats" aria-label="Company at a glance">
+  <div class="stat"><span>Treasury</span><b id="s-cash">ƒ6.42M</b><small id="s-cash2"></small></div>
+  <div class="stat"><span>Debt</span><b id="s-debt">ƒ0</b><small id="s-debt2">4% a year</small></div>
+  <div class="stat"><span>Share price</span><b id="s-share">100%</b><small id="s-share2">of face value</small></div>
+  <div class="stat"><span>Shareholders expect</span><b id="s-exp">—</b><small id="s-exp2"></small></div>
+  <div class="stat"><span>Monopolies</span><b id="s-mono">0 of 5</b><small id="s-mono2"></small></div>
+</section>
+
+<main class="grid">
+  <div class="col">
+    <section class="card" aria-labelledby="h-equip">
+      <h2 id="h-equip">Equip ships <small id="equip-cap"></small></h2>
+      <details class="help"><summary>How shipping works</summary>
+        <p>A ship costs its hull, crew and stores, plus the silver you put aboard. Europe has little Asia wants to buy, so silver is what pays for cargo.</p>
+        <p>Ships leave only in the sailing seasons, reach Batavia 8 to 11 months later, wait for the return season (November to January) and come home loaded with whatever Batavia has bought. A round trip takes about two years.</p>
+        <p>More ships only help if Batavia has goods to fill them. Watch "Goods waiting for ships" in the letter from Batavia.</p>
+      </details>
+      <div class="stack">
+        <div>
+          <div class="row between"><label for="silver">Silver aboard each ship</label><output id="silver-out" class="num"></output></div>
+          <input type="range" id="silver" min="0" max="400000" step="25000" value="250000">
+          <p class="eff" id="silver-eff"></p>
+        </div>
+        <button type="button" class="btn" id="equip">Equip a ship</button>
+        <div class="note" id="harbour"></div>
+        <div class="row between">
+          <label for="auto">Standing orders</label>
+          <select id="auto"><option value="0">None</option><option value="1">1 ship each season</option><option value="2">2 ships each season</option><option value="3">3 ships each season</option><option value="4">4 ships each season</option><option value="6">6 ships each season</option></select>
+        </div>
+        <label class="row"><input type="checkbox" id="autoborrow"> Borrow when the treasury is short</label>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-auction">
+      <h2 id="h-auction">Warehouse &amp; auction <small id="next-auction"></small></h2>
+      <details class="help"><summary>How prices are set</summary>
+        <p>Auctions are held on 1 April and 1 October. The slider sets what share of each good in the warehouse you put up for sale.</p>
+        <p>The price depends on three things: how much you sell against what Europe wants in half a year, how much the English bring, and how much you keep back. Buyers know what is left in your warehouse, so a big stock pulls the price down too.</p>
+        <p>Fine spices are the clearest case: demand barely grows, so selling more can earn you less. The Company sometimes burned spices to hold the price.</p>
+      </details>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Goods</th><th class="r">In store</th><th>Sell</th><th class="r">Est. price</th></tr></thead>
+          <tbody id="wh"></tbody>
+        </table>
+      </div>
+      <div class="row between" style="margin-top:10px">
+        <span class="note" id="auction-est"></span>
+        <button type="button" class="btn ghost small" id="burn">Burn surplus spice</button>
+      </div>
+    </section>
+
+    <section class="card" aria-labelledby="h-books">
+      <h2 id="h-books">Accounts <small>Amsterdam chamber</small></h2>
+      <details class="help"><summary>What these numbers mean</summary>
+        <p>This is the Amsterdam side only: auction sales coming in, ships, silver, interest and dividends going out.</p>
+        <p>Silver sent east is not lost. It sits in Batavia and buys the cargo that comes home a year or two later. That is why a busy year can look like a loss. Batavia's own books arrive with each letter, a year late.</p>
+        <p>The VOC never added the two sets of books together.</p>
+      </details>
+      <div class="tablewrap"><table class="books"><thead><tr><th></th><th class="r" id="bk-y1"></th><th class="r" id="bk-y0"></th></tr></thead><tbody id="books"></tbody></table></div>
+      <canvas class="bars" id="bars" aria-label="Trading result per year"></canvas>
+      <p class="note" id="bars-cap"></p>
+      <p class="eff" id="perShip"></p>
+    </section>
+
+    <section class="card" aria-labelledby="h-share">
+      <h2 id="h-share">Shareholders <small>meeting each May</small></h2>
+      <details class="help"><summary>How shareholders react</summary>
+        <p>Each May you pay the dividend you set here, as a share of the ƒ6.4 million original capital. If the treasury cannot cover it, the rest is borrowed.</p>
+        <p>Shareholders expect roughly what you paid over the last five years. Paying less raises discontent; high discontent brings pamphlets. The share price follows the dividend, not the real health of the Company.</p>
+      </details>
+      <div class="stack">
+        <div>
+          <div class="row between"><label for="div">Dividend on ƒ6.4M capital</label><output id="div-out" class="num"></output></div>
+          <input type="range" id="div" min="0" max="40" step="1" value="0">
+          <p class="eff" id="div-eff"></p>
+        </div>
+        <div>
+          <div class="row between"><label>Discontent</label><span class="note" id="disc-txt"></span></div>
+          <div class="meter" id="disc"><i></i></div>
+        </div>
+        <div>
+          <div class="row between"><label>Share price, last 30 years</label><span class="note" id="share-range"></span></div>
+          <canvas class="spark" id="spark" aria-label="Share price chart"></canvas>
+        </div>
+        <div class="row">
+          <button type="button" class="btn ghost small" id="borrow">Borrow ƒ1M</button>
+          <button type="button" class="btn ghost small" id="repay">Repay ƒ1M</button>
+          <button type="button" class="btn ghost small" id="audit">Commission an audit</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="col mid">
+    <section class="card" aria-labelledby="h-notes">
+      <h2 id="h-notes">The bookkeeper's notes</h2>
+      <ul class="notes" id="notes"></ul>
+    </section>
+    <section class="card" aria-labelledby="h-map">
+      <h2 id="h-map">The route east <small>presumed positions</small></h2>
+      <div class="mapwrap"><canvas id="map" aria-label="Map of the route from Texel via the Cape to Batavia and the Company posts in Asia"></canvas></div>
+      <div class="legend"><span class="lo">Outbound</span><span class="lh">Homebound</span><span class="lp">Post you could order</span></div>
+      <p class="note" style="margin-top:6px">Amsterdam sees only the schedule. A ship that sank keeps sailing on this map until word arrives.</p>
+    </section>
+    <section class="card" aria-labelledby="h-fleet">
+      <h2 id="h-fleet">Fleet <small id="fleet-count"></small></h2>
+      <div class="tablewrap"><table class="fleet"><thead><tr><th>Ship</th><th>Status</th><th class="r">Silver</th></tr></thead><tbody id="fleet"></tbody></table></div>
+    </section>
+    <section class="card" aria-labelledby="h-log">
+      <h2 id="h-log">Chronicle</h2>
+      <ul class="log" id="log"></ul>
+    </section>
+  </div>
+
+  <div class="col">
+    <section class="card" aria-labelledby="h-aims">
+      <h2 id="h-aims">The Seventeen's aims <small>monopoly</small></h2>
+      <details class="help"><summary>Why monopoly</summary>
+        <p>The Heeren XVII wanted to be the only sellers of the fine spices in Europe, so they could set the price. Each monopoly here was won by force or by forced contracts. When you secure one, its cost is entered in the other ledger.</p>
+        <p>Each one cuts the rivals' supply at auction. They are counted once a letter from Batavia confirms them.</p>
+      </details>
+      <div class="row between"><label>Your share of Europe's fine spices</label><span class="num" id="fine-share"></span></div>
+      <div class="sharebar"><i id="fine-bar"></i></div>
+      <p class="note" id="fine-rivals"></p>
+      <ul class="aims" id="aims"></ul>
+    </section>
+    <section class="card" aria-labelledby="h-report">
+      <h2 id="h-report">Letter from Batavia</h2>
+      <div id="report"></div>
+    </section>
+    <section class="card" aria-labelledby="h-letter">
+      <h2 id="h-letter">Instructions to Asia</h2>
+      <details class="help"><summary>How orders reach Asia</summary>
+        <p>Your choices here are written into a letter. It sails with the next ship and takes effect only when that ship reaches Batavia. If the ship sinks, the letter is lost; every ship of the season carries a copy.</p>
+        <p>The Governor-General does not always obey.</p>
+      </details>
+      <fieldset><legend>What Batavia should buy first</legend><div class="seg" id="f-focus"></div><p class="eff" id="eff-focus"></p></fieldset>
+      <fieldset><legend>Pay for Company servants in Asia</legend><div class="seg" id="f-wages"></div><p class="eff" id="eff-wages"></p></fieldset>
+      <fieldset><legend>Expansion by the Governor-General</legend><div class="seg" id="f-exp"></div><p class="eff" id="eff-exp"></p></fieldset>
+      <fieldset><legend><label for="f-found">Open or take a new post</label></legend><select id="f-found"></select><p class="eff" id="found-desc"></p></fieldset>
+      <div class="lstatus" id="lstatus"></div>
+    </section>
+    <section class="card other" aria-labelledby="h-other">
+      <h2 id="h-other">The other ledger</h2>
+      <div class="counts">
+        <div><span>Sailed east</span><b id="o-sent">0</b></div>
+        <div><span>Died at sea</span><b id="o-sea">0</b></div>
+        <div><span>Died in Asia</span><b id="o-asia">0</b></div>
+        <div><span>Came home</span><b id="o-home">0</b></div>
+      </div>
+      <ul id="o-lines"></ul>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <span>Prototype · Homo Ludens. Prices and costs are simplified for play; dates, events and human costs follow the historical record.</span>
+  <span class="row"><a class="btn ghost small" href="/" style="text-decoration:none">Homo Ludens</a><button type="button" class="btn ghost small" id="credits">Sources</button><button type="button" class="btn ghost small" id="newgame">New game</button></span>
+</footer>
+
+<div class="modal" id="modal" hidden><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="m-title" id="sheet"></div></div>
+<div class="coach" id="coach" role="dialog" aria-live="polite" hidden></div>
+<div class="small-screen" id="small-screen" hidden><div><h3>Best on a bigger screen</h3><p>Retourvloot is a desk full of ledgers, letters and a map. It is made for a laptop or desktop.</p><button type="button" class="btn" id="small-go">Play anyway</button></div></div>
+
+<script>
+// ================= Retourvloot — simulation model =================
+const EPOCH = Date.UTC(1602, 0, 1);
+const DAYMS = 864e5;
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MON3 = MONTHS.map(m => m.slice(0, 3));
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const rnd = Math.random;
+function dateOf(t) { return new Date(EPOCH + Math.floor(t) * DAYMS); }
+function yearOf(t) { return dateOf(t).getUTCFullYear(); }
+function tOf(y, m = 1, d = 1) { return Math.round((Date.UTC(y, m - 1, d) - EPOCH) / DAYMS); }
+function mdOf(t) { const d = dateOf(t); return (d.getUTCMonth() + 1) * 100 + d.getUTCDate(); }
+function fmtDate(t) { const d = dateOf(t); return d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+function fmtMon(t) { const d = dateOf(t); return MON3[d.getUTCMonth()] + ' ' + d.getUTCFullYear(); }
+function money(v) {
+  const s = v < 0 ? '−' : ''; v = Math.abs(v);
+  if (v >= 1e6) return s + 'ƒ' + (v / 1e6).toFixed(v >= 1e8 ? 0 : v >= 1e7 ? 1 : 2) + 'M';
+  if (v >= 1e3) return s + 'ƒ' + Math.round(v / 1e3) + 'k';
+  return s + 'ƒ' + Math.round(v);
+}
+function num(v) { return Math.round(v).toLocaleString('en-US'); }
+
+const START_T = tOf(1602, 3, 20);
+const END_T = tOf(1800, 1, 1);
+const NOMINAL = 6424588;
+const CREW = 250, SOLDIERS = 110, SAILORS_HOME = 140;
+
+const SHIP_NAMES = ['Amsterdam','Mauritius','Hollandia','Zeelandia','Gelderland','Nassau','Oranje','Delft','Middelburg','Enkhuizen','Hoorn','Rotterdam','Duyfken','Wapen van Hoorn','Walcheren','Vlissingen','Den Briel','Leyden','Utrecht','Haarlem','Witte Leeuw','Batavia','Texel','Westfriesland','Sloten','Schiedam','Vergulde Draeck','Ridderschap','Hof van Zeeland','Amersfoort','Zuytdorp','Zeewijk','Huis te Kruiningen','Princes Maria','Gouden Leeuw','Wapen van Delft','Arnemuiden','Veere','Goes','Purmerend','Edam','Monnickendam','Medemblik','Alkmaar','Dordrecht','Gouda'];
+
+const GOODS = {
+  pepper:   { name: 'Pepper',      sub: 'Java & Malabar',               cost: 200 },
+  fine:     { name: 'Fine spices', sub: 'nutmeg, mace, cloves, cinnamon', cost: 350 },
+  textiles: { name: 'Textiles',    sub: 'Indian cottons & silk',         cost: 1200 },
+  coffee:   { name: 'Coffee',      sub: 'Mocha & Java',                  cost: 350 },
+  tea:      { name: 'Tea',         sub: 'Canton',                        cost: 700 },
+};
+const GOOD_KEYS = ['pepper', 'fine', 'textiles', 'coffee', 'tea'];
+const LOAD_ORDER = ['fine', 'textiles', 'tea', 'coffee', 'pepper'];
+function goodUnlocked(g, y) { return g === 'coffee' ? y >= 1700 : g === 'tea' ? y >= 1729 : true; }
+
+// European market. d = yearly demand (t), p0 = price at which demand clears, e = elasticity, eic = English supply (t/yr)
+function market(S, g, y) {
+  switch (g) {
+    case 'pepper': return { p0: 1100, d: 1800 + Math.max(0, y - 1650) * 4, e: 1.2, eic: 300 + Math.max(0, y - 1620) * 4 - (S.flags.bantamWar ? 150 : 0) };
+    case 'fine': {
+      return { p0: 5200, d: 260, e: 0.7, eic: fineLeaks(S).total };
+    }
+    case 'textiles': {
+      const d = Math.min(2600, 120 + Math.max(0, y - 1610) * 22);
+      const boost = S.flags.eicIndia ? 1.25 : 1;
+      return { p0: 3400, d, e: 1.4, eic: d * Math.min(0.9, 0.15 + Math.max(0, y - 1640) * 0.006) * boost };
+    }
+    case 'coffee': {
+      const k = clamp((y - 1711) / 80, 0, 1);
+      return { p0: 3000 - 2300 * k, d: 150 + 1400 * k, e: 1.3, eic: (150 + 1400 * k) * 0.35 };
+    }
+    case 'tea': {
+      const k = clamp((y - 1729) / 60, 0, 1);
+      const boost = S.flags.eicIndia ? 1.25 : 1;
+      return { p0: 2400 - 900 * k, d: 300 + 2500 * k, e: 1.5, eic: (300 + 2500 * k) * (0.8 + 0.6 * k) * boost };
+    }
+  }
+}
+// Who else sells fine spices in Europe: each source closes when its monopoly is won
+function fineLeaks(S) {
+  const nutmeg = S.flags.banda === 'conquest' ? 0 : 50;
+  const cloves = S.flags.hongi && S.flags.makassar ? 0 : (S.flags.hongi || S.flags.makassar ? 15 : 30) - (S.flags.amboyna ? 5 : 0);
+  const cinnamon = S.asia.posts.ceylon ? 0 : 20;
+  const smuggled = S.flags.privateTrade ? 10 : 0;
+  return { nutmeg, cloves, cinnamon, smuggled, total: nutmeg + cloves + cinnamon + smuggled };
+}
+function auctionPrice(S, g, released, remaining, y) {
+  const m = market(S, g, y);
+  const D = m.d / 2;
+  const Q = Math.max(1, released + m.eic / 2);
+  let p = m.p0 * Math.pow(D / Q, 1 / m.e);
+  p = clamp(p, 0.15 * m.p0, 3 * m.p0);
+  p *= 1 / (1 + 0.35 * remaining / D); // merchants know what is still in the warehouse
+  return p;
+}
+
+// Trading posts. how: auto (comes with the period), letter (you can order it), event
+const POSTS = {
+  bantam:     { name: 'Bantam', good: 'pepper', cap: 1600, upkeep: 40000, garrison: 150, from: 1603, how: 'auto', lon: 106.1, lat: -6.0, desc: 'Pepper port on Java.' },
+  ambon:      { name: 'Ambon', good: 'fine', cap: 90, upkeep: 90000, garrison: 400, from: 1605, how: 'auto', war: true, lon: 128.2, lat: -3.7, desc: 'Clove fort taken from the Portuguese.' },
+  banda:      { name: 'Banda', good: 'fine', cap: 80, upkeep: 30000, garrison: 80, from: 1609, how: 'auto', lon: 129.9, lat: -4.5, desc: 'The only source of nutmeg and mace.' },
+  japan:      { name: 'Hirado · Dejima', silver: true, upkeep: 30000, garrison: 30, from: 1609, how: 'letter', cost: 80000, lon: 129.9, lat: 32.7, desc: 'Japanese silver pays for Indian cloth.' },
+  coromandel: { name: 'Coromandel', good: 'textiles', cap: 170, upkeep: 50000, garrison: 150, from: 1610, how: 'letter', cost: 150000, lon: 80.3, lat: 13.4, desc: 'Painted cottons that buy spices in the islands.' },
+  formosa:    { name: 'Formosa', intra: 0.03, upkeep: 100000, garrison: 700, from: 1624, until: 1662, how: 'letter', cost: 300000, war: true, lon: 120.2, lat: 23.0, desc: 'Fort Zeelandia, gateway to Chinese silk and sugar.' },
+  bengal:     { name: 'Bengal', good: 'textiles', cap: 380, upkeep: 60000, garrison: 150, from: 1634, how: 'letter', cost: 200000, lon: 88.4, lat: 22.9, desc: 'Silk and muslin, the great cloth market.' },
+  ceylon:     { name: 'Ceylon', good: 'fine', cap: 110, upkeep: 220000, garrison: 1200, from: 1638, how: 'letter', cost: 600000, war: true, lon: 80.2, lat: 6.0, desc: 'Cinnamon, won by war with the Portuguese.' },
+  malacca:    { name: 'Malacca', intra: 0.02, upkeep: 150000, garrison: 600, from: 1640, how: 'letter', cost: 500000, war: true, lon: 102.2, lat: 2.2, desc: 'Controls the strait. Taken by siege.' },
+  cape:       { name: 'Cape', upkeep: 60000, garrison: 100, from: 1652, how: 'event', lon: 18.4, lat: -33.9, desc: 'Refreshment station: fewer deaths, a month longer.' },
+  mocha:      { name: 'Mocha', good: 'coffee', cap: 120, costMult: 3, upkeep: 30000, garrison: 20, from: 1700, how: 'letter', cost: 100000, lon: 43.3, lat: 13.3, desc: 'Buy coffee on the Yemeni market.' },
+  priangan:   { name: 'Priangan', good: 'coffee', cap: 900, upkeep: 50000, garrison: 200, from: 1707, how: 'event', lon: 107.6, lat: -7.0, desc: 'Coffee grown under forced deliveries.' },
+  canton:     { name: 'Canton', good: 'tea', cap: 800, upkeep: 40000, garrison: 20, from: 1729, how: 'letter', cost: 150000, lon: 113.3, lat: 23.1, desc: 'Tea, bought with silver.' },
+};
+
+const FOCUS = {
+  spices:   { label: 'Spices first',     w: { fine: 1, pepper: 1, textiles: .35, coffee: .35, tea: .35 } },
+  balanced: { label: 'Balanced',         w: { fine: 1, pepper: 1, textiles: 1, coffee: 1, tea: 1 } },
+  cloth:    { label: 'Cloth, tea & coffee first', w: { fine: .7, pepper: .5, textiles: 1, coffee: 1, tea: 1 } },
+};
+const EXPANSION = { restrain: 'Restrain', permit: 'Permit', encourage: 'Encourage' };
+
+function newState() {
+  return {
+    v: 1, t: START_T, speed: 0, cash: NOMINAL, debt: 0,
+    share: 100, sent: 1, shareHist: [100], divRate: 0, divHist: [], discontent: 0,
+    ships: [], shipSeq: 0,
+    wh: { pepper: 0, fine: 0, textiles: 0, coffee: 0, tea: 0 },
+    lastPrice: {},
+    release: { pepper: 50, fine: 50, textiles: 70, coffee: 70, tea: 70 },
+    auto: { n: 0, borrow: false }, silver: 250000,
+    asia: {
+      capital: 0, stock: { pepper: 0, fine: 0, textiles: 0, coffee: 0, tea: 0 }, personnel: 0, posts: {},
+      focus: 'balanced', wages: 'low', expansion: 'restrain',
+      letterIssued: -1, letterArrived: null, pendingFound: null, acts: [], missing: [],
+      yr: blankYr(), lastYr: null, eff: 1, need: 0,
+    },
+    letter: { focus: 'balanced', wages: 'low', expansion: 'restrain', found: '', issued: START_T },
+    letterSealed: false, letterCopies: 0,
+    report: null,
+    humans: { sent: 0, diedSea: 0, diedAsia: 0, returned: 0 },
+    other: [], enslavedBanda: 0,
+    flags: {}, done: { founding: true }, queue: ['founding'],
+    log: [],
+    stats: { voyages: 0, lost: 0, silver: 0, auction: 0, divPaid: 0, divYears: 0 },
+    auditLast: -99999, pamphletLast: -99999,
+    news: { losses: [] }, dynLast: {}, dynCount: {}, tut: { i: 0, done: false, seen: {}, ctxOn: false },
+    books: blankBooks(1602), booksLast: null, bookHist: [], mono: {},
+    ended: false,
+  };
+}
+function blankBooks(y) { return { y, sales: { pepper: 0, fine: 0, textiles: 0, coffee: 0, tea: 0 }, hulls: 0, silver: 0, div: 0, interest: 0, other: 0, borrowed: 0, repaid: 0, shipsOut: 0, shipsIn: 0 }; }
+function salesTotal(b) { return GOOD_KEYS.reduce((a, g) => a + b.sales[g], 0); }
+function tradeResult(b) { return salesTotal(b) - b.hulls - b.silver - b.interest - b.other; }
+function blankYr() { return { intra: 0, leak: 0, upkeep: 0, land: 0, buy: 0, deaths: 0, silverIn: 0, japan: 0 }; }
+
+function log(S, text, kind = '') { S.log.unshift({ t: S.t, text, kind }); if (S.log.length > 80) S.log.pop(); }
+function act(S, text) { S.asia.acts.push({ t: S.t, text }); if (S.asia.acts.length > 12) S.asia.acts.shift(); }
+function addOther(S, place, text) { S.other.push({ t: S.t, place, text }); }
+
+// ---------- Asia helpers ----------
+function autonomy(S, y) {
+  if ((y >= 1618 && y <= 1623) || (y >= 1627 && y <= 1629)) return 0.6; // Coen
+  return y < 1700 ? 0.3 : 0.4;
+}
+function postCap(S, id, y) {
+  const P = POSTS[id];
+  if (id === 'banda') return S.flags.banda === 'conquest' ? 220 : 80;
+  if (id === 'priangan') return P.cap * clamp((y - 1711) / 20, 0.1, 1);
+  const since = S.asia.posts[id] ? yearOf(S.asia.posts[id].since) : y;
+  const grow = P.good === 'fine' ? 1 : 1 + clamp((y - since) / 60, 0, 1) * (P.good === 'pepper' ? 0.3 : 1); // networks deepen over 60 years
+  if (id === 'coromandel' && y >= 1781) return P.cap * grow * 0.5;
+  return (P.cap || 0) * grow;
+}
+function postUpkeep(S, id) { return id === 'banda' && S.flags.banda === 'conquest' ? 120000 : POSTS[id].upkeep; }
+function postGarrison(S, id) { return id === 'banda' && S.flags.banda === 'conquest' ? 600 : POSTS[id].garrison; }
+function upkeepTotal(S) {
+  const y = yearOf(S.t), A = S.asia;
+  let u = Object.keys(A.posts).reduce((a, id) => a + postUpkeep(S, id), 0);
+  if (A.loanUntil && y < A.loanUntil) u += 80000;
+  if (S.flags.asianTroops) u += 60000;
+  if (S.flags.capeSlaves && A.posts.cape) u -= 20000;
+  if (A.economyUntil && y < A.economyUntil) u *= 0.85;
+  return u;
+}
+function garrisonNeed(S) { return Object.keys(S.asia.posts).reduce((a, id) => a + postGarrison(S, id), 0); }
+function conquered(S) { return Object.keys(S.asia.posts).filter(id => POSTS[id].war || (id === 'banda' && S.flags.banda === 'conquest')).length; }
+function intraRate(S, y) {
+  let r = y < 1619 ? 0.03 : y < 1635 ? 0.08 : y < 1690 ? 0.15 : y < 1720 ? 0.04 : -0.02;
+  if (S.asia.posts.malacca) r += POSTS.malacca.intra;
+  if (S.asia.posts.formosa) r += POSTS.formosa.intra;
+  return r;
+}
+function workingCap(S) { return 1.5e6 + 0.25e6 * Object.keys(S.asia.posts).length; }
+function japanYield(y) { return y < 1668 ? 600000 : y < 1685 ? 200000 : 120000; }
+function asiaMort(y) { return y < 1733 ? 0.006 : 0.016; }
+function leakRate(S, y) {
+  const n = Object.keys(S.asia.posts).length;
+  let r = clamp(0.03 + 0.0011 * (y - 1602) + 0.006 * n, 0, 0.45) * (S.asia.wages === 'high' ? 0.55 : 1);
+  if (S.flags.privateTrade) r *= 0.5;
+  if (S.asia.commissionUntil && y < S.asia.commissionUntil) r *= 0.6;
+  return r;
+}
+function foundablePosts(S, y) {
+  return Object.keys(POSTS).filter(id => {
+    const P = POSTS[id];
+    return P.how === 'letter' && !S.asia.posts[id] && P.from <= y && !(P.until && y >= P.until) && !(S.flags.lost && S.flags.lost[id]);
+  });
+}
+function foundPost(S, id, own) {
+  const P = POSTS[id], A = S.asia;
+  A.capital -= P.cost || 0;
+  A.posts[id] = { since: S.t };
+  if (own) act(S, `On his own authority the Governor-General ${P.war ? 'took' : 'opened a post at'} ${P.name}. It adds ${money(P.upkeep)} a year in upkeep and needs ${num(P.garrison)} men.`);
+  else act(S, `${P.war ? 'Took' : 'Opened a post at'} ${P.name}, as instructed from Amsterdam.`);
+}
+
+// ---------- Ships ----------
+function baseShipCost(y) { return y < 1650 ? 150000 : y < 1700 ? 200000 : 250000; }
+let _S = null; // current state for cost modifiers
+function shipCost(y) { let c = baseShipCost(y); if (_S && _S.flags.provisions) c += 10000; if (_S && _S.flags.sailorPay) c += 5000; if (_S && _S.flags.convoys) c *= 1.15; return Math.round(c); }
+function shipCap(y) { return y < 1650 ? 450 : y < 1700 ? 600 : 800; }
+function maxSilver(y) { return y < 1700 ? 400000 : 500000; }
+function equipShip(S, silver, borrow) {
+  const y = yearOf(S.t);
+  if (S.flags.nationalised) return false;
+  const cost = shipCost(y) + silver;
+  if (S.cash < cost) {
+    if (!borrow) return false;
+    const b = cost - Math.max(0, S.cash); S.debt += b; S.cash += b; S.books.borrowed += b;
+  }
+  S.cash -= cost; S.books.hulls += shipCost(y); S.books.silver += silver; S.books.shipsOut++;
+  const base = SHIP_NAMES[S.shipSeq % SHIP_NAMES.length];
+  const round = Math.floor(S.shipSeq / SHIP_NAMES.length);
+  S.shipSeq++;
+  S.ships.push({ id: S.shipSeq, name: round ? base + ' ' + ['II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'][Math.min(round - 1, 6)] : base, state: 'harbour', silver, crew: CREW, cap: shipCap(y), equipped: S.t });
+  return true;
+}
+function windowAt(S, t) {
+  const md = mdOf(t);
+  if (md >= 1215 || md <= 131) return 'Christmas';
+  if (md >= 401 && md <= 515) return 'Easter';
+  if (S.flags.kermis && md >= 901 && md <= 1015) return 'Kermis';
+  return null;
+}
+function nextWindow(S) {
+  for (let i = 0; i < 400; i++) { const w = windowAt(S, S.t + i); if (w) return { name: w, days: i }; }
+  return null;
+}
+function batWindow(t) { const md = mdOf(t); return md >= 1115 || md <= 131; }
+
+function depart(S, sh) {
+  const A = S.asia, y = yearOf(S.t);
+  sh.state = 'out'; sh.dep = S.t;
+  const cape = !!A.posts.cape;
+  sh.exp = (S.flags.brouwer ? 220 : 330) + (cape ? 25 : 0);
+  sh.days = Math.round(sh.exp * (0.88 + rnd() * 0.3));
+  const war = S.flags.war4 && y <= 1784;
+  sh.lost = rnd() < (war ? 0.3 : 0.02) * (S.flags.convoys ? 0.5 : 1);
+  sh.letter = { ...S.letter };
+  S.letterSealed = true;
+  S.humans.sent += sh.crew; S.stats.voyages++; S.stats.silver += sh.silver;
+}
+function arriveAsia(S, sh) {
+  const A = S.asia;
+  if (sh.lost) { sh.state = 'lostOut'; S.humans.diedSea += sh.crew; S.stats.lost++; return; }
+  let m = 0.15 * (A.posts.cape ? 0.7 : 1) * (S.flags.provisions ? 0.8 : 1) * (0.45 + rnd() * 1.1);
+  if (rnd() < 0.03) m = 0.4 + rnd() * 0.25;
+  // mutiny: rare, likelier on low wages and deadly voyages
+  if (!S.news.mutiny && rnd() < (S.asia.wages === 'low' ? 0.006 : 0.002) * (m > 0.3 ? 3 : 1) * (S.flags.sailorPay ? 0.3 : 1)) {
+    sh.lost = true; sh.state = 'lostOut'; S.humans.diedSea += sh.crew; S.stats.lost++; S.news.mutiny = { name: sh.name, t: S.t }; return;
+  }
+  if (m >= 0.4) A.disaster = { name: sh.name, deaths: Math.round(sh.crew * m), t: S.t };
+  const deaths = Math.round(sh.crew * m);
+  S.humans.diedSea += deaths; sh.crew -= deaths; sh.deathsOut = deaths;
+  const soldiers = Math.round(sh.crew * (SOLDIERS + (S.flags.crimps ? 40 : 0)) / CREW);
+  A.personnel += soldiers; sh.crew -= soldiers;
+  A.capital += sh.silver * 1.25; A.yr.silverIn += sh.silver * 1.25;
+  deliverLetter(S, sh.letter);
+  sh.state = 'asia'; sh.arr = S.t; sh.ready = S.t + 50;
+}
+function departAsia(S, sh) {
+  const A = S.asia;
+  A._dis = null;
+  const need = SAILORS_HOME - sh.crew;
+  if (need > 0) { const take = Math.min(need, Math.max(0, Math.floor(A.personnel))); sh.crew += take; A.personnel -= take; }
+  let room = sh.cap; sh.cargo = {};
+  for (const g of LOAD_ORDER) {
+    const q = Math.min(room, A.stock[g]);
+    if (q > 0.5) { sh.cargo[g] = q; A.stock[g] -= q; room -= q; }
+  }
+  sh.report = snapshot(S); A._dis = null;
+  sh.state = 'home'; sh.dep2 = S.t;
+  sh.exp2 = 200 + (A.posts.cape ? 20 : 0);
+  sh.days2 = Math.round(sh.exp2 * (0.88 + rnd() * 0.3));
+  const war = S.flags.war4 && yearOf(S.t) <= 1784;
+  sh.lostH = rnd() < (war ? 0.35 : 0.045) * (S.flags.convoys ? 0.5 : 1);
+}
+function cargoText(c) {
+  const parts = LOAD_ORDER.filter(g => c && c[g] > 0.5).map(g => num(c[g]) + ' t ' + GOODS[g].name.toLowerCase());
+  return parts.length ? parts.join(', ') : 'an empty hold';
+}
+function arriveHome(S, sh) {
+  if (sh.lostH) { sh.state = 'lostHome'; S.humans.diedSea += sh.crew; S.stats.lost++; return; }
+  const deaths = Math.round(sh.crew * 0.07 * (0.4 + rnd() * 1.2));
+  S.humans.diedSea += deaths; S.humans.returned += sh.crew - deaths;
+  for (const g in sh.cargo) S.wh[g] += sh.cargo[g];
+  S.books.shipsIn++;
+  if (!S.report || sh.report.date > S.report.date) {
+    S.report = sh.report; S.reportNew = true;
+    if (sh.report.disaster && sh.report.disaster.t > (S.news.lastDisasterT || 0)) { S.news.disaster = sh.report.disaster; S.news.lastDisasterT = sh.report.disaster.t; }
+    revealMissing(S, sh.report.missing);
+  } else revealMissing(S, sh.report.missing);
+  S.sent += 0.015;
+  log(S, `The ${sh.name} is home at Texel with ${cargoText(sh.cargo)}. ${num(sh.crew - deaths)} of ${CREW} men came back.`, 'ship');
+  sh.state = 'done'; sh.doneT = S.t;
+}
+function revealMissing(S, names) {
+  for (const id of names || []) {
+    const sh = S.ships.find(s => s.id === id);
+    if (sh && !sh.revealed) {
+      sh.revealed = true; sh.revealT = S.t; S.sent -= 0.03; S.news.losses.push(S.t);
+      log(S, `Batavia reports the ${sh.name} never arrived. She is presumed lost with ${CREW} men and ${money(sh.silver)} in silver.`, 'loss');
+    }
+  }
+}
+function snapshot(S) {
+  const A = S.asia, y = yearOf(S.t);
+  const m = A.missing.slice(); A.missing = [];
+  const dis = A.disaster; A.disaster = null; if (dis) A._dis = dis;
+  return {
+    date: S.t, capital: A.capital, stock: { ...A.stock }, personnel: Math.floor(A.personnel), need: garrisonNeed(S), eff: A.eff,
+    upkeep: upkeepTotal(S) * (A.wages === 'high' ? 1.3 : 1), leak: leakRate(S, y), posts: Object.keys(A.posts),
+    acts: A.acts.slice(-5), letterIssued: A.letterIssued, letterArrived: A.letterArrived, focus: A.focus, wages: A.wages, expansion: A.expansion,
+    disaster: A._dis || null, missing: m, lastYr: A.lastYr ? { ...A.lastYr } : null, inAsia: S.ships.filter(s => s.state === 'asia').map(s => s.id),
+  };
+}
+
+function shipsDaily(S) {
+  const y = yearOf(S.t), bw = batWindow(S.t), md = mdOf(S.t);
+  const blockade = S.flags.war4 && (y === 1781 || y === 1782);
+  for (const sh of S.ships) {
+    if (sh.state === 'out' && S.t >= sh.dep + sh.days) arriveAsia(S, sh);
+    else if (sh.state === 'asia') {
+      if (bw && S.t >= sh.ready && !blockade && (rnd() < 0.08 || md === 131)) departAsia(S, sh);
+    } else if (sh.state === 'home' && S.t >= sh.dep2 + sh.days2) arriveHome(S, sh);
+    else if (sh.state === 'lostOut' && !sh.batNoted && S.t >= sh.dep + sh.exp + 60) { sh.batNoted = true; S.asia.missing.push(sh.id); }
+    else if (sh.state === 'lostHome' && !sh.revealed && S.t >= sh.dep2 + sh.exp2 + 90) {
+      sh.revealed = true; sh.revealT = S.t; S.sent -= 0.04; S.news.losses.push(S.t);
+      log(S, `The ${sh.name} is long overdue from Batavia. She is presumed lost with her cargo and crew.`, 'loss');
+    }
+  }
+  S.ships = S.ships.filter(sh => !((sh.state === 'done' && S.t - sh.doneT > 30) || (sh.revealed && S.t - sh.revealT > 120)));
+}
+
+// ---------- Letters ----------
+function deliverLetter(S, L) {
+  const A = S.asia, y = yearOf(S.t);
+  if (!L || L.issued <= A.letterIssued) return;
+  A.letterIssued = L.issued; A.letterArrived = S.t;
+  if (L.focus !== A.focus) {
+    if (rnd() < autonomy(S, y) * 0.35) act(S, `Your letter of ${fmtMon(L.issued)} asked for "${FOCUS[L.focus].label}". The Governor-General kept his own priorities.`);
+    else A.focus = L.focus;
+  }
+  A.wages = L.wages; A.expansion = L.expansion;
+  if (L.found && !A.posts[L.found] && POSTS[L.found]) {
+    const P = POSTS[L.found];
+    if (A.capital >= P.cost * 0.6) foundPost(S, L.found, false);
+    else { A.pendingFound = L.found; act(S, `Ordered to take up ${P.name}, but Batavia lacks the funds (${money(P.cost)}). Waiting for silver.`); }
+  }
+}
+
+// ---------- Periodic ----------
+function asiaMonth(S, y) {
+  const A = S.asia;
+  const need = garrisonNeed(S); A.need = need;
+  const eff = need ? clamp(Math.pow(A.personnel / need, 0.7), 0.05, 1) : 1; A.eff = eff;
+  let inc = 0;
+  if (A.posts.japan) { const j = japanYield(y) / 12; inc += j; A.yr.japan += j; }
+  const work = workingCap(S);
+  const intra = A.capital > 0 ? Math.min(A.capital, work) * intraRate(S, y) / 12 : A.capital * 0.08 / 12;
+  const idle = A.capital > work ? (A.capital - work) * 0.01 : 0; // silver lying idle in Batavia drains away
+  let land = y >= 1680 ? conquered(S) * 25000 * (1 + (y - 1680) / 40) / 12 : 0;
+  if (S.flags.opium) land += 150000 / 12;
+  if (S.flags.sugar && y < 1740) land += 60000 / 12;
+  const upkeep = upkeepTotal(S) * (A.wages === 'high' ? 1.3 : 1) / 12 * (S.flags.war4 && y <= 1784 ? 1.4 : 1);
+  let budget = Math.max(0, A.capital + inc + intra + land - upkeep) * 0.5;
+  let buy = 0;
+  const W = FOCUS[A.focus].w;
+  const posts = Object.keys(A.posts).filter(id => POSTS[id].good).sort((a, b) => W[POSTS[b].good] - W[POSTS[a].good]);
+  const disrupt = (S.flags.disrupt1740 && y <= 1742 ? (S.flags.sugar ? 0.55 : 0.7) : 1) * (A.economyUntil && y < A.economyUntil ? 0.85 : 1);
+  for (const id of posts) {
+    if (budget <= 0) break;
+    const P = POSTS[id];
+    const cap = postCap(S, id, y) / 12 * eff * W[P.good] * disrupt;
+    const c = GOODS[P.good].cost * (P.costMult || 1) * (P.good === 'fine' && S.flags.banda !== 'conquest' ? 1.8 : 1);
+    const q = Math.min(cap, budget / c);
+    A.stock[P.good] += q; budget -= q * c; buy += q * c;
+  }
+  const leak = leakRate(S, y) * (buy + upkeep) + idle;
+  A.capital += inc + intra + land - upkeep - buy - leak;
+  for (const g of GOOD_KEYS) A.stock[g] *= 0.992;
+  const mr = asiaMort(y);
+  const dd = Math.round(A.personnel * mr); A.personnel -= dd;
+  let shipD = 0;
+  for (const sh of S.ships) if (sh.state === 'asia') { const k = Math.round(sh.crew * mr); sh.crew -= k; shipD += k; }
+  S.humans.diedAsia += dd + shipD;
+  Object.assign(A.yr, { intra: A.yr.intra + intra, leak: A.yr.leak + leak, upkeep: A.yr.upkeep + upkeep, land: A.yr.land + land, buy: A.yr.buy + buy, deaths: A.yr.deaths + dd + shipD });
+  if (A.pendingFound && A.capital >= POSTS[A.pendingFound].cost) { const id = A.pendingFound; A.pendingFound = null; if (!A.posts[id]) foundPost(S, id, false); }
+}
+function interestRate(S, y) { return S.flags.credit1773 && y >= 1773 && y < 1778 ? 0.055 : 0.04; }
+function monthly(S) {
+  const y = yearOf(S.t);
+  const ir = interestRate(S, y); S.cash -= S.debt * ir / 12; S.books.interest += S.debt * ir / 12;
+  asiaMonth(S, y);
+  if (S.flags.banda === 'conquest') S.enslavedBanda += 200 / 12;
+  const r = S.divHist.slice(-5);
+  const avg = r.length ? r.reduce((a, b) => a + b, 0) / r.length : 0;
+  const target = (100 + avg / 100 / 0.045 * 100 * 0.85) * S.sent;
+  S.share = Math.max(20, S.share + (target - S.share) * 0.08 + (rnd() - 0.5) * S.share * 0.02);
+  S.sent += (1 - S.sent) * 0.04;
+  S.shareHist.push(S.share); if (S.shareHist.length > 360) S.shareHist.shift();
+  S.discontent = Math.max(0, S.discontent - 0.8);
+  if (S.cash < 0) {
+    log(S, `The treasury is empty. ${money(-S.cash)} borrowed on short-term notes.`, 'loss');
+    S.debt += -S.cash; S.books.borrowed += -S.cash; S.cash = 0;
+  }
+  updateMono(S);
+  if (S.debt > 120e6 && !S.flags.nationalised) { S.ended = true; S.endReason = 'bankrupt'; S.speed = 0; return; }
+  if (S.discontent >= 75 && S.done.revolt && S.t - S.pamphletLast > 365 * 5) { S.pamphletLast = S.t; S.queue.push('pamphlets'); }
+}
+// The Heeren XVII's monopoly aims. Amsterdam counts a post only once a Batavia report confirms it.
+const AIMS = [
+  { id: 'nutmeg', name: 'Nutmeg & mace', where: 'Banda Islands', hist: 1621, how: 'Conquer Banda (the 1620 decision).' },
+  { id: 'cloves', name: 'Cloves', where: 'Ambon & the Moluccas', hist: 1669, how: 'Hongi patrols and tree-cutting (1650s) and the war against Makassar (1666).' },
+  { id: 'cinnamon', name: 'Cinnamon', where: 'Ceylon', hist: 1658, how: 'Order Ceylon taken from the Portuguese (from 1638).' },
+  { id: 'japan', name: 'The Japan trade', where: 'Hirado, then Dejima', hist: 1641, how: 'Have a post in Japan when the Portuguese are expelled in 1641.' },
+  { id: 'strait', name: 'The Strait of Malacca', where: 'Malacca', hist: 1641, how: 'Order Malacca taken (from 1640).' },
+];
+function reported(S, id) { return S.report && S.report.posts.includes(id); }
+function aimDone(S, id) {
+  switch (id) {
+    case 'nutmeg': return S.flags.banda === 'conquest';
+    case 'cloves': return !!(S.flags.hongi && S.flags.makassar);
+    case 'cinnamon': return reported(S, 'ceylon');
+    case 'japan': return reported(S, 'japan') && yearOf(S.t) >= 1641;
+    case 'strait': return reported(S, 'malacca');
+  }
+}
+function updateMono(S) {
+  for (const a of AIMS) {
+    const d = aimDone(S, a.id);
+    if (d && !S.mono[a.id]) { S.mono[a.id] = S.t; log(S, `Monopoly secured: ${a.name.toLowerCase()} (${a.where}). The Heeren XVII achieved this in ${a.hist}.`, 'money'); }
+    if (!d && S.mono[a.id] && a.id === 'cinnamon' && S.flags.lost && S.flags.lost.ceylon) S.mono[a.id] = -1;
+  }
+}
+function fineShare(S, y) {
+  const own = Object.keys(S.asia.posts).filter(id => POSTS[id].good === 'fine').reduce((a, id) => a + postCap(S, id, y), 0);
+  const other = fineLeaks(S).total;
+  return own + other > 0 ? own / (own + other) : 0;
+}
+function yearly(S) {
+  const y = yearOf(S.t), A = S.asia;
+  for (const id in POSTS) {
+    const P = POSTS[id];
+    if (P.how === 'auto' && P.from <= y && !A.posts[id]) { A.posts[id] = { since: S.t }; act(S, `${P.name}: ${P.desc}`); }
+  }
+  const p = autonomy(S, y) * { restrain: .12, permit: .35, encourage: .7 }[A.expansion];
+  if (A.capital > 0 && rnd() < p) {
+    const c = foundablePosts(S, y);
+    if (c.length) foundPost(S, c[Math.floor(rnd() * c.length)], true);
+  }
+  A.lastYr = { ...A.yr, year: y - 1 }; A.yr = blankYr();
+  S.booksLast = S.books; S.bookHist.push({ y: S.books.y, res: tradeResult(S.books), div: S.books.div, sales: salesTotal(S.books), shipsIn: S.books.shipsIn, shipsOut: S.books.shipsOut, cost: S.books.hulls + S.books.silver });
+  if (S.bookHist.length > 40) S.bookHist.shift();
+  S.books = blankBooks(y);
+}
+function auction(S) {
+  const y = yearOf(S.t); let total = 0; const parts = [];
+  for (const g of GOOD_KEYS) {
+    const st = S.wh[g]; if (st < 1) continue;
+    const rel = Math.floor(st * S.release[g] / 100); if (rel < 1) continue;
+    const p = auctionPrice(S, g, rel, st - rel, y);
+    S.wh[g] -= rel; S.lastPrice[g] = p; total += rel * p; S.books.sales[g] += rel * p;
+    parts.push(`${num(rel)} t ${GOODS[g].name.toLowerCase()} at ${money(p)}/t`);
+  }
+  S.cash += total; S.stats.auction += total;
+  if (total > 0) log(S, `${mdOf(S.t) < 600 ? 'Spring' : 'Autumn'} auction: ${money(total)}. ${parts.join('; ')}.`, 'money');
+}
+function expectation(S) {
+  const r = S.divHist.slice(-5);
+  if (!r.length) return 10;
+  return Math.max(5, r.reduce((a, b) => a + b, 0) / r.length);
+}
+function dividend(S) {
+  const y = yearOf(S.t);
+  if (S.skipDivYear === y) return;
+  const exp = expectation(S);
+  const pay = NOMINAL * S.divRate / 100;
+  if (pay > 0) {
+    let borrowed = 0;
+    if (S.cash < pay) { borrowed = pay - S.cash; S.debt += borrowed; S.cash = 0; S.books.borrowed += borrowed; } else S.cash -= pay;
+    S.books.div += pay;
+    S.stats.divPaid += pay;
+    log(S, `Dividend of ${S.divRate}% paid: ${money(pay)}${borrowed ? `, of which ${money(borrowed)} borrowed` : ''}.`, borrowed ? 'loss' : 'money');
+  } else log(S, `No dividend this year. Shareholders expected about ${Math.round(exp)}%.`, 'loss');
+  S.divHist.push(S.divRate); S.stats.divYears++;
+  const gap = exp - S.divRate;
+  S.discontent = clamp(S.discontent + (gap > 0 ? gap * 3 : -Math.min(15, -gap * 1.5 + 5)), 0, 100);
+}
+function autoEquip(S) {
+  let n = 0;
+  for (let i = 0; i < S.auto.n; i++) if (equipShip(S, Math.min(S.silver, maxSilver(yearOf(S.t))), S.auto.borrow)) n++;
+  if (S.auto.n > 0) log(S, n ? `Standing orders: ${n} ship${n > 1 ? 's' : ''} equipped for the ${windowAt(S, S.t)} fleet.` : `Standing orders: no money to equip ships for the ${windowAt(S, S.t)} fleet.`, n ? 'ship' : 'loss');
+}
+function audit(S) {
+  const y = yearOf(S.t);
+  S.auditLast = S.t; S.cash -= 60000; S.books.other += 60000;
+  let whv = 0; for (const g of GOOD_KEYS) whv += S.wh[g] * (S.lastPrice[g] || market(S, g, y).p0 * 0.8);
+  const R = S.report; let asv = 0;
+  if (R) { asv = R.capital; for (const g of GOOD_KEYS) asv += R.stock[g] * GOODS[g].cost; }
+  const equity = S.cash - S.debt + whv + asv;
+  const mcap = NOMINAL * S.share / 100;
+  S.discontent = Math.max(0, S.discontent - 25);
+  if (equity < mcap * 0.6) S.sent -= 0.12;
+  return { equity, mcap, cash: S.cash, debt: S.debt, whv, asv, rdate: R ? R.date : null };
+}
+
+function step(S) {
+  if (S.ended) return;
+  _S = S;
+  S.t++;
+  const t = S.t, y = yearOf(t), md = mdOf(t);
+  const w = windowAt(S, t);
+  if (w && w !== windowAt(S, t - 1)) autoEquip(S);
+  if (w) for (const sh of S.ships) if (sh.state === 'harbour' && rnd() < 0.09) depart(S, sh);
+  shipsDaily(S);
+  if (dateOf(t).getUTCDate() === 1) monthly(S);
+  if (md === 101) yearly(S);
+  if (md === 401 || md === 1001) auction(S);
+  if (md === 515 && y >= 1610) dividend(S);
+  checkEvents(S);
+  if (dateOf(t).getUTCDate() === 1) S.reportNew = false;
+  if (t >= END_T) { S.ended = true; S.speed = 0; }
+}
+function checkEvents(S) {
+  const monthStart = dateOf(S.t).getUTCDate() === 1;
+  for (const e of EVENTS) {
+    if (e.check) {
+      if (!monthStart || S.done[e.id] || S.queue.includes(e.id)) continue;
+      if (S.t - (S.dynLast[e.id] ?? -1e9) < (e.cooldown || 10) * 365) continue;
+      if (e.from && yearOf(S.t) < e.from) continue;
+      if (e.max && (S.dynCount[e.id] || 0) >= e.max) continue;
+      if (!e.check(S)) continue;
+      S.dynLast[e.id] = S.t; S.dynCount[e.id] = (S.dynCount[e.id] || 0) + 1; if (e.once) S.done[e.id] = true;
+      if (e.onTrigger) e.onTrigger(S);
+      S.queue.push(e.id); continue;
+    }
+    if (S.done[e.id]) continue;
+    if (S.t < tOf(...e.at)) continue;
+    S.done[e.id] = true;
+    if (e.cond && !e.cond(S)) continue;
+    if (e.onTrigger) e.onTrigger(S);
+    S.queue.push(e.id);
+  }
+}
+
+// ================= Retourvloot — historical events =================
+// Each event: at [y,m,d], title, body(S) -> html, choices [{label, hint, fx(S) -> outcome text}], history (what actually happened)
+const EVENTS = [
+  {
+    id: 'founding', at: [1602, 3, 20],
+    title: 'The United East India Company',
+    body: () => `<p>The States General have granted the <i>Vereenigde Oostindische Compagnie</i> a charter (<i>octrooi</i>) for 21 years. It holds the Dutch monopoly on trade east of the Cape of Good Hope and may build forts, sign treaties and wage war in Asia.</p>
+      <p>Investors have paid in <b>ƒ6.4 million</b>. You sit as a <i>bewindhebber</i>, a director of the Amsterdam chamber.</p>
+      <p>Your job: equip ships, send silver east, sell what comes back at auction, and keep the shareholders paid. Your orders to Asia travel by ship. They take most of a year to arrive, and the answer takes as long again.</p>`,
+    choices: [{ label: 'Take your seat' }],
+    history: 'The charter gave a trading company powers normally held by states. Shareholders had no vote and never met; directors were appointed for life. In 1612 the planned ten-year liquidation was dropped, and the capital became permanent.',
+  },
+  {
+    id: 'lemaire', at: [1609, 1, 24],
+    title: 'A former director turns against the Company',
+    onTrigger: S => { S.sent -= 0.1; },
+    body: () => `<p>Isaac Le Maire, one of the Company's founders, has fallen out with the board. He petitions against the directors and quietly organises a syndicate to sell VOC shares <i>short</i>, betting that the price will fall. The price is sliding.</p>`,
+    choices: [
+      { label: 'Ask the States General to ban short selling', fx: S => { S.sent += 0.06; return 'The States General issue a ban. The market steadies.'; } },
+      { label: 'Let the market settle it', fx: S => { S.sent -= 0.04; return 'The selling continues for months.'; } },
+    ],
+    history: 'In 1610 the States General banned naked short selling of VOC shares, the first such ban in history. Le Maire left Amsterdam and later backed a rival expedition that found a new route around Cape Horn.',
+  },
+  {
+    id: 'firstdiv', at: [1610, 4, 20],
+    title: 'The first dividend',
+    body: S => `<p>Eight years in, the shareholders want a return. The treasury is thin, but the warehouses hold spices.</p><p>Fine spices in store: <b>${num(S.wh.fine)} t</b>.</p>`,
+    choices: [
+      { label: 'Pay in mace, worth 75% of capital', hint: 'No cash out. Shareholders get spices they must sell themselves.', fx: S => { S.wh.fine = Math.max(0, S.wh.fine - 40); S.skipDivYear = 1610; S.divHist.push(30); S.discontent += 10; S.stats.divYears++; log(S, 'First dividend paid in kind: mace worth 75% of capital.', 'money'); return 'Shareholders receive sacks of mace. Many are not pleased.'; } },
+      { label: 'Pay in cash at the May meeting', hint: 'Set the rate yourself on the Shareholders panel.', fx: () => 'You will set the rate at the May meeting.' },
+    ],
+    history: 'The first VOC dividend, in 1610, was paid in mace worth 75% of capital. The payouts of 1610–12 totalled 162.5%, mostly in spices, and many shareholders objected to being paid in kind.',
+  },
+  {
+    id: 'brouwer', at: [1611, 8, 1],
+    title: 'A faster road to Java',
+    body: () => `<p>Commander Hendrik Brouwer reports a new route. From the Cape, instead of hugging Africa and crossing the monsoon seas, he ran east on the strong westerlies of the far south, then turned north to Java. He saved months.</p>`,
+    choices: [{ label: 'Order all captains to take the southern route', fx: S => { S.flags.brouwer = true; return 'Outbound voyages are now much shorter.'; } }],
+    history: 'The Brouwer route became compulsory for Company ships in 1616. It cut the Cape–Java passage dramatically, though ships that turned north too late were wrecked on the Australian coast.',
+  },
+  {
+    id: 'batavia', at: [1619, 5, 30],
+    title: 'Batavia',
+    onTrigger: S => { S.flags.batavia = true; },
+    body: () => `<p>Governor-General Jan Pieterszoon Coen has destroyed the town of Jayakarta on Java and founded <b>Batavia</b> on its ruins. It will be the Company's headquarters in Asia, where every cargo is gathered, accounted for and reloaded.</p>
+      <blockquote>“We cannot carry on trade without war, nor war without trade.”<cite>Coen to the Heeren XVII, 1614</cite></blockquote>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Batavia remained the hub of the Company for 180 years. Coen often acted first and asked Amsterdam later; letters took the better part of a year each way.',
+  },
+  {
+    id: 'banda', at: [1620, 11, 1],
+    title: 'Coen asks for a free hand in Banda',
+    body: () => `<p>The Banda Islands are the only place on earth where nutmeg and mace grow. The Bandanese sell to whoever pays, including the English, despite contracts the Company forced on them.</p>
+      <p>Coen writes asking for authority to subjugate the islands and take the nutmeg trees for the Company. Under the 1619 accord the English are supposed to share the spice trade.</p>`,
+    choices: [
+      { label: 'Authorise the conquest', hint: 'Secures the nutmeg and mace monopoly. Banda needs a garrison of 600 for good.', fx: S => { conquerBanda(S); return 'Your consent sails east.'; } },
+      { label: 'Order him to keep the accord with the English', hint: 'Shared trade, lower margins.', fx: S => {
+        if (Math.random() < 0.35) { conquerBanda(S); return 'Your letter arrives too late. Coen has already sailed for Banda.'; }
+        S.flags.banda = 'contract'; return 'Coen grudgingly holds back. The English stay in the islands, and nutmeg stays expensive to buy.'; } },
+    ],
+    history: 'The Heeren XVII backed Coen. In 1621 his forces conquered the Banda Islands. Of an estimated 15,000 Bandanese, about 1,000 remained on the islands; the rest were killed, starved, enslaved, deported or fled. The nutmeg groves were divided among Dutch planters (perkeniers), worked by enslaved people brought from elsewhere. Some historians call it genocide.',
+  },
+  {
+    id: 'revolt', at: [1622, 11, 1],
+    title: 'The shareholders revolt',
+    body: S => `<p>Pamphlets are circulating on the Dam. Investors holding a large share of the capital accuse the directors of self-dealing, of hiding the accounts and of spending on war instead of paying dividends. The charter is up for renewal in 1623.</p><p>Shareholder discontent: <b>${Math.round(S.discontent)}/100</b>.</p>`,
+    choices: [
+      { label: 'Accept a supervisory committee of large shareholders', fx: S => { S.flags.heren9 = true; S.discontent = Math.max(0, S.discontent - 40); return 'A committee of nine will look over your shoulder.'; } },
+      { label: 'Refuse, and rely on the States General', fx: S => { S.discontent = Math.max(0, S.discontent - 10); S.sent -= 0.1; return 'The States back the board. The pamphlets get angrier.'; } },
+    ],
+    history: 'The 1623 charter created a nine-member committee of large shareholders to oversee the directors and let them nominate new ones. Ordinary shareholders still had no vote, and the accounts stayed closed.',
+  },
+  {
+    id: 'amboyna', at: [1623, 3, 9],
+    title: 'Amboyna',
+    onTrigger: S => { S.flags.eicIndia = true; S.flags.amboyna = true; addOther(S, 'Ambon, 1623', 'About twenty men, ten of them English, executed after torture on charges of plotting against the Company fort.'); },
+    body: () => `<p>On Ambon the Company's governor has had about twenty men, ten of them English, tortured and executed, accused of plotting to seize the fort. The English East India Company is pulling out of the Spice Islands.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The “Amboyna massacre” became English propaganda for decades. Pushed out of the spice trade, the English East India Company concentrated on India: cotton cloth and, later, tea — the growth markets of the next century. In this game, that is why English competition in cloth and tea is stronger than it would otherwise be.',
+  },
+  {
+    id: 'hongi', at: [1652, 3, 1], cond: S => !!S.asia.posts.ambon,
+    title: 'Cloves grow everywhere',
+    body: () => `<p>The Company holds the clove fort on Ambon, but clove trees grow on dozens of islands in the Moluccas. Local rulers sell to Makassar traders, who sell on to the English, Danes and Portuguese. Clove prices in Amsterdam suffer.</p>
+      <p>The Governor of Ambon proposes <i>hongi</i> expeditions: fleets of war canoes, rowed by villagers obliged to serve, that sail the islands each year and cut down every clove tree the Company does not control. Rulers would receive a yearly payment for the lost trees.</p>`,
+    choices: [
+      { label: 'Authorise the hongi expeditions', hint: 'Half of the clove smuggling stops. A step toward the clove monopoly.', fx: S => { S.flags.hongi = true; S.asia.capital -= 200000; addOther(S, 'Moluccas, 1650s', 'Hongi fleets cut down clove trees outside Company control. Villages that resisted lost their clove trees and food gardens; after the long war over West Seram, survivors were deported in 1655.'); return 'The first hongi fleet sails from Ambon.'; } },
+      { label: 'Buy cloves where they grow, at market prices', hint: 'Cheaper in lives and garrisons. Cloves keep leaking to rivals.', fx: () => 'Clove trees keep growing outside Company control.' },
+    ],
+    history: 'The Company did enforce its clove monopoly by extirpatie, the systematic destruction of clove trees outside Ambon and a few controlled islands, using annual hongi expeditions. The policy lasted into the 19th century.',
+  },
+  {
+    id: 'makassar', at: [1666, 11, 1],
+    title: 'Makassar, the free port',
+    body: () => `<p>The sultanate of Gowa at Makassar on Sulawesi runs an open port. Spices the Company cannot control pass through it to every buyer in Asia and Europe.</p>
+      <p>Admiral Cornelis Speelman offers to take a fleet there. Arung Palakka, a Bugis prince in exile and enemy of Gowa, will join him with his own army.</p>`,
+    choices: [
+      { label: 'Send Speelman and ally with Arung Palakka', hint: 'Costs Batavia ƒ600k. Closes the last free spice port.', fx: S => { S.flags.makassar = true; S.asia.capital -= 600000; addOther(S, 'Makassar, 1666–69', 'War against the sultanate of Gowa, fought together with Arung Palakka\'s Bugis forces. Makassar was taken and ceased to be a free port for spices.'); return 'Speelman sails for Makassar.'; } },
+      { label: 'Leave Makassar alone', hint: 'Spices keep leaking through Makassar.', fx: () => 'Makassar stays open.' },
+    ],
+    history: 'Speelman and Arung Palakka forced Gowa to sign the Treaty of Bongaya in 1667; fighting went on until 1669. The Company\'s victory depended on its Asian allies, and Arung Palakka became the dominant power in southern Sulawesi.',
+  },
+  {
+    id: 'bantam1682', at: [1682, 4, 1], cond: S => !!S.asia.posts.bantam,
+    title: 'Civil war in Bantam',
+    body: () => `<p>In the sultanate of Bantam, the young sultan Haji has risen against his father, Sultan Ageng. Haji asks the Company for help. In return he offers to expel the English and other Europeans from Bantam and give the Company the pepper trade.</p>`,
+    choices: [
+      { label: 'Intervene for Sultan Haji', hint: 'Costs Batavia ƒ300k. English pepper supply falls.', fx: S => { S.flags.bantamWar = true; S.asia.capital -= 300000; return 'Company troops land at Bantam.'; } },
+      { label: 'Stay out of it', fx: () => 'The English keep their factory at Bantam.' },
+    ],
+    history: 'The Company backed Haji, and in 1682 the English were expelled from Bantam. They moved to Bencoolen on Sumatra and kept buying pepper there and in Malabar. The VOC never controlled the whole pepper trade.',
+  },
+  {
+    id: 'kermis', at: [1636, 1, 10],
+    title: 'A third sailing season',
+    onTrigger: S => { S.flags.kermis = true; },
+    body: () => `<p>Besides the Christmas and Easter departures, the Heeren XVII add a <b>Kermis fleet</b>, sailing in September and October.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The fleets were departure windows rather than convoys: the 14 ships of the 1663 Easter fleet left over seven weeks.',
+  },
+  {
+    id: 'dejima', at: [1641, 6, 1], cond: S => !!S.asia.posts.japan,
+    title: 'Dejima',
+    body: () => `<p>The Tokugawa shogunate has expelled the Portuguese and moved the Company's post from Hirado to <b>Dejima</b>, a small artificial island in Nagasaki harbour. The Dutch are now the only Europeans allowed to trade with Japan.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'For two centuries Dejima was Japan\'s main window on Europe. Japanese silver, and later copper, financed the Company\'s purchases of Indian cloth.',
+  },
+  {
+    id: 'cape', at: [1652, 4, 6],
+    title: 'A station at the Cape',
+    onTrigger: S => { S.asia.posts.cape = { since: S.t }; },
+    body: () => `<p>Jan van Riebeeck has landed at Table Bay to build a fort and gardens. Ships can now stop for fresh water, meat and vegetables halfway to Asia.</p><p>Voyages get about a month longer, but fewer men die of scurvy on the way.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The Cape station grew into a colony that took land from the Khoikhoi and relied on enslaved labour: from none in 1652 to 16,839 enslaved people in 1795.',
+  },
+  {
+    id: 'formosa', at: [1662, 2, 1], cond: S => !!S.asia.posts.formosa,
+    title: 'Formosa is lost',
+    onTrigger: S => { delete S.asia.posts.formosa; S.flags.lost = { ...(S.flags.lost || {}), formosa: true }; S.sent -= 0.08; },
+    body: () => `<p>After a nine-month siege, Fort Zeelandia has surrendered to the Ming loyalist commander Zheng Chenggong (Koxinga). The Company has lost Formosa.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Zheng Chenggong\'s army of some 25,000 men overwhelmed the small Dutch garrison. It was one of the Company\'s few outright defeats by an Asian power.',
+  },
+  {
+    id: 'silverban', at: [1668, 3, 1], cond: S => !!S.asia.posts.japan,
+    title: 'Japan stops the silver',
+    body: () => `<p>The shogunate has banned the export of silver. From now on the Company can take copper and gold coins out of Japan, worth far less to Batavia.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Japanese silver had paid for Indian textiles, which in turn bought spices in the islands. Losing it meant more silver had to be shipped all the way from Europe.',
+  },
+  {
+    id: 'rampjaar', at: [1672, 6, 15],
+    title: 'The Disaster Year',
+    onTrigger: S => { S.sent -= 0.35; },
+    body: () => `<p>France, England and two German bishoprics have attacked the Republic at once. French armies are deep inside the country; the dikes are being opened to flood the land in front of Amsterdam. VOC shares are collapsing.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The Republic survived the Rampjaar of 1672, but it marked the end of its unchallenged prime. VOC shares recovered and reached new heights in the decades that followed.',
+  },
+  {
+    id: 'coffee', at: [1707, 2, 1],
+    title: 'Coffee on Java',
+    body: () => `<p>Europe is acquiring a taste for coffee. Until now the Company has bought it at Mocha in Yemen. Seedlings planted on Java are doing well in the Priangan highlands.</p><p>The local regents could be ordered to have their villages grow coffee and deliver it at a price the Company sets.</p>`,
+    choices: [
+      { label: 'Order forced deliveries on Java', hint: 'Cheap, large supply from about 1711.', fx: S => { S.asia.posts.priangan = { since: S.t }; addOther(S, 'Priangan, Java', 'From the early 1700s regents and villagers were obliged to grow coffee and deliver it at prices set by the Company.'); return 'Instructions sail for Batavia.'; } },
+      { label: 'Keep buying at Mocha', hint: 'Small, expensive supply. You can order a Mocha post.', fx: () => 'Coffee will stay a small trade for you.' },
+    ],
+    history: 'The Company did set up forced coffee deliveries on Java through local regents. By the 1720s Java coffee was flooding Europe, and its price fell for most of the century.',
+  },
+  {
+    id: 'bubble', at: [1720, 3, 1],
+    title: 'The bubble year',
+    onTrigger: S => { S.sent += 0.45; },
+    body: () => `<p>Paris has gone mad for Mississippi shares, London for the South Sea Company. Money is pouring into anything that trades on an exchange. VOC shares are soaring.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'VOC shares reached their highest prices in the 1720s, around six times face value, just as the Company\'s real profits were shrinking. The market priced the dividend, not the business.',
+  },
+  {
+    id: 'canton', at: [1729, 1, 15],
+    title: 'Tea from Canton',
+    body: () => `<p>Tea used to reach Batavia on Chinese junks. The Heeren XVII now allow ships to sail directly to <b>Canton</b> to buy it. You can order a post there in your letter to Batavia.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Tea became the great growth trade of the 18th century. The English company dominated it, buying tea with Indian cloth and, later, opium rather than silver.',
+  },
+  {
+    id: 'malaria', at: [1733, 6, 1],
+    title: 'Fever in Batavia',
+    body: () => `<p>Reports describe a new and deadly fever in Batavia. Newly arrived soldiers and sailors are dying within months of landing.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'From 1733 malaria, bred in fish ponds and silted canals around the city, made Batavia known as “the graveyard of the East”. Deaths among Company employees rose sharply and stayed high.',
+  },
+  {
+    id: 'geger', at: [1741, 7, 1],
+    title: 'News from Batavia',
+    onTrigger: S => { S.flags.disrupt1740 = true; S.asia.capital -= 300000; S.sent -= 0.08; addOther(S, 'Batavia, October 1740', 'Between 5,000 and 10,000 Chinese residents killed by soldiers and townspeople after unrest in the sugar districts around the city.'); },
+    body: S => `<p>Last October, after Chinese sugar workers outside Batavia rose against deportation threats, Company soldiers and townspeople turned on the Chinese inside the city. For days they killed. Estimates run from 5,000 to more than 10,000 dead. The sugar districts are in ruins.</p>
+      <p>Governor-General Adriaan Valckenier and his council member Van Imhoff blame each other.</p>${S.flags.sugar ? '<p>The sugar mills you encouraged around Batavia are burned or abandoned.</p>' : ''}`,
+    choices: [
+      { label: 'Recall Valckenier and order an inquiry', fx: () => 'An order to arrest Valckenier sails east.' },
+      { label: 'Take no action', fx: S => { S.sent -= 0.04; return 'The matter is left to Batavia.'; } },
+    ],
+    history: 'Valckenier was arrested and died in a Batavia prison in 1751 before his trial ended. Van Imhoff became Governor-General. The massacre is remembered in Indonesia as Geger Pacinan.',
+  },
+  {
+    id: 'war4', at: [1780, 12, 20],
+    title: 'War with Britain',
+    onTrigger: S => {
+      S.flags.war4 = true; S.sent -= 0.4; let n = 0;
+      for (const sh of S.ships) {
+        if ((sh.state === 'out' && !sh.lost) || (sh.state === 'home' && !sh.lostH)) {
+          if (Math.random() < 0.4) { if (sh.state === 'out') sh.lost = true; else sh.lostH = true; n++; }
+        }
+      }
+    },
+    body: () => `<p>Britain has declared war on the Republic. The Royal Navy is hunting Company ships at sea, and British forces are attacking posts in India and the Indian Ocean.</p><p>Return fleets will be stuck in Batavia for at least two seasons.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The Fourth Anglo-Dutch War (1780–84) cost the Company an estimated ƒ43 million and about half its fleet. From 1784 the States had to lend it tens of millions to keep it afloat.',
+  },
+  {
+    id: 'stateaid', at: [1784, 6, 1],
+    title: 'The State steps in',
+    onTrigger: S => { S.cash += 5e6; S.debt += 5e6; S.books.borrowed += 5e6; },
+    body: () => `<p>Peace has been signed, but the Company cannot meet its obligations. The States of Holland agree to guarantee new loans. <b>ƒ5 million</b> is added to your treasury, and to your debt.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Between 1784 and 1790 the state provided some ƒ58 million in support. The Company kept paying dividends for several more years.',
+  },
+  {
+    id: 'batavian', at: [1795, 1, 19],
+    title: 'Revolution',
+    onTrigger: S => { delete S.asia.posts.cape; delete S.asia.posts.ceylon; S.flags.lost = { ...(S.flags.lost || {}), cape: true, ceylon: true }; S.sent -= 0.2; },
+    body: () => `<p>French revolutionary armies have crossed the frozen rivers. The Stadholder has fled to England, and the Batavian Republic is proclaimed. In exile he orders Dutch colonies to accept British protection. The Cape and Ceylon will fall to Britain.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Britain took the Cape in 1795 and Ceylon in 1796. The new republic had little patience with a bankrupt company run by the old regents.',
+  },
+  {
+    id: 'nationalised', at: [1796, 3, 1],
+    title: 'The board is dismissed',
+    onTrigger: S => { S.flags.nationalised = true; S.auto.n = 0; },
+    body: () => `<p>The Heeren XVII have been dismissed. A <i>Committee for the Affairs of the East Indian Trade</i> now runs the Company for the state. You stay on as an adviser, but you can no longer equip ships.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The charter was allowed to lapse at the end of 1799. On 1 January 1800 the Batavian state took over the Company\'s possessions and its debts.',
+  },
+  // ---------- events driven by the state of your company ----------
+  {
+    id: 'deathship', check: S => !!S.news.disaster && !S.flags.provisions, cooldown: 12, max: 3,
+    onTrigger: S => { S.news.cur = S.news.disaster; S.news.disaster = null; },
+    title: 'A death ship',
+    body: S => `<p>The latest letter from Batavia reports that the <i>${esc(S.news.cur.name)}</i> arrived with ${num(S.news.cur.deaths)} of her ${CREW} men dead on the way. Scurvy, fever and dysentery. The survivors were carried ashore.</p><p>The surgeons' guild proposes better provisions: more fresh water casks, preserved vegetables, more cooks and medicine chests.</p>`,
+    choices: [
+      { label: 'Pay for better provisions', hint: '+ƒ10k per ship. About a fifth fewer deaths at sea.', fx: S => { S.flags.provisions = true; return 'From the next fleet, every ship carries better stores.'; } },
+      { label: 'Accept the losses', hint: 'Men are cheaper than stores.', fx: () => 'Nothing changes.' },
+    ],
+    history: 'On average, something like one in five men died on the outward voyage in the 18th century, and single voyages could lose more than half. Remedies such as citrus were known to some surgeons but were not used consistently. The Cape station did most to bring deaths down.',
+  },
+  {
+    id: 'mutiny', check: S => !!S.news.mutiny, cooldown: 25, max: 3,
+    onTrigger: S => { S.news.cur = S.news.mutiny; S.news.mutiny = null; },
+    title: 'Mutiny',
+    body: S => `<p>Word comes from the Cape: the <i>${esc(S.news.cur.name)}</i> will never reach Batavia. Her crew, hungry, sick and unpaid for months, rose against the officers. Some say they meant to turn pirate. The ship, her silver and her men are lost to the Company.</p>`,
+    choices: [
+      { label: 'Raise sailors’ pay', hint: '+ƒ5k per ship. Mutinies become rarer.', fx: S => { S.flags.sailorPay = true; return 'Wages for ordinary sailors go up.'; } },
+      { label: 'Harsher discipline', hint: 'Keelhauling and the noose. Costs nothing.', fx: () => 'The articles of war are read aloud before every voyage.' },
+    ],
+    history: 'Mutinies on Company ships were rare but deeply feared. Punishments were brutal: flogging, keelhauling, and hanging for ringleaders. The most notorious case was the Batavia in 1629.',
+  },
+  {
+    id: 'silverplea', check: S => S.reportNew && S.report && S.report.capital < 150000, cooldown: 15, max: 4, from: 1612,
+    title: 'Batavia begs for silver',
+    body: S => `<p>The Governor-General writes that Batavia had only <b>${money(S.report.capital)}</b> left. He cannot pay the garrisons, and the cloth merchants of Coromandel will not sell on credit. Without silver, he warns, the posts will produce nothing and the ships will come home half empty.</p>`,
+    choices: [
+      { label: 'Equip an emergency silver ship', hint: `A ship with the most silver allowed, ready for the next sailing. Borrowed if need be.`, fx: S => { equipShip(S, maxSilver(yearOf(S.t)), true); return 'A ship is loaded with silver at Texel.'; } },
+      { label: 'Let Batavia borrow from Chinese merchants', hint: 'ƒ1M in Batavia now; ƒ80k a year in interest for 15 years.', fx: S => { S.asia.capital += 1e6; S.asia.loanUntil = yearOf(S.t) + 15; return 'Batavia may borrow locally.'; } },
+      { label: 'Order him to economise', hint: 'Upkeep −15% for five years, but posts produce 15% less.', fx: S => { S.asia.economyUntil = yearOf(S.t) + 5; return 'Orders to economise sail east.'; } },
+    ],
+    history: 'Europe produced little that Asia wanted to buy, so the Company had to ship silver east year after year. Batavia was chronically short of cash and often borrowed from Chinese and other Asian merchants in the city.',
+  },
+  {
+    id: 'idlesilver', check: S => S.reportNew && S.report && S.report.capital > (1.5e6 + 0.25e6 * S.report.posts.length) * 1.6, cooldown: 15, max: 3,
+    title: 'Silver piling up in Batavia',
+    body: S => `<p>Batavia's books show <b>${money(S.report.capital)}</b> in cash, far more than its trade can use. Idle silver does not stay idle for long: some of it finds its way into the pockets of Company servants.</p>`,
+    choices: [
+      { label: 'Ship the surplus home as gold and diamonds', hint: 'About half its value reaches Amsterdam after losses and discounts.', fx: S => { const ex = Math.max(0, S.asia.capital - workingCap(S)); S.asia.capital -= ex * 0.8; S.cash += ex * 0.45; S.books.other -= ex * 0.45; log(S, `${money(ex * 0.45)} in gold and gems from Batavia added to the treasury.`, 'money'); return `${money(ex * 0.45)} reaches the treasury.`; } },
+      { label: 'Leave it in Batavia', hint: 'Send less silver per ship instead.', fx: () => 'The silver stays in Asia.' },
+    ],
+    history: 'Most of the Company’s capital in Asia stayed there, financing trade between Asian ports. Only a small share ever flowed back to the Netherlands as cash; the return came as cargo.',
+  },
+  {
+    id: 'corruption', check: S => S.reportNew && S.report && S.report.leak >= 0.18, cooldown: 20, max: 3,
+    title: 'Fortunes in Batavia',
+    body: S => `<p>Company servants on modest salaries are returning from Asia rich. The fiscal in Batavia estimates that about <b>${Math.round(S.report.leak * 100)}%</b> of what the Company spends in Asia is lost to private trade, smuggling and false accounts.</p>`,
+    choices: [
+      { label: 'Send a commissioner-general to investigate', hint: 'ƒ150k. Losses fall by 40% for ten years.', fx: S => { S.cash -= 150000; S.books.other += 150000; S.asia.commissionUntil = yearOf(S.t) + 10; return 'A commissioner sails with full powers.'; } },
+      { label: 'Let servants trade privately, as the English do', hint: 'Losses halve for good, but more spices are smuggled to rivals.', fx: S => { S.flags.privateTrade = true; return 'Private trade is allowed, within limits.'; } },
+      { label: 'Ignore it', fx: () => 'Nothing is done.' },
+    ],
+    history: 'Contemporaries joked that VOC stood for Vergaan Onder Corruptie, “perished by corruption”. Historians now see the problem as built into the Company: low pay, and a ban on private trade that everyone broke. The English company let its servants trade on their own account.',
+  },
+  {
+    id: 'glut', check: S => S.wh.fine > market(S, 'fine', yearOf(S.t)).d / 2 * 1.5, cooldown: 20, max: 3,
+    title: 'Too much nutmeg',
+    body: S => `<p>The warehouses hold <b>${num(S.wh.fine)} t</b> of fine spices, far more than Europe will buy at a good price. The buyers know it, and bids are falling.</p>`,
+    choices: [
+      { label: 'Burn half of it', hint: 'Prices recover. The smoke smells of nutmeg for days.', fx: S => { const q = S.wh.fine * 0.5; S.wh.fine -= q; log(S, `${num(q)} t of spices burned to hold up the price.`, 'loss'); return `${num(q)} t go up in smoke.`; } },
+      { label: 'Sell half cheaply in the Baltic and the Levant', hint: 'Cash now, at about a third of the usual price.', fx: S => { const q = S.wh.fine * 0.5, p = (S.lastPrice.fine || 4000) * 0.35; S.wh.fine -= q; S.cash += q * p; S.books.sales.fine += q * p; return `${money(q * p)} raised.`; } },
+      { label: 'Keep it', fx: () => 'The spices stay in store.' },
+    ],
+    history: 'Contemporaries described large quantities of spices being burned in Amsterdam and Middelburg to keep prices up. Limiting supply was the point of the monopoly.',
+  },
+  {
+    id: 'convoys', check: S => !S.flags.convoys && S.news.losses.filter(t => t > S.t - 730).length >= 3, cooldown: 15,
+    title: 'Three ships in two years',
+    body: () => `<p>Three Company ships have been lost in two years. The chamber of Zeeland proposes that ships sail in convoys, with armed escorts through the dangerous waters off Africa and in the Channel.</p>`,
+    choices: [
+      { label: 'Sail in convoys', hint: 'Ships cost 15% more. Losses at sea halve.', fx: S => { S.flags.convoys = true; return 'Convoys from the next season.'; } },
+      { label: 'Accept the risk', fx: () => 'Ships keep sailing alone.' },
+    ],
+    history: 'Return fleets usually sailed together, and in wartime the Republic’s navy escorted them home around Scotland. About 4–5% of homeward voyages were lost.',
+  },
+  {
+    id: 'garrison', check: S => S.reportNew && S.report && S.report.need > 0 && S.report.personnel < S.report.need * 0.7, cooldown: 15, max: 4, from: 1615,
+    title: 'Empty barracks',
+    body: S => `<p>Batavia reports <b>${num(S.report.personnel)}</b> men in service for <b>${num(S.report.need)}</b> places. Forts are half manned; posts cannot be worked. Fever kills recruits faster than ships bring them.</p>`,
+    choices: [
+      { label: 'Recruit Asian soldiers', hint: 'Fills 40% of the gap now. +ƒ60k a year.', fx: S => { S.asia.personnel += S.report.need * 0.4; S.flags.asianTroops = true; return 'Ambonese, Balinese and Bugis companies are raised.'; } },
+      { label: 'Pay crimps to find more men in Germany', hint: 'Each ship leaves 40 more soldiers in Asia.', fx: S => { S.flags.crimps = true; addOther(S, 'Recruitment, Amsterdam', 'Crimps (zielverkopers) lodged poor recruits, many from the German lands, and took a share of their future wages. More men sailed east, and more died there.'); return 'The crimps of Amsterdam get busy.'; } },
+      { label: 'Give up the costliest post', hint: 'Less upkeep, fewer men needed.', fx: S => { const ids = Object.keys(S.asia.posts).filter(id => POSTS[id].how === 'letter'); if (!ids.length) return 'There is no post you can give up.'; const id = ids.sort((a, b) => postUpkeep(S, b) - postUpkeep(S, a))[0]; delete S.asia.posts[id]; act(S, `${POSTS[id].name} abandoned on orders from Amsterdam.`); return `${POSTS[id].name} will be abandoned.`; } },
+    ],
+    history: 'Most of the Company’s soldiers were not Dutch: by 1790 about 70% were foreign-born, mostly German. In Asia it relied heavily on Asian troops and allies, without whom wars like Makassar could not have been won.',
+  },
+  {
+    id: 'opium', check: S => !!(S.report && S.report.posts.includes('bengal')), once: true, from: 1677,
+    title: 'Opium from Bengal',
+    body: () => `<p>The Bengal post reports that opium grown around Patna sells for many times its price in Java and the islands, where it is smoked mixed with tobacco. Company ships could carry it to Batavia and sell it under monopoly.</p>`,
+    choices: [
+      { label: 'Ship Bengal opium to Java', hint: 'About ƒ150k a year for Batavia.', fx: S => { S.flags.opium = true; addOther(S, 'Java, from the 1670s', 'Bengal opium shipped to Java and sold under Company monopoly. From 1745 an Opium Society (Amfioen Sociëteit) ran the trade.'); return 'The first chests of opium are loaded at Hugli.'; } },
+      { label: 'Refuse', fx: () => 'The Company leaves opium to others.' },
+    ],
+    history: 'The VOC traded Bengal opium to Java from the 1670s. In 1745 it set up the Amfioen Sociëteit to monopolise sales. The English company later built an even larger opium trade to China.',
+  },
+  {
+    id: 'sugar', check: S => !!S.asia.posts.bantam && yearOf(S.t) < 1735, once: true, from: 1690,
+    title: 'Sugar around Batavia',
+    body: () => `<p>Chinese entrepreneurs are clearing the land around Batavia, the Ommelanden, for sugar cane and mills. They bring in thousands of workers from Fujian. The mills pay rent and taxes, and Batavia gains a sugar export.</p>`,
+    choices: [
+      { label: 'Encourage the mills', hint: 'About ƒ60k a year for Batavia.', fx: S => { S.flags.sugar = true; return 'More land is leased to the mill owners.'; } },
+      { label: 'Keep the Ommelanden small', fx: () => 'The mills stay few.' },
+    ],
+    history: 'Sugar mills spread around Batavia from the 1680s. When prices collapsed in the 1720s and 30s, many closed and their workers were left without income. The Company’s plan to deport “unemployed” Chinese to Ceylon helped set off the uprising and massacre of 1740.',
+  },
+  {
+    id: 'capeslaves', check: S => !!S.asia.posts.cape, once: true, from: 1655,
+    title: 'Labour for the Cape',
+    body: () => `<p>The Cape station needs hands for its gardens, fields and fort. The Khoikhoi will not work for the Company on its terms, and few Dutch settlers come.</p><p>The commander asks to send Company ships to buy enslaved people in Madagascar and on the African coast.</p>`,
+    choices: [
+      { label: 'Approve the slave voyages', hint: 'Cape upkeep −ƒ20k a year.', fx: S => { S.flags.capeSlaves = true; addOther(S, 'Cape Colony', 'Enslaved people brought from Madagascar, Mozambique, India and the Indonesian islands. There were 16,839 by 1795, more than the free settlers.'); return 'Company ships sail for Madagascar.'; } },
+      { label: 'Rely on settlers and paid labour', hint: 'Costlier, slower.', fx: () => 'The Cape stays small.' },
+    ],
+    history: 'The Company did organise slaving voyages to Madagascar and elsewhere for the Cape. Enslaved people grew from none in 1652 to 16,839 in 1795, while the Khoikhoi lost their land and cattle to the expanding colony.',
+  },
+  // ---------- more dated events ----------
+  {
+    id: 'mataram', at: [1628, 9, 1],
+    title: 'Batavia besieged',
+    onTrigger: S => { S.asia.capital -= 150000; },
+    body: () => `<p>Sultan Agung of Mataram, the strongest power on Java, has sent a great army against Batavia. The town is under siege, and Batavia's money goes to soldiers and walls instead of cargo.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'Mataram besieged Batavia in 1628 and again in 1629. The second attack failed after the Dutch burned the rice stores that fed Agung’s army. Coen died in the town during the second siege.',
+  },
+  {
+    id: 'batavia1629', at: [1630, 6, 1],
+    title: 'The wreck of the Batavia',
+    body: () => `<p>News arrives of the Company's newest ship, the <i>Batavia</i>. On her maiden voyage she ran onto a reef off the unknown South Land. While her commander went for help, a junior merchant, Jeronimus Cornelisz, took control of the survivors and had more than a hundred of them murdered.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The Batavia was wrecked on the Houtman Abrolhos in June 1629. Commander Pelsaert reached Batavia in a longboat and returned with a rescue ship; Cornelisz and other mutineers were executed. Ships following the Brouwer route too far east kept hitting the Australian coast.',
+  },
+  {
+    id: 'tasman', at: [1642, 7, 1],
+    title: 'The South Land',
+    body: () => `<p>Governor-General Antonio van Diemen proposes an expedition under Abel Tasman to explore the great unknown land south of the Indies. Perhaps there is gold, or a new route to Chile.</p>`,
+    choices: [
+      { label: 'Fund the expedition', hint: 'ƒ100k from Batavia.', fx: S => { S.asia.capital -= 100000; S.flags.tasman = true; return 'Tasman sails from Batavia in August.'; } },
+      { label: 'Not worth the money', fx: () => 'The South Land stays unexplored, for now.' },
+    ],
+    history: 'Tasman reached Tasmania (which he named Van Diemen’s Land), New Zealand, Tonga and Fiji in 1642–43. He found nothing to trade, and the Company lost interest in exploration.',
+  },
+  {
+    id: 'credit1773', at: [1773, 1, 15],
+    title: 'Credit crisis in Amsterdam',
+    onTrigger: S => { S.flags.credit1773 = true; S.sent -= 0.12; },
+    body: () => `<p>The Amsterdam banking house Clifford & Co. has collapsed, and others are following. Lenders are calling in their money. The Company will pay more for every guilder it borrows for the next few years.</p>`,
+    choices: [{ label: 'Continue' }],
+    history: 'The failure of Clifford & Co. in December 1772 set off a financial crisis across northern Europe. For a company already living on borrowed money, dearer credit was dangerous. In the game, interest rises to 5.5% until 1778.',
+  },
+  {
+    id: 'pamphlets', at: [9999, 1, 1],
+    title: 'Pamphlets on the Dam',
+    body: S => `<p>Shareholders are furious about the dividend. Anonymous pamphlets accuse the board of incompetence and worse.</p><p>Shareholders expect about <b>${Math.round(expectation(S))}%</b>. Discontent: <b>${Math.round(S.discontent)}/100</b>.</p>`,
+    choices: [
+      { label: 'Promise to meet expectations next May', fx: S => { S.divRate = Math.max(S.divRate, Math.round(expectation(S))); S.discontent -= 25; return `Dividend set to ${S.divRate}%.`; } },
+      { label: 'Ignore them', fx: S => { S.sent -= 0.15; return 'The share price falls.'; } },
+    ],
+    history: 'Dividends were the Company\'s political licence. From 1730 they exceeded earnings in almost every decade, paid first from capital in Asia and then from short-term loans in Amsterdam.',
+  },
+];
+const EVENT_BY_ID = Object.fromEntries(EVENTS.map(e => [e.id, e]));
+
+function conquerBanda(S) {
+  S.flags.banda = 'conquest';
+  addOther(S, 'Banda Islands, 1621', 'Population about 15,000 before the conquest, about 1,000 after. Thousands were killed; many more died of hunger and disease, were enslaved and deported, or fled.');
+}
+
+// Rijksmuseum images (public domain, CC0)
+const EVENT_IMAGES = {
+ "founding": {
+  "src": "img/founding.jpg",
+  "title": "The East India House in Amsterdam ('T Oost Indisch Huys)",
+  "maker": "possibly Jacob van Meurs",
+  "date": "1663",
+  "obj": "RP-P-OB-102.062",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-102.062"
+ },
+ "lemaire": {
+  "src": "img/lemaire.jpg",
+  "title": "Byrsa Amsterodamensis: Courtyard of Hendrick de Keyser's Exchange in Amsterdam",
+  "maker": "Boëtius Adamsz. Bolswert",
+  "date": "1609",
+  "obj": "RP-P-OB-67.487",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-67.487"
+ },
+ "firstdiv": {
+  "src": "img/firstdiv.jpg",
+  "title": "Nutmeg of the Banda Islands, 1599",
+  "maker": "Anonymous (Northern Netherlands)",
+  "date": "1619",
+  "obj": "RP-P-OB-75.396",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-75.396"
+ },
+ "brouwer": {
+  "src": "img/brouwer.jpg",
+  "title": "The Return to Amsterdam of the Second Expedition to the East Indies",
+  "maker": "Hendrick Cornelisz Vroom",
+  "date": "1599",
+  "obj": "SK-A-2858",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-2858"
+ },
+ "batavia": {
+  "src": "img/batavia.jpg",
+  "title": "The Castle of Batavia",
+  "maker": "Andries Beeckman",
+  "date": "c. 1662",
+  "obj": "SK-A-19",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-19"
+ },
+ "banda": {
+  "src": "img/banda.jpg",
+  "title": "View of Banda Neira, Moluccas",
+  "maker": "Workshop of Johannes Vingboons",
+  "date": "c. 1662-1663",
+  "obj": "SK-A-4476",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4476"
+ },
+ "revolt": {
+  "src": "img/revolt.jpg",
+  "title": "Portrait of Johan de Reus, Director of the Rotterdam Chamber of the Dutch East India Company, elected 1657",
+  "maker": "Pieter van der Werff",
+  "date": "1695-1722",
+  "obj": "SK-A-4505",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4505"
+ },
+ "amboyna": {
+  "src": "img/amboyna.jpg",
+  "title": "Bird's-eye View of Ambon, with a Portrait of Frederik Houtman in a Cartouche",
+  "maker": "Anonymous",
+  "date": "c. 1617",
+  "obj": "SK-A-4482",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4482"
+ },
+ "hongi": {
+  "src": "img/hongi.jpg",
+  "title": "Cinnamon, Nutmeg, Clove and Bamboo (Les Indes Orientales et Occidentales)",
+  "maker": "Romeyn de Hooghe (publisher Pieter van der Aa)",
+  "date": "1682-1733",
+  "obj": "BI-1972-1043-16",
+  "page": "https://www.rijksmuseum.nl/en/collection/BI-1972-1043-16"
+ },
+ "makassar": {
+  "src": "img/makassar.jpg",
+  "title": "Portrait of Cornelis Speelman, Governor-General of the Dutch East Indies",
+  "maker": "attributed to Martin Palin",
+  "date": "1680-1700",
+  "obj": "SK-A-3767",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-3767"
+ },
+ "bantam1682": {
+  "src": "img/bantam1682.jpg",
+  "title": "View of the City of Bantam",
+  "maker": "Pieter Serwouters, after Pieter Sibrantsz.",
+  "date": "1614-1622",
+  "obj": "RP-P-1886-A-11180",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-1886-A-11180"
+ },
+ "kermis": {
+  "src": "img/kermis.jpg",
+  "title": "East Indiamen off a Coast",
+  "maker": "Hendrick Cornelisz Vroom",
+  "date": "c. 1600-1630",
+  "obj": "SK-A-3108",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-3108"
+ },
+ "dejima": {
+  "src": "img/dejima.jpg",
+  "title": "Nagasaki Bay",
+  "maker": "Workshop of Kawahara Keiga",
+  "date": "c. 1833-1836",
+  "obj": "NG-1190",
+  "page": "https://www.rijksmuseum.nl/en/collection/NG-1190"
+ },
+ "cape": {
+  "src": "img/cape.jpg",
+  "title": "The Cape of Good Hope",
+  "maker": "Anonymous (England), after Jan van Ryne; publ. Robert Sayer",
+  "date": "1754",
+  "obj": "RP-P-1932-480",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-1932-480"
+ },
+ "formosa": {
+  "src": "img/formosa.jpg",
+  "title": "Capture of Fort Zeelandia on Formosa by the Chinese (Koxinga) and the martyrdom of the Reformed ministers, 1661",
+  "maker": "attributed to Crispijn van de Passe (II)",
+  "date": "1662-1663",
+  "obj": "RP-P-OB-47.421",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-47.421"
+ },
+ "silverban": {
+  "src": "img/silverban.jpg",
+  "title": "Foreign Ships in the Harbour of Nagasaki",
+  "maker": "Anonymous (Japan), publ. Bunkindo, Nagasaki",
+  "date": "1800-1850",
+  "obj": "RP-P-1956-461",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-1956-461"
+ },
+ "rampjaar": {
+  "src": "img/rampjaar.jpg",
+  "title": "Allegory on the French Invasion of 1672",
+  "maker": "Johannes van Wijckersloot",
+  "date": "1672",
+  "obj": "SK-A-4910",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4910"
+ },
+ "coffee": {
+  "src": "img/coffee.jpg",
+  "title": "Arabian Coffee Plant",
+  "maker": "Laurens Vincentsz. van der Vinne",
+  "date": "1668-1729",
+  "obj": "RP-T-2013-58-25",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-T-2013-58-25"
+ },
+ "bubble": {
+  "src": "img/bubble.jpg",
+  "title": "Title print for Het Groote Tafereel der Dwaasheid (The Great Mirror of Folly): the Share Shop of the Paper World",
+  "maker": "Jacob Folkema, after Arnold Houbraken",
+  "date": "1720",
+  "obj": "RP-P-AO-28-59-1",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-AO-28-59-1"
+ },
+ "canton": {
+  "src": "img/canton.jpg",
+  "title": "View of Canton, China",
+  "maker": "Workshop of Johannes Vingboons (anonymous)",
+  "date": "c. 1662-1663",
+  "obj": "SK-A-4474",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4474"
+ },
+ "malaria": {
+  "src": "img/malaria.jpg",
+  "title": "View of the Town Hall and the New Dutch Church in Batavia",
+  "maker": "Franz Xaver Habermann (publ. Kaiserlich Franziskische Akademie, Augsburg)",
+  "date": "1755-1779",
+  "obj": "RP-P-OB-47.415",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-47.415"
+ },
+ "geger": {
+  "src": "img/geger.jpg",
+  "title": "Massacre of the Chinese in Batavia, 1740",
+  "maker": "Adolf van der Laan",
+  "date": "1740",
+  "obj": "RP-P-OB-75.355",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-75.355"
+ },
+ "war4": {
+  "src": "img/war4.jpg",
+  "title": "Battle of Dogger Bank, 5 August 1781",
+  "maker": "Cornelis Bogerts",
+  "date": "1781-1783",
+  "obj": "RP-P-BI-1956",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-BI-1956"
+ },
+ "stateaid": {
+  "src": "img/stateaid.jpg",
+  "title": "Drill of the Amsterdam Citizenry in the Presence of Baron van der Capellen tot den Pol, 1783",
+  "maker": "Simon Fokke",
+  "date": "1783-1784",
+  "obj": "RP-P-OB-77.549",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-77.549"
+ },
+ "batavian": {
+  "src": "img/batavian.jpg",
+  "title": "Festival of Liberty on Dam Square, Amsterdam, 4 March 1795 (inauguration of the Liberty Tree)",
+  "maker": "Reinier Vinkeles (I) and Daniël Vrijdag, after Jacques Kuyper",
+  "date": "1795",
+  "obj": "RP-P-OB-77.568",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-77.568"
+ },
+ "nationalised": {
+  "src": "img/nationalised.jpg",
+  "title": "View of the Dolhuis and the Gate to the East India House on the Kloveniersburgwal, Amsterdam",
+  "maker": "possibly Hermanus Petrus Schouten (publ. Pierre Fouquet)",
+  "date": "c. 1770-1783",
+  "obj": "RP-P-AO-25-63A",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-AO-25-63A"
+ },
+ "pamphlets": {
+  "src": "img/pamphlets.jpg",
+  "title": "The Town Hall on Dam Square, Amsterdam",
+  "maker": "Gerrit Berckheyde",
+  "date": "1672",
+  "obj": "SK-A-34",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-34"
+ },
+ "deathship": {
+  "src": "img/deathship.jpg",
+  "title": "Warships in a Heavy Storm",
+  "maker": "Ludolf Bakhuysen",
+  "date": "c. 1695",
+  "obj": "SK-A-4856",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4856"
+ },
+ "batavia1629": {
+  "src": "img/batavia1629.jpg",
+  "title": "Hamburg Taler of Emperor Ferdinand II, Recovered from the Wreck of the VOC Ship Batavia",
+  "maker": "Anonymous (Hamburg mint)",
+  "date": "1621",
+  "obj": "NG-538",
+  "page": "https://www.rijksmuseum.nl/en/collection/NG-538"
+ },
+ "mutiny": {
+  "src": "img/mutiny.jpg",
+  "title": "The Keelhauling of the Ship's Surgeon of Admiral Jan van Nes",
+  "maker": "Lieve Verschuier",
+  "date": "c. 1660-1686",
+  "obj": "SK-A-449",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-449"
+ },
+ "silverplea": {
+  "src": "img/silverplea.jpg",
+  "title": "Silver Netherlands Rijksdaalder of West-Friesland, 1619",
+  "maker": "Landschap West-Friesland (mint)",
+  "date": "1619",
+  "obj": "KOG-MP-1-1719",
+  "page": "https://www.rijksmuseum.nl/en/collection/KOG-MP-1-1719"
+ },
+ "idlesilver": {
+  "src": "img/idlesilver.jpg",
+  "title": "The Castle of Batavia",
+  "maker": "Wenceslaus Hollar",
+  "date": "1669",
+  "obj": "RP-P-1906-178",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-1906-178"
+ },
+ "corruption": {
+  "src": "img/corruption.jpg",
+  "title": "Portrait of Petrus Albertus van der Parra, Governor-General of the Dutch East India Company",
+  "maker": "Anonymous",
+  "date": "c. 1762",
+  "obj": "SK-A-3782",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-3782"
+ },
+ "glut": {
+  "src": "img/glut.jpg",
+  "title": "The East India Company Shipyard and Warehouse in Amsterdam, Seen from the IJ",
+  "maker": "Jan Spaan",
+  "date": "c. 1757-1828",
+  "obj": "RP-P-OB-59.755",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-59.755"
+ },
+ "convoys": {
+  "src": "img/convoys.jpg",
+  "title": "The Failed English Attack on the Dutch Return Fleet in the Port of Bergen, Norway, 12 August 1665",
+  "maker": "Willem van de Velde the Elder",
+  "date": "1669",
+  "obj": "SK-A-1384",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-1384"
+ },
+ "garrison": {
+  "src": "img/garrison.jpg",
+  "title": "Isaac de l'Ostal de Saint-Martin, Councillor of the Indies and Commander of the Garrison at Batavia",
+  "maker": "Attributed to Jan de Baen",
+  "date": "c. 1660-1670",
+  "obj": "SK-A-4162",
+  "page": "https://www.rijksmuseum.nl/en/collection/SK-A-4162"
+ },
+ "sugar": {
+  "src": "img/sugar.jpg",
+  "title": "Red Sugarcane",
+  "maker": "Jan Brandes",
+  "date": "1779-1787",
+  "obj": "NG-1985-7-1-72",
+  "page": "https://www.rijksmuseum.nl/en/collection/NG-1985-7-1-72"
+ },
+ "capeslaves": {
+  "src": "img/capeslaves.jpg",
+  "title": "The Strandstraat in Cape Town",
+  "maker": "Jan Brandes",
+  "date": "1786",
+  "obj": "NG-2012-41",
+  "page": "https://www.rijksmuseum.nl/en/collection/NG-2012-41"
+ },
+ "tasman": {
+  "src": "img/tasman.jpg",
+  "title": "Arrival of Abel Tasman in New Zealand, 1642-1643",
+  "maker": "Johann Heinrich Rennefeld, after Everhardus Koster",
+  "date": "1865-1870",
+  "obj": "BI-1997-1407B-19",
+  "page": "https://www.rijksmuseum.nl/en/collection/BI-1997-1407B-19"
+ },
+ "mataram": {
+  "src": "img/mataram.jpg",
+  "title": "Siege of Batavia by the King of Java (Mataram), 1628",
+  "maker": "C.W. Mieling (lithographer), possibly after Balthasar Florisz. van Berckenrode; publ. Frederik Muller",
+  "date": "1857-1859",
+  "obj": "RP-P-OB-75.325A",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-75.325A"
+ },
+ "credit1773": {
+  "src": "img/credit1773.jpg",
+  "title": "Bankrupt Couple",
+  "maker": "Daniel Nikolaus Chodowiecki",
+  "date": "1775",
+  "obj": "RP-P-OB-13.698",
+  "page": "https://www.rijksmuseum.nl/en/collection/RP-P-OB-13.698"
+ }
+};
+
+// ================= Retourvloot — guided first ship & analytics =================
+function track(name, props) { try { if (window.posthog && window.posthog.capture) window.posthog.capture(name, Object.assign({ game: 'retourvloot', year: S ? yearOf(S.t) : null }, props || {})); } catch (e) {} }
+
+const cardOf = id => { const el = document.getElementById(id); return el ? el.closest('.card') || el : null; };
+const TUT = [
+  { id: 'equip', el: () => cardOf('h-equip'), title: 'Equip your first ship', wait: 'equip',
+    text: () => `Europe makes little that Asia wants to buy, so every ship carries silver to pay for cargo. Leave the silver at ${money(S.silver)} and press <b>Equip a ship</b>.` },
+  { id: 'season', el: () => document.querySelector('.clock'), title: 'Ships sail in seasons',
+    text: () => { const nw = nextWindow(S); return `Your ship now waits at Texel. It leaves with the next fleet${nw ? `, the <b>${nw.name} fleet</b>, in ${nw.days} days` : ''}. The voyage to Batavia takes 8 to 11 months.`; } },
+  { id: 'letter', el: () => cardOf('h-letter'), title: 'Write to Batavia', wait: 'letter',
+    text: () => 'Your orders sail with the ship and take effect only when it arrives. Tell Batavia what to buy first. In its early years the Company went for <b>spices</b>.' },
+  { id: 'auto', el: () => document.getElementById('auto').closest('.row'), title: 'Standing orders', wait: 'auto',
+    text: () => 'You do not have to equip every ship by hand. Set <b>2 ships each season</b> and the chamber will send them for you.' },
+  { id: 'speed', el: () => document.querySelector('.speed'), title: 'Let time pass', wait: 'speed',
+    text: () => 'Press <b>3×</b> or <b>10×</b>. Follow your ship on the map. Your first letter from Batavia, and your first cargo, will come home in about two years.' },
+];
+const TUT_CTX = [
+  { id: 'sailed', when: () => S.stats.voyages > 0, el: () => cardOf('h-map'), title: 'Your ship has sailed',
+    text: () => 'The arrow shows where Amsterdam <i>presumes</i> your ship is, going by the schedule. If she sinks, you will not know until Batavia writes.' },
+  { id: 'report', when: () => !!S.report, el: () => cardOf('h-report'), title: 'Your first letter from Batavia',
+    text: () => `It was written months ago. Watch two lines: <b>silver on hand</b> tells you whether to send more or less silver; <b>goods waiting for ships</b> tells you whether to send more ships.` },
+  { id: 'cargo', when: () => GOOD_KEYS.some(g => S.wh[g] > 0), el: () => cardOf('h-auction'), title: 'Cargo in the warehouse',
+    text: () => 'Goods are sold at auction on 1 April and 1 October. The sliders set how much you put up for sale. Sell everything at once and the price collapses; Europe only buys so much.' },
+  { id: 'dividend', when: () => S.t >= tOf(1610, 3, 1), el: () => cardOf('h-share'), title: 'Shareholders want their money',
+    text: () => 'From May 1610 you pay a dividend every year. Shareholders expect about 10% at first, and whatever you paid lately after that. Pay more than you earn and you will be paying it with borrowed money.' },
+  { id: 'aims', when: () => S.t >= tOf(1619, 1, 1), el: () => cardOf('h-aims'), title: 'The Seventeen’s aims',
+    text: () => 'The directors want monopolies on the fine spices. Each one raises your prices. Each one was also won by force, and its cost goes in the other ledger.' },
+];
+let coachEl = null, coachStep = null, coachPrevSpeed = 0;
+function tutActive() { return S.tut && !S.tut.done; }
+function showCoach(step, n, total, ctx) {
+  hideCoach();
+  const el = step.el(); if (!el) return;
+  coachStep = step; coachEl = el;
+  el.classList.add('coach-on');
+  el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  const b = $('coach');
+  b.innerHTML = `<div class="coach-n">${ctx ? 'Tip' : `Step ${n} of ${total}`}</div><h4>${step.title}</h4><p>${step.text()}</p>
+    <div class="coach-act">${ctx ? '' : '<button type="button" class="linkbtn" id="coach-skip">Skip the guide</button>'}${step.wait ? '' : `<button type="button" class="btn small" id="coach-next">${ctx ? 'Got it' : 'Next'}</button>`}</div>`;
+  b.hidden = false;
+  const nx = $('coach-next'); if (nx) nx.addEventListener('click', () => ctx ? endCtx() : tutNext());
+  const sk = $('coach-skip'); if (sk) sk.addEventListener('click', () => { track('tutorial_skip', { step: step.id }); S.tut.done = true; hideCoach(); });
+  setTimeout(positionCoach, 350);
+}
+function hideCoach() { if (coachEl) coachEl.classList.remove('coach-on'); coachEl = null; coachStep = null; const b = $('coach'); if (b) b.hidden = true; }
+function positionCoach() {
+  if (!coachEl) return;
+  const b = $('coach'), r = coachEl.getBoundingClientRect(), bw = b.offsetWidth, bh = b.offsetHeight, vw = window.innerWidth, vh = window.innerHeight;
+  let top, left;
+  if (r.right + 16 + bw < vw) { left = r.right + 16; top = r.top; }
+  else if (r.left - 16 - bw > 0) { left = r.left - 16 - bw; top = r.top; }
+  else { left = r.left; top = r.bottom + 12 + bh < vh ? r.bottom + 12 : r.top - bh - 12; }
+  b.style.left = Math.max(12, Math.min(vw - bw - 12, left)) + 'px';
+  b.style.top = Math.max(12, Math.min(vh - bh - 12, top)) + 'px';
+}
+function tutStart() { if (!tutActive()) return; S.speed = 0; showCoach(TUT[S.tut.i], S.tut.i + 1, TUT.length); track('tutorial_step', { step: TUT[S.tut.i].id }); }
+function tutNext() {
+  S.tut.i++;
+  if (S.tut.i >= TUT.length) { S.tut.done = true; S.tut.ctxOn = true; hideCoach(); track('tutorial_done'); return; }
+  showCoach(TUT[S.tut.i], S.tut.i + 1, TUT.length); track('tutorial_step', { step: TUT[S.tut.i].id });
+}
+function tutHook(kind) { if (tutActive() && coachStep && coachStep.wait === kind) setTimeout(tutNext, kind === 'speed' ? 50 : 250); }
+function endCtx() { hideCoach(); S.speed = coachPrevSpeed || resumeSpeed; render(); }
+function tutCheck() {
+  if (!S.tut || !S.tut.ctxOn || modalOpen || coachStep) return;
+  for (const c of TUT_CTX) {
+    if (S.tut.seen[c.id] || !c.when()) continue;
+    S.tut.seen[c.id] = true;
+    coachPrevSpeed = S.speed; S.speed = 0;
+    showCoach(c, 0, 0, true); track('tip', { tip: c.id });
+    return;
+  }
+}
+function showCredits() {
+  pauseForModal();
+  const rows = Object.entries(EVENT_IMAGES).map(([id, im]) => `<li><a href="${im.page}" target="_blank" rel="noopener">${esc(im.title)}</a>, ${esc(im.maker)}, ${esc(im.date)}. Rijksmuseum ${esc(im.obj)}.</li>`).join('');
+  showSheet(`<h3 id="m-title">Sources</h3><div class="body">
+    <p>Retourvloot is a game, not a textbook. Prices, costs and quantities are simplified so the economy can be played. Dates, people, events and the human costs in the other ledger follow the historical record.</p>
+    <p>Main works behind it: Femme Gaastra, <i>The Dutch East India Company</i>; J. R. Bruijn, F. S. Gaastra and I. Schöffer, <i>Dutch-Asiatic Shipping</i>; Jan de Vries and Ad van der Woude, <i>The First Modern Economy</i>; Om Prakash on the Asian trade; Markus Vink on slavery in the Indian Ocean; Chris Nierstrasz on the Company's decline.</p>
+    <p>All images come from the Rijksmuseum, Amsterdam, and are in the public domain (CC0):</p><ul class="credits">${rows}</ul></div>
+    <div class="actions"><button type="button" class="btn" id="m-go">Close</button></div>`);
+  $('m-go').addEventListener('click', () => { closeSheet(); S.speed = resumeSpeed; render(); });
+}
+
+// ================= Retourvloot — interface =================
+let S;
+const $ = id => document.getElementById(id);
+const SAVE_KEY = 'retourvloot.v1';
+let resumeSpeed = 5;
+let modalOpen = false;
+
+function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) {} }
+function load() { try { const r = localStorage.getItem(SAVE_KEY); if (r) { const s = JSON.parse(r); if (s && s.v === 1) return s; } } catch (e) {} return null; }
+
+function cssVar(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+// ---------- static UI setup ----------
+function buildStatic() {
+  const wh = $('wh'); wh.innerHTML = '';
+  for (const g of GOOD_KEYS) {
+    const tr = document.createElement('tr'); tr.id = 'row-' + g;
+    tr.innerHTML = `<td>${GOODS[g].name}<span class="sub">${GOODS[g].sub}</span></td><td class="r num" id="st-${g}"></td>
+      <td><div class="rel"><input type="range" min="0" max="100" step="5" id="rel-${g}" aria-label="Share of ${GOODS[g].name} to sell"><output id="relo-${g}"></output></div></td>
+      <td class="r num" id="pr-${g}"></td>`;
+    wh.appendChild(tr);
+    tr.querySelector('input').addEventListener('input', e => { S.release[g] = +e.target.value; render(); });
+  }
+  const seg = (el, name, opts) => {
+    el.innerHTML = Object.entries(opts).map(([k, v]) => `<label><input type="radio" name="${name}" value="${k}" id="${name}-${k}"><span>${v}</span></label>`).join('');
+    el.addEventListener('change', e => { S.letter = { ...S.letter, [name]: e.target.value, issued: S.t }; S.letterSealed = false; render(); tutHook('letter'); });
+  };
+  seg($('f-focus'), 'focus', Object.fromEntries(Object.entries(FOCUS).map(([k, v]) => [k, v.label])));
+  seg($('f-wages'), 'wages', { low: 'Low wages', high: 'Higher wages' });
+  seg($('f-exp'), 'expansion', EXPANSION);
+  $('f-found').addEventListener('change', e => { S.letter = { ...S.letter, found: e.target.value, issued: S.t }; S.letterSealed = false; render(); tutHook('letter'); });
+
+  document.querySelectorAll('.speed button').forEach(b => b.addEventListener('click', () => { if (modalOpen || S.ended) return; if (coachStep && !coachStep.wait && !tutActive()) endCtx(); S.speed = +b.dataset.speed; if (S.speed) resumeSpeed = S.speed; render(); if (S.speed) tutHook('speed'); }));
+  $('silver').addEventListener('input', e => { S.silver = +e.target.value; render(); });
+  $('equip').addEventListener('click', () => { if (equipShip(S, S.silver, false)) { log(S, `The ${S.ships[S.ships.length - 1].name} is equipped with ${money(S.silver)} in silver.`, 'ship'); if (S.shipSeq === 1) track('first_ship'); tutHook('equip'); } render(); });
+  $('auto').addEventListener('change', e => { S.auto.n = +e.target.value; render(); tutHook('auto'); });
+  $('autoborrow').addEventListener('change', e => { S.auto.borrow = e.target.checked; });
+  $('div').addEventListener('input', e => { S.divRate = +e.target.value; render(); });
+  $('borrow').addEventListener('click', () => { S.debt += 1e6; S.cash += 1e6; log(S, 'Borrowed ƒ1M on short-term notes.', 'money'); render(); });
+  $('repay').addEventListener('click', () => { const r = Math.min(1e6, S.debt, S.cash); if (r > 0) { S.debt -= r; S.cash -= r; log(S, `Repaid ${money(r)} of debt.`, 'money'); } render(); });
+  $('burn').addEventListener('click', () => { const q = Math.floor(S.wh.fine * 0.25); if (q > 0) { S.wh.fine -= q; log(S, `${num(q)} t of fine spices burned in the warehouse to hold up the price.`, 'loss'); } render(); });
+  $('audit').addEventListener('click', () => { if (S.t - S.auditLast < 365 * 5) return; showAudit(audit(S)); });
+  let armed = false;
+  $('newgame').addEventListener('click', e => {
+    if (!armed) { armed = true; e.target.textContent = 'Click again to start over'; setTimeout(() => { armed = false; e.target.textContent = 'New game'; }, 3000); return; }
+    S = newState(); hideCoach(); armed = false; e.target.textContent = 'New game'; save(); syncInputs(); render(); track('game_start', { restart: true }); openQueued();
+  });
+  new ResizeObserver(() => sizeCanvases()).observe($('map'));
+  sizeCanvases();
+}
+
+function syncInputs() {
+  const y = yearOf(S.t);
+  $('silver').max = maxSilver(y); $('silver').value = S.silver;
+  $('auto').value = String(S.auto.n); $('autoborrow').checked = !!S.auto.borrow;
+  $('div').value = S.divRate;
+  for (const g of GOOD_KEYS) $('rel-' + g).value = S.release[g];
+  for (const [n, v] of [['focus', S.letter.focus], ['wages', S.letter.wages], ['expansion', S.letter.expansion]]) { const r = $(n + '-' + v); if (r) r.checked = true; }
+}
+
+// ---------- rendering ----------
+let foundKey = '';
+function render() {
+  _S = S;
+  const y = yearOf(S.t);
+  $('date').textContent = fmtDate(S.t);
+  const w = windowAt(S, S.t), nw = nextWindow(S);
+  $('season').innerHTML = w ? `<b>${w} fleet</b> is sailing` : nw ? `Next sailing: <b>${nw.name}</b> in ${nw.days} days` : '';
+  document.querySelectorAll('.speed button').forEach(b => b.setAttribute('aria-pressed', String(+b.dataset.speed === S.speed)));
+
+  // stats
+  $('s-cash').textContent = money(S.cash);
+  const res = tradeResult(S.books);
+  $('s-cash2').innerHTML = `trading this year: <span class="${res < 0 ? 'neg' : 'pos'}">${res < 0 ? '' : '+'}${money(res)}</span>`;
+  $('s-debt').textContent = money(S.debt); $('s-debt').className = S.debt > 0 ? 'neg' : '';
+  $('s-debt2').textContent = S.debt > 0 ? `interest ${money(S.debt * 0.04)} a year` : '4% a year';
+  $('s-share').textContent = Math.round(S.share) + '%';
+  $('s-share2').textContent = `market value ${money(NOMINAL * S.share / 100)}`;
+  $('s-exp').textContent = y >= 1610 ? Math.round(expectation(S)) + '%' : '—';
+  $('s-exp2').textContent = y >= 1610 ? `you set ${S.divRate}% for May` : 'no dividend before 1610';
+  const nMono = AIMS.filter(a => S.mono[a.id] > 0).length;
+  $('s-mono').textContent = `${nMono} of ${AIMS.length}`;
+  $('s-mono2').textContent = `fine-spice share ${Math.round(fineShare(S, y) * 100)}%`;
+
+  // equip
+  const cost = shipCost(y) + S.silver;
+  $('silver').max = maxSilver(y);
+  $('silver-out').textContent = money(S.silver);
+  $('equip').textContent = S.flags.nationalised ? 'The committee equips ships now' : `Equip a ship · ${money(cost)}`;
+  $('equip').disabled = S.cash < cost || !!S.flags.nationalised;
+  $('equip-cap').textContent = `${shipCap(y)} t · ${CREW} men · hull ${money(shipCost(y))}`;
+  const inH = S.ships.filter(s => s.state === 'harbour').length;
+  $('harbour').textContent = inH ? `${inH} ship${inH > 1 ? 's' : ''} at Texel, ${w ? 'leaving with the ' + w + ' fleet' : 'waiting for the ' + (nw ? nw.name : '') + ' fleet'}.` : 'Ships leave only in the sailing seasons: Christmas, Easter' + (S.flags.kermis ? ' and Kermis.' : '.');
+
+  // warehouse
+  let est = 0;
+  for (const g of GOOD_KEYS) {
+    const row = $('row-' + g); const show = goodUnlocked(g, y) || S.wh[g] > 0;
+    row.hidden = !show; if (!show) continue;
+    $('st-' + g).textContent = num(S.wh[g]) + ' t';
+    $('relo-' + g).textContent = S.release[g] + '%';
+    const rel = Math.floor(S.wh[g] * S.release[g] / 100);
+    const p = auctionPrice(S, g, Math.max(rel, 1), S.wh[g] - rel, y);
+    const m = market(S, g, y);
+    $('pr-' + g).innerHTML = `${S.wh[g] >= 1 ? money(p) + '/t' : '—'}<span class="sub">Europe ${num(m.d / 2)} t · English ${num(m.eic / 2)} t</span>`;
+    est += rel * p;
+    const inp = $('rel-' + g); if (document.activeElement !== inp) inp.value = S.release[g];
+  }
+  const na = nextAuction(S);
+  $('next-auction').textContent = 'next: ' + fmtDate(na);
+  $('auction-est').textContent = est > 0 ? `If sold today: about ${money(est)}` : 'Nothing to sell yet.';
+  $('burn').disabled = S.wh.fine < 4;
+  $('burn').textContent = S.wh.fine >= 4 ? `Burn ${num(S.wh.fine * 0.25)} t of fine spice` : 'Burn surplus spice';
+  $('silver-eff').innerHTML = silverEffect(y);
+
+  // shareholders
+  $('div-out').textContent = `${S.divRate}% · ${money(NOMINAL * S.divRate / 100)}`;
+  const dinp = $('div'); if (document.activeElement !== dinp) dinp.value = S.divRate;
+  $('disc').querySelector('i').style.width = S.discontent + '%';
+  $('disc').classList.toggle('bad', S.discontent >= 60);
+  $('disc-txt').textContent = S.discontent < 20 ? 'Content' : S.discontent < 50 ? 'Grumbling' : S.discontent < 75 ? 'Angry' : 'Pamphlets';
+  const auditReady = S.t - S.auditLast >= 365 * 5;
+  $('audit').disabled = !auditReady;
+  $('audit').textContent = auditReady ? 'Commission an audit · ƒ60k' : `Audit again in ${Math.ceil((S.auditLast + 365 * 5 - S.t) / 365)} yr`;
+  $('repay').disabled = S.debt <= 0 || S.cash <= 0;
+  const exp = expectation(S), pay = NOMINAL * S.divRate / 100;
+  const avgRes = S.bookHist.slice(-5).reduce((a, b) => a + b.res, 0) / Math.max(1, S.bookHist.slice(-5).length);
+  $('div-eff').innerHTML = y < 1610 ? 'The first dividend can be paid in May 1610.' :
+    `Shareholders expect about <b>${Math.round(exp)}%</b>. ${S.divRate < exp ? 'Paying less will raise discontent.' : 'This keeps them content.'} ` +
+    (S.bookHist.length ? `Your trading result averaged <b>${money(avgRes)}</b> a year over the last five years; this dividend costs <b>${money(pay)}</b>.` : '');
+  drawSpark();
+  renderBooks(y);
+  renderNotes(y);
+  renderAims(y);
+
+  renderFleet();
+  renderLog();
+  renderReport();
+  renderLetter(y);
+  renderOther();
+}
+function nextAuction(S) { for (let i = 1; i < 370; i++) { const md = mdOf(S.t + i); if (md === 401 || md === 1001) return S.t + i; } return S.t; }
+
+function viewOf(sh) {
+  const t = S.t;
+  if (sh.state === 'harbour') return { kind: 'harbour', cls: '', text: 'At Texel' };
+  if (sh.revealed) return { kind: 'lost', cls: 'lost', text: sh.state === 'lostOut' ? 'Never reached Batavia' : 'Lost on the way home' };
+  if (sh.state === 'done') return { kind: 'done', cls: 'home', text: 'Home at Texel' };
+  if (sh.state === 'home' || sh.state === 'lostHome') {
+    const p = clamp(1 - (t - sh.dep2) / sh.exp2, 0.02, 1);
+    return { kind: 'home', cls: 'home', p, text: p <= 0.02 ? 'Overdue from Batavia' : 'Homebound' };
+  }
+  const p = (t - sh.dep) / sh.exp;
+  if (p < 1) return { kind: 'out', cls: 'out', p, text: p < 0.55 ? 'Outbound, presumed in the Atlantic' : 'Outbound, presumed past the Cape' };
+  const inReport = S.report && S.report.inAsia && S.report.inAsia.includes(sh.id);
+  return { kind: 'asia', cls: 'asia', text: inReport ? `In Asia (reported ${fmtMon(S.report.date)})` : 'Presumed in Asia' };
+}
+function renderFleet() {
+  const rows = S.ships.map(sh => ({ sh, v: viewOf(sh) }));
+  const order = { harbour: 0, out: 1, asia: 2, home: 3, done: 4, lost: 5 };
+  rows.sort((a, b) => order[a.v.kind] - order[b.v.kind] || a.sh.id - b.sh.id);
+  const atSea = rows.filter(r => r.v.kind !== 'harbour' && r.v.kind !== 'done' && r.v.kind !== 'lost').length;
+  $('fleet-count').textContent = rows.length ? `${atSea} away from home` : '';
+  $('fleet').innerHTML = rows.length ? rows.map(({ sh, v }) => `<tr><td>${esc(sh.name)}</td><td><span class="pill ${v.cls}">${v.text}</span></td><td class="r num">${money(sh.silver)}</td></tr>`).join('')
+    : `<tr><td colspan="3" class="empty">No ships yet. Equip one and it will sail with the next fleet.</td></tr>`;
+}
+let lastLogKey = '';
+function renderLog() {
+  const key = S.log.length + ':' + (S.log[0] ? S.log[0].t + S.log[0].text : '');
+  if (key === lastLogKey) return; lastLogKey = key;
+  $('log').innerHTML = S.log.length ? S.log.slice(0, 40).map(l => `<li class="${l.kind}"><time>${fmtDate(l.t)}</time>${esc(l.text)}</li>`).join('') : `<li>The chamber awaits its first ship.</li>`;
+}
+function renderReport() {
+  const R = S.report, el = $('report');
+  if (!R) { el.innerHTML = `<p class="empty">No ship has come back from Asia yet. The first report will arrive with the first return ship, more than a year after it sails.</p>`; return; }
+  const age = Math.round((S.t - R.date) / 30.4);
+  const goods = GOOD_KEYS.filter(g => R.stock[g] > 0.5).map(g => `${num(R.stock[g])} t ${GOODS[g].name.toLowerCase()}`).join(', ') || 'nothing';
+  const L = R.lastYr;
+  const letter = R.letterIssued >= 0 && R.letterArrived ? `Your letter of ${fmtMon(R.letterIssued)} arrived in ${fmtMon(R.letterArrived)}.` : 'None of your letters had arrived.';
+  el.innerHTML = `<div class="dated">Written in Batavia <b>${fmtDate(R.date)}</b>. It reached you ${age} month${age === 1 ? '' : 's'} later. ${letter}</div>
+    <dl class="kv">
+      <dt>Silver on hand in Batavia</dt><dd class="${R.capital < 0 ? 'neg' : ''}">${money(R.capital)}</dd>
+      <dt>Goods waiting for ships</dt><dd>${goods.length > 34 ? '' : goods}</dd>
+      ${goods.length > 34 ? `<dt style="grid-column:1/-1;text-align:right;color:var(--ink)">${goods}</dt>` : ''}
+      <dt>Men in service</dt><dd class="${R.personnel < R.need ? 'neg' : ''}">${num(R.personnel)} of ${num(R.need)} needed</dd>
+      <dt>Garrisons and posts cost</dt><dd>${money(R.upkeep)} a year</dd>
+      <dt>Lost to private trade</dt><dd class="neg">about ${Math.round(R.leak * 100)}%</dd>
+      ${L ? `<dt>Trade within Asia, ${L.year}</dt><dd class="${L.intra < 0 ? 'neg' : 'pos'}">${money(L.intra)}</dd>
+      ${L.japan ? `<dt>Japanese silver &amp; copper</dt><dd>${money(L.japan)}</dd>` : ''}
+      ${L.land ? `<dt>Taxes from conquered land</dt><dd>${money(L.land)}</dd>` : ''}
+      <dt>Deaths among servants, ${L.year}</dt><dd class="neg">${num(L.deaths)}</dd>` : ''}
+    </dl>
+    <p class="note" style="margin-top:8px">Posts: ${R.posts.map(id => POSTS[id].name).join(', ') || 'none'}. Buying: ${FOCUS[R.focus].label.toLowerCase()}.</p>
+    ${R.acts.length ? `<ul class="acts">${R.acts.slice().reverse().map(a => `<li><b>${fmtMon(a.t)}</b>${esc(a.text)}</li>`).join('')}</ul>` : ''}`;
+}
+function renderLetter(y) {
+  const f = foundablePosts(S, y).filter(id => !(S.report && S.report.posts.includes(id)));
+  const key = f.join(',') + '|' + S.letter.found;
+  if (key !== foundKey) {
+    foundKey = key;
+    const opts = ['<option value="">No new post</option>'].concat(f.map(id => `<option value="${id}">${POSTS[id].name} · ${money(POSTS[id].cost)}${POSTS[id].war ? ' · war' : ''}</option>`));
+    $('f-found').innerHTML = opts.join('');
+    $('f-found').value = f.includes(S.letter.found) ? S.letter.found : '';
+  }
+  const P = POSTS[S.letter.found];
+  $('found-desc').innerHTML = P ? `${P.desc} Costs Batavia <b>${money(P.cost)}</b> once, then <b>${money(P.upkeep)}</b> a year and <b>${num(P.garrison)}</b> men.${P.good ? ` Supplies up to ${num(P.cap)} t of ${GOODS[P.good].name.toLowerCase()} a year.` : P.intra ? ' Makes trade within Asia more profitable.' : P.silver ? ' Sends Japanese silver to Batavia every year.' : ''}` : f.length ? `${f.length} place${f.length > 1 ? 's' : ''} open to you: ${f.map(id => POSTS[id].name).join(', ')}.` : 'Nothing new is open to you in this period.';
+  for (const [n, v] of [['focus', S.letter.focus], ['wages', S.letter.wages], ['expansion', S.letter.expansion]]) { const r = $(n + '-' + v); if (r && !r.checked) r.checked = true; }
+  const L = S.letter, W = FOCUS[L.focus].w;
+  const full = GOOD_KEYS.filter(g => W[g] >= 1 && goodUnlocked(g, y)).map(g => GOODS[g].name.toLowerCase());
+  const part = GOOD_KEYS.filter(g => W[g] < 1 && goodUnlocked(g, y)).map(g => `${GOODS[g].name.toLowerCase()} ${Math.round(W[g] * 100)}%`);
+  $('eff-focus').innerHTML = `Batavia buys <b>${full.join(', ')}</b> as far as the posts can supply${part.length ? `; ${part.join(', ')} of capacity` : ''}. Whatever is bought first fills the return ships.`;
+  const lrLow = leakRate({ ...S, asia: { ...S.asia, wages: 'low' } }, y), lrHigh = leakRate({ ...S, asia: { ...S.asia, wages: 'high' } }, y);
+  $('eff-wages').innerHTML = `Low: upkeep as is, servants skim about <b>${Math.round(lrLow * 100)}%</b> through private trade. Higher: upkeep <b>+30%</b>, skimming falls to about <b>${Math.round(lrHigh * 100)}%</b>. Skimming grows with every post and every decade.`;
+  const au = autonomy(S, y);
+  const pexp = k => Math.round(au * { restrain: .12, permit: .35, encourage: .7 }[k] * 100);
+  $('eff-exp').innerHTML = `Chance each year that the Governor-General opens or seizes a post on his own: <b>${pexp(L.expansion)}%</b> (restrain ${pexp('restrain')}%, encourage ${pexp('encourage')}%). Every post adds upkeep for good. ${au >= 0.6 ? '<b>Coen</b> rarely waits for orders.' : ''}`;
+  const aboard = S.ships.filter(sh => sh.state === 'out' && sh.letter && sh.letter.issued === S.letter.issued).length;
+  const ls = $('lstatus');
+  const nw = nextWindow(S);
+  if (!S.letterSealed) { ls.className = 'lstatus dirty'; ls.textContent = `Unsent. These instructions sail with the next ship${nw ? `, ${nw.days ? 'in ' + nw.days + ' days' : 'this season'}` : ''}. Expect them in Batavia 8 to 11 months after that.`; }
+  else { ls.className = 'lstatus'; ls.textContent = aboard ? `Sealed. Copies are aboard ${aboard} ship${aboard > 1 ? 's' : ''} at sea; the first to arrive delivers them.` : 'Sealed and sent. Change anything to write a new letter.'; }
+}
+let otherKey = '';
+function renderOther() {
+  $('o-sent').textContent = num(S.humans.sent); $('o-sea').textContent = num(S.humans.diedSea);
+  $('o-asia').textContent = num(S.humans.diedAsia); $('o-home').textContent = num(S.humans.returned);
+  const key = S.other.length + ':' + Math.floor(S.enslavedBanda / 10);
+  if (key === otherKey) return; otherKey = key;
+  const lines = S.other.map(o => `<li><b>${esc(o.place)}</b>${esc(o.text)}</li>`);
+  if (S.enslavedBanda >= 1) lines.push(`<li><b>Banda nutmeg gardens</b>About ${num(S.enslavedBanda)} enslaved people brought in so far to replace those who died, about 200 a year.</li>`);
+  $('o-lines').innerHTML = lines.join('') || `<li class="note" style="border:0">Deaths among the Company's own men are counted above. Other costs of the trade will be entered here as they happen.</li>`;
+}
+
+function silverEffect(y) {
+  const R = S.report;
+  let t = `Arrives in Batavia worth <b>${money(S.silver * 1.25)}</b>: silver buys about 25% more in Asia.`;
+  if (R && R.lastYr) {
+    const need = R.upkeep + R.lastYr.buy;
+    t += ` Batavia spent about <b>${money(need)}</b> last year on goods and garrisons and had <b>${money(R.capital)}</b> left.`;
+  }
+  return t;
+}
+function bookRow(label, a, b, cls = '') { return `<tr class="${cls}"><td>${label}</td><td class="r num">${a == null ? '' : money(a)}</td><td class="r num">${b == null ? '' : money(b)}</td></tr>`; }
+let booksKey = '';
+function renderBooks(y) {
+  const B = S.books, L = S.booksLast;
+  const key = JSON.stringify(B) + (L ? L.y : '');
+  if (key === booksKey) return; booksKey = key;
+  $('bk-y1').textContent = B.y + ' so far'; $('bk-y0').textContent = L ? String(L.y) : '';
+  const v = (b, f) => b ? f(b) : null;
+  let h = bookRow('<b>Auction sales</b>', salesTotal(B), v(L, salesTotal));
+  for (const g of GOOD_KEYS) if (B.sales[g] || (L && L.sales[g])) h += bookRow(GOODS[g].name, B.sales[g], v(L, b => b.sales[g]), 'subrow');
+  h += bookRow(`Hulls, crews &amp; stores (${B.shipsOut}${L ? ' · ' + L.shipsOut : ''} ships)`, -B.hulls, v(L, b => -b.hulls));
+  h += bookRow('Silver sent to Asia', -B.silver, v(L, b => -b.silver));
+  h += bookRow('Interest on debt', -B.interest, v(L, b => -b.interest));
+  if (B.other || (L && L.other)) h += bookRow('Other', -B.other, v(L, b => -b.other));
+  h += bookRow('Trading result', tradeResult(B), v(L, tradeResult), 'tot');
+  h += bookRow('Dividends paid', -B.div, v(L, b => -b.div));
+  if (B.borrowed || (L && L.borrowed)) h += bookRow('Borrowed', B.borrowed, v(L, b => b.borrowed));
+  $('books').innerHTML = h;
+  drawBars();
+  const last = S.bookHist.slice(-5); const shipsIn = last.reduce((a, b) => a + b.shipsIn, 0), shipsOut = last.reduce((a, b) => a + b.shipsOut, 0);
+  if (shipsIn && shipsOut) {
+    const perIn = last.reduce((a, b) => a + b.sales, 0) / shipsIn, perOut = last.reduce((a, b) => a + b.cost, 0) / shipsOut;
+    $('perShip').innerHTML = `Last five years: each ship sent cost <b>${money(perOut)}</b> with its silver; each ship home brought goods that sold for <b>${money(perIn)}</b>.`;
+  } else $('perShip').textContent = 'Once ships start coming home, the cost and return per ship will show here.';
+}
+function drawBars() {
+  const c = $('bars'), x = c.getContext('2d'), W = c.width, H = c.height, dpr = window.devicePixelRatio || 1;
+  x.clearRect(0, 0, W, H);
+  const h = S.bookHist.slice(-30);
+  if (!h.length) { $('bars-cap').textContent = 'Each year\'s trading result will be charted here.'; return; }
+  const mx = Math.max(1, ...h.map(d => Math.abs(d.res)), ...h.map(d => d.div));
+  const mid = H / 2, bw = W / 30;
+  x.strokeStyle = cssVar('--rule'); x.lineWidth = 1; x.beginPath(); x.moveTo(0, mid); x.lineTo(W, mid); x.stroke();
+  h.forEach((d, i) => {
+    const bh = d.res / mx * (mid - 4);
+    x.fillStyle = d.res >= 0 ? cssVar('--gain') : cssVar('--loss');
+    x.fillRect(i * bw + bw * .15, bh >= 0 ? mid - bh : mid, bw * .7, Math.abs(bh));
+    if (d.div) { x.fillStyle = cssVar('--delft'); const dy = mid - d.div / mx * (mid - 4); x.fillRect(i * bw + bw * .05, dy - dpr, bw * .9, 2 * dpr); }
+  });
+  $('bars-cap').textContent = `Bars: trading result per year, ${h[0].y}–${h[h.length - 1].y} (largest ${money(mx)}). Blue marks: dividend paid.`;
+}
+function renderNotes(y) {
+  const n = [], R = S.report;
+  const inH = S.ships.filter(s => s.state === 'harbour').length;
+  if (!S.ships.length && !S.auto.n && !S.stats.voyages) n.push(['', 'Start by equipping a ship, or set standing orders. Nothing earns money until ships sail, and the first cargo will not be home for about two years.']);
+  if (!R && S.stats.voyages) n.push(['', 'Your first ships are on their way. Until one comes back you will know nothing about Asia; use the time to decide your instructions to Batavia.']);
+  if (R) {
+    const work = 1.5e6 + 0.25e6 * R.posts.length;
+    if (R.capital > work * 1.3) n.push(['warn', `Batavia is sitting on ${money(R.capital)} in silver it cannot spend; idle silver leaks away at about 1% a month. Send less silver per ship, or order new posts so it can buy more.`]);
+    else if (R.capital < 150000) n.push(['warn', `Batavia is short of silver (${money(R.capital)}). It cannot buy goods or pay its garrisons. Put more silver aboard each ship.`]);
+    if (R.personnel < R.need * 0.85) n.push(['warn', `Garrisons are under strength: ${num(R.personnel)} men for ${num(R.need)} places, so the posts produce about ${Math.round(R.eff * 100)}%. Each ship leaves about 110 soldiers in Asia.`]);
+    const waiting = GOOD_KEYS.reduce((a, g) => a + R.stock[g], 0);
+    const capNext = S.ships.filter(s => s.state === 'out' || s.state === 'asia').reduce((a, s) => a + s.cap, 0);
+    if (waiting > capNext * 1.5 && waiting > 300) n.push(['', `${num(waiting)} t of goods were waiting in Batavia, more than your ships in Asia can carry. More ships would bring them home.`]);
+  }
+  for (const g of GOOD_KEYS) {
+    if (!S.lastPrice[g]) continue;
+    const shipCostPerT = shipCost(y) / shipCap(y);
+    const breakEven = GOODS[g].cost * 1.25 + shipCostPerT;
+    if (S.lastPrice[g] < breakEven && S.wh[g] > 50) { n.push(['warn', `${GOODS[g].name} sold for ${money(S.lastPrice[g])}/t, below the roughly ${money(breakEven)}/t it costs to buy and ship. Sell less, or tell Batavia to buy something else.`]); break; }
+  }
+  const D = market(S, 'fine', y).d / 2;
+  if (S.wh.fine > D * 1.2) n.push(['warn', `${num(S.wh.fine)} t of fine spices in the warehouse against European demand of about ${num(D)} t per auction. The overhang depresses the price; sell less or burn some.`]);
+  if (y >= 1612 && S.bookHist.length >= 3) {
+    const avg = S.bookHist.slice(-5).reduce((a, b) => a + b.res, 0) / S.bookHist.slice(-5).length;
+    if (NOMINAL * S.divRate / 100 > avg && S.divRate > 0) n.push(['warn', `A ${S.divRate}% dividend (${money(NOMINAL * S.divRate / 100)}) is more than the Company has been earning (${money(avg)} a year). The difference is paid with borrowed money.`]);
+  }
+  if (!S.letterSealed) n.push(['', 'You have changed your instructions. They go with the next ship to leave.']);
+  const open = foundablePosts(S, y).filter(id => !(R && R.posts.includes(id)));
+  const nextAim = AIMS.find(a => !S.mono[a.id] && ((a.id === 'cinnamon' && open.includes('ceylon')) || (a.id === 'strait' && open.includes('malacca')) || (a.id === 'japan' && open.includes('japan'))));
+  if (nextAim) n.push(['good', `Within reach: ${nextAim.name} (${nextAim.where}). ${nextAim.how}`]);
+  if (!n.length) n.push(['good', 'Nothing needs your attention. Let the fleets sail.']);
+  $('notes').innerHTML = n.slice(0, 4).map(([k, t]) => `<li class="${k}">${esc(t)}</li>`).join('');
+}
+function renderAims(y) {
+  const sh = fineShare(S, y), lk = fineLeaks(S);
+  $('fine-share').textContent = Math.round(sh * 100) + '%';
+  $('fine-bar').style.width = Math.round(sh * 100) + '%';
+  const r = [];
+  if (lk.nutmeg) r.push(`nutmeg from Banda ${lk.nutmeg} t`); if (lk.cloves) r.push(`smuggled cloves ${lk.cloves} t`); if (lk.cinnamon) r.push(`Portuguese cinnamon ${lk.cinnamon} t`);
+  $('fine-rivals').textContent = r.length ? `Rivals still sell, per year: ${r.join(', ')}.` : 'No one else sells fine spices in Europe. You set the price, as long as you hold back supply.';
+  $('aims').innerHTML = AIMS.map(a => {
+    const t = S.mono[a.id];
+    const st = t === -1 ? '<span class="pill lost">Lost</span>' : t ? `<span class="pill done">Secured ${yearOf(t)}</span>` : '<span class="pill">Open</span>';
+    return `<li><span class="nm">${a.name}<small>${a.where}</small></span>${st}<span class="hw">${t ? `Historically ${a.hist}.` : a.how + ` Historically ${a.hist}.`}</span></li>`;
+  }).join('') + `<li><span class="nm">Pepper<small>Java, Sumatra, Malabar</small></span><span class="pill">Never</span><span class="hw">Grown too widely to control. The English kept buying it in Sumatra and Malabar.</span></li>`;
+}
+
+// ---------- canvases ----------
+function sizeCanvases() {
+  const dpr = window.devicePixelRatio || 1;
+  for (const c of [$('map'), $('spark'), $('bars')]) {
+    const r = c.getBoundingClientRect();
+    c.width = Math.max(1, Math.round(r.width * dpr)); c.height = Math.max(1, Math.round(r.height * dpr));
+  }
+  drawMap(); drawSpark(); drawBars();
+}
+function drawSpark() {
+  const c = $('spark'), x = c.getContext('2d'), W = c.width, H = c.height, h = S.shareHist;
+  x.clearRect(0, 0, W, H); if (h.length < 2) return;
+  const max = Math.max(...h) * 1.08, min = Math.min(0, ...h);
+  const px = i => i / (h.length - 1) * (W - 6) + 3, py = v => H - 3 - (v - min) / (max - min) * (H - 6);
+  x.strokeStyle = cssVar('--rule'); x.lineWidth = 1; x.setLineDash([3, 3]);
+  x.beginPath(); x.moveTo(0, py(100)); x.lineTo(W, py(100)); x.stroke(); x.setLineDash([]);
+  x.beginPath(); h.forEach((v, i) => i ? x.lineTo(px(i), py(v)) : x.moveTo(px(i), py(v)));
+  x.strokeStyle = cssVar('--delft'); x.lineWidth = 1.6 * (window.devicePixelRatio || 1); x.stroke();
+  x.lineTo(px(h.length - 1), H); x.lineTo(px(0), H); x.closePath(); x.fillStyle = cssVar('--delft-soft'); x.fill();
+  x.fillStyle = cssVar('--brass'); x.beginPath(); x.arc(px(h.length - 1), py(h[h.length - 1]), 3 * (window.devicePixelRatio || 1), 0, 7); x.fill();
+  $('share-range').textContent = `high ${Math.round(Math.max(...h))}% · dashed line = face value`;
+}
+// Equirectangular view: lon -40..147, lat 68..-49 (aspect 16:10)
+const VIEW = { lon0: -40, lonSpan: 187, lat0: 68, latSpan: 117 };
+const proj = ([lon, lat]) => [(lon - VIEW.lon0) / VIEW.lonSpan, (VIEW.lat0 - lat) / VIEW.latSpan];
+const PORTS = { texel: [4.8, 53.0], cape: [18.4, -33.9], batavia: [106.8, -6.2] };
+const LAND = [
+  // Eurasia
+  [[5,72],[150,72],[150,60],[140,54],[135,45],[129,40],[129.4,35.2],[126.5,34.4],[125,38.5],[121.5,40.5],[122.5,37],[120.5,34],[121.8,31],[119.5,25.5],[116,22.8],[113.5,22.2],[110,21],[108,21.5],[106.5,18],[109.2,13],[107,10.5],[104.8,8.6],[104.5,10.5],[101,13],[100,7.5],[103.4,1.3],[101,3],[98.3,8],[97.7,16.5],[94.3,16.5],[92.3,21],[89,22],[86.9,21],[85,19.5],[80.3,15.5],[80,10.5],[77.5,8],[76,10],[74,15],[72.8,19],[72.5,21.5],[70,22.5],[67,24.8],[61.5,25.2],[57.5,25.5],[56.4,26.4],[54,24.2],[51.5,24],[50,26.5],[48,29.8],[49.5,27],[51.6,25.9],[52.6,24],[56,24.8],[56.5,24],[59.8,22.5],[57.5,18.7],[55.5,17.5],[52.2,16],[48.5,14],[45,12.8],[43.4,12.7],[42.7,15.5],[39.2,21.5],[36.5,26],[34.8,28.3],[34.3,30.4],[32.6,30],[32.3,31.3],[34.3,31.3],[35.1,33.2],[36,35.8],[34,36.2],[30.5,36.4],[27.3,37],[26.2,39.8],[26.5,40.8],[23,40.4],[23.8,38],[21.7,36.8],[21,39.5],[19.5,41.5],[16,43.4],[13.6,45.6],[12.3,44.3],[14.3,42.4],[18.5,40.2],[16.6,38],[15.7,40],[12.3,41.8],[10.2,43.9],[8.8,44.4],[6.5,43.1],[3.2,43.2],[3.1,41.9],[0.9,41],[-0.4,39.4],[-0.7,37.6],[-2.2,36.7],[-5.4,36.1],[-6.4,36.8],[-8.9,37],[-8.7,40.8],[-9.3,43.1],[-8,43.7],[-1.8,43.4],[-1.2,46],[-2.6,47.4],[-4.6,48.4],[-1.6,48.7],[1.4,50.1],[2.5,51.1],[4.2,51.5],[4.6,52.9],[5.6,53.4],[8.5,53.6],[8.6,55.5],[8.1,56.9],[10.4,57.6],[10.6,56.2],[12.5,55.7],[12.8,54.4],[14.3,53.9],[19.5,54.4],[21.2,55.2],[21,57.1],[23.7,57.3],[24.4,59.5],[28.5,60],[22.9,59.8],[21.4,60.8],[21.5,61.8],[25.4,65.2],[22,65.9],[17.5,62.3],[18.9,59.8],[16.4,57.3],[14.6,56],[12.7,56.4],[11.1,58.9],[8,58.1],[5.6,58.9],[5,62],[10,64],[14,67],[18,70]],
+  // Africa
+  [[-17,21],[-17.4,14.7],[-15.1,10.9],[-13.1,8.4],[-11.3,6.6],[-7.5,4.4],[-2,4.8],[1.6,6.2],[4.7,6.2],[6.9,4.4],[9,3.9],[9.6,2],[9.3,-0.9],[11.9,-5],[13.3,-8.8],[13.6,-12],[11.8,-17],[14.5,-22.9],[15.1,-26.7],[16.5,-28.6],[18.4,-34.2],[20,-34.8],[22.5,-34],[25.6,-34],[27.9,-33],[30.9,-30],[32.4,-28.6],[32.9,-26],[35.5,-24],[35.4,-22],[34.8,-20],[36.9,-17.9],[40.5,-15.3],[40.4,-10.5],[39.3,-6.8],[39.8,-3.8],[41.6,-1.6],[44.1,1.2],[47.5,4.6],[49.7,8.6],[51.3,11.8],[48.9,11.3],[45.2,10.6],[43.3,11.8],[42.8,12.6],[41.2,14.6],[39.3,15.8],[38.5,18],[37.4,19.4],[36.9,22],[35.6,23.9],[34.1,26.4],[33.2,28.1],[32.6,29.9],[32.3,31.3],[29.7,31.2],[25.2,31.6],[20.1,30.9],[19.6,30.4],[15.2,32.3],[11.1,33.3],[10.3,36.9],[8.4,36.9],[3.2,36.8],[-1.2,35.3],[-5.9,35.8],[-6.8,34],[-9.6,30.4],[-13.2,27.6],[-16,23.7]],
+  [[49.3,-12],[50.4,-15.5],[49.5,-17],[47.1,-24.9],[45.2,-25.5],[43.7,-23.5],[43.3,-21.5],[44.3,-18],[44,-16.6],[46.3,-15.7],[47.9,-13.6]],
+  [[-5.7,50.1],[1.4,51.3],[1.7,52.7],[0.2,53.5],[-0.3,54.6],[-1.6,55.6],[-2,57.6],[-3.8,57.6],[-3,58.6],[-5,58.6],[-6.2,56.5],[-5.2,55.2],[-4.8,54.8],[-3.1,54.9],[-3.2,53.4],[-4.6,53.3],[-4.2,52.3],[-5.3,51.7],[-3.2,51.4],[-4.2,51.2]],
+  [[-6,52.2],[-6.1,54],[-5.6,54.6],[-7.3,55.3],[-8.5,54.4],[-10.1,54.2],[-9.9,53.4],[-10.4,51.9],[-9.7,51.5],[-8.3,51.8]],
+  [[-24.3,65.6],[-22,66.4],[-16,66.5],[-13.6,65.1],[-15,64.2],[-18.8,63.4],[-22.7,63.8]],
+  [[-50,0.5],[-48,-1],[-44.3,-2.5],[-41,-2.9],[-38.5,-3.7],[-35.3,-5.2],[-34.8,-7.5],[-35.3,-9.4],[-37.1,-11],[-38.9,-13.4],[-39.1,-17.6],[-40.3,-20.3],[-41,-22],[-42.5,-23],[-44.6,-23.4],[-48,-25.5],[-48.6,-28.4],[-50,-30],[-52,-33],[-55,-35]],
+  [[79.9,9.7],[81.2,8.5],[81.9,7.5],[81.7,6.4],[80.6,5.9],[80,6.3],[79.8,8]],
+  [[95.3,5.6],[97.5,5.2],[98.6,3.9],[100.4,2.3],[103.8,0.1],[104.6,-1.8],[106.1,-3.1],[105.9,-5.9],[104.6,-5.9],[102.3,-4],[100.9,-2.6],[99.3,0],[98.6,1.7],[96.4,3.8]],
+  [[105.2,-6.8],[106.4,-6],[108.5,-6.4],[111,-6.4],[112.6,-6.9],[114.4,-7.7],[114.5,-8.7],[112,-8.4],[108.6,-7.8],[106.4,-7.4]],
+  [[109,1.5],[109.7,2],[111.2,2.7],[113,3.3],[115.4,5.1],[116.7,6.9],[117.7,6.4],[119.2,5.3],[118,4.4],[117.8,1.8],[119,0.9],[117.5,0.1],[116.6,-1.5],[116.4,-3.9],[114.6,-4.1],[113,-3.2],[111.7,-3],[110.2,-1.7],[109.1,-0.4]],
+  [[119.4,-5.5],[120.4,-5.6],[120.4,-2.8],[121.4,-4.3],[122.7,-5.3],[123.2,-4.7],[122.2,-3.4],[121.4,-2.3],[123.1,-1],[121.6,-0.9],[120.9,0.4],[123,0.5],[124.4,0.4],[125.2,1.4],[124.6,1.6],[122.8,0.9],[120.2,0.9],[119.7,-0.3],[119.2,-2.7],[119.5,-3.5]],
+  [[127.9,-3.1],[129.6,-2.8],[130.8,-3.3],[130.6,-3.8],[129.1,-3.5],[128.2,-3.6]],
+  [[127.4,1.8],[128.2,2.3],[128.6,1.6],[128.1,0.9],[128.5,0.3],[127.9,-0.6],[127.4,0.6]],
+  [[131,-1.2],[132.4,-0.4],[134,-0.9],[135.4,-3.3],[137.9,-1.5],[141,-2.6],[145.7,-4.8],[147.6,-6.1],[148.3,-8.6],[146,-8.1],[143.4,-9],[141,-9.1],[139,-8.1],[138,-7.6],[137.8,-5.3],[135.1,-4.4],[133.2,-4],[132,-2.8]],
+  [[113.4,-21.8],[113.9,-26],[115,-33.6],[115.7,-34.4],[118,-35],[121.9,-33.9],[124,-33],[129,-31.7],[131.3,-31.5],[134.2,-32.7],[136,-35],[138,-34.3],[138.1,-35.6],[139.6,-37.4],[141.6,-38.4],[143.6,-38.8],[146.4,-39.1],[148,-37.8],[152,-37],[153.6,-28.2],[153,-25],[150,-22.4],[147,-19.2],[145.4,-14.9],[143.4,-12.6],[142.5,-10.7],[141.6,-12.6],[141.5,-15.8],[140.6,-17.5],[139.2,-17.4],[137,-15.9],[135.4,-14.8],[136.8,-12.3],[135.9,-11.9],[133,-11.3],[131,-12.2],[129.4,-14.4],[128.1,-15],[126.1,-14.1],[124.4,-16.3],[122.3,-17.2],[121.7,-18.7],[119,-20],[116.7,-20.6]],
+  [[129.7,33.1],[130.2,31.4],[131.4,31.4],[132,33.2],[133.3,33.4],[135.1,33.8],[136.8,34.4],[138.8,34.7],[140.9,35.7],[141,38.3],[142,39.6],[141.4,41.4],[139.9,40.6],[140,39.4],[139,38],[137.2,36.8],[136.7,37.3],[136.1,36],[133.2,35.5],[131.4,34.4]],
+  [[140,41.5],[141.6,42.6],[143.3,42],[145.5,43.3],[144.5,44],[141.8,45.4],[141.2,43.2],[140.3,42.9]],
+  [[121.9,25.2],[121.8,24.1],[120.9,22],[120.1,23.1],[120.7,24.6]],
+  [[108.7,19.6],[110.5,20.1],[111,19.6],[110.1,18.4],[109.3,18.3]],
+  [[120.6,18.5],[122.3,18.4],[122.2,16.2],[121.6,15.9],[121.7,14.2],[124,13.7],[124.1,12.5],[122.7,13.2],[120.6,14.2],[120,16]],
+  [[122,7],[123.6,7.8],[125.4,7.1],[126.5,7.3],[126.4,8.5],[125.5,9.8],[123.7,8.6],[122.1,7.8]],
+  [[123.9,-10.2],[125,-9],[127.3,-8.4],[126.4,-9.2],[124.4,-10.2]],
+];
+const LABEL = { bantam: ['right', -7, -5], priangan: ['left', 7, 13], ambon: ['left', 7, -6], banda: ['left', 7, 12], japan: ['right', -7, -6], coromandel: ['left', 7, 4], bengal: ['right', -7, -6], ceylon: ['right', -7, 10], malacca: ['right', -7, -5], mocha: ['right', -7, -6], canton: ['right', -7, -6], formosa: ['left', 7, -2], cape: ['left', 8, 14] };
+const ROUTE_A = [[4.8,53],[3,51.6],[0.5,50.6],[-5.5,49.2],[-11,44],[-17,33],[-23,18],[-27,6],[-30,-6],[-31,-18],[-26,-28],[-12,-35],[4,-37],[18.4,-34.8]];
+const ROUTE_OLD = [[18.4,-34.8],[30,-35],[37,-28],[41,-20],[43,-12],[50,-7],[64,-4],[80,-4],[93,-5],[101,-7.7],[105.4,-6.4],[106.8,-6.2]];
+const ROUTE_BROUWER = [[18.4,-34.8],[32,-39],[60,-41],[88,-40],[101,-33],[104.5,-20],[105.2,-9],[105.6,-6.5],[106.8,-6.2]];
+let routeCache = null;
+function route() {
+  const key = S.flags.brouwer ? 'b' : 'o';
+  if (routeCache && routeCache.key === key) return routeCache;
+  const pts = ROUTE_A.concat((S.flags.brouwer ? ROUTE_BROUWER : ROUTE_OLD).slice(1)).map(proj);
+  const len = [0];
+  for (let i = 1; i < pts.length; i++) len.push(len[i - 1] + Math.hypot(pts[i][0] - pts[i - 1][0], (pts[i][1] - pts[i - 1][1]) * 0.625));
+  routeCache = { key, pts, len, total: len[len.length - 1] };
+  return routeCache;
+}
+function routePoint(p) {
+  const r = route(), d = clamp(p, 0, 1) * r.total;
+  let i = 1; while (i < r.len.length - 1 && r.len[i] < d) i++;
+  const u = (d - r.len[i - 1]) / ((r.len[i] - r.len[i - 1]) || 1);
+  return [r.pts[i - 1][0] + (r.pts[i][0] - r.pts[i - 1][0]) * u, r.pts[i - 1][1] + (r.pts[i][1] - r.pts[i - 1][1]) * u];
+}
+function drawMap() {
+  const c = $('map'); if (!c || !S) return;
+  const x = c.getContext('2d'), W = c.width, H = c.height, dpr = window.devicePixelRatio || 1;
+  const P = ([u, v]) => [u * W, v * H];
+  const G = ll => P(proj(ll));
+  x.clearRect(0, 0, W, H);
+  const rule = cssVar('--rule'), rule2 = cssVar('--rule-2'), delft = cssVar('--delft'), brass = cssVar('--brass'), ink = cssVar('--ink'), ink2 = cssVar('--ink-2'), ink3 = cssVar('--ink-3'), loss = cssVar('--loss');
+  // graticule every 20°
+  x.strokeStyle = rule2; x.lineWidth = 1;
+  for (let lon = -40; lon <= 140; lon += 20) { const [a] = G([lon, 0]); x.beginPath(); x.moveTo(a, 0); x.lineTo(a, H); x.stroke(); }
+  for (let lat = -40; lat <= 60; lat += 20) { const [, b] = G([0, lat]); x.beginPath(); x.moveTo(0, b); x.lineTo(W, b); x.stroke(); }
+  // land
+  x.fillStyle = cssVar('--land'); x.strokeStyle = cssVar('--land-edge'); x.lineWidth = 0.8 * dpr; x.lineJoin = 'round';
+  for (const poly of LAND) { x.beginPath(); poly.forEach((ll, i) => { const [a, b] = G(ll); i ? x.lineTo(a, b) : x.moveTo(a, b); }); x.closePath(); x.fill(); x.stroke(); }
+  // equator
+  x.setLineDash([2 * dpr, 4 * dpr]); x.strokeStyle = rule; const [, eq] = G([0, 0]); x.beginPath(); x.moveTo(0, eq); x.lineTo(W, eq); x.stroke(); x.setLineDash([]);
+  x.fillStyle = ink3; x.font = `italic ${Math.round(12.5 * dpr)}px "IM Fell DW Pica", Georgia, serif`; x.textAlign = 'center';
+  let [a0, b0] = G([-24, 28]); x.fillText('Oceanus', a0, b0); x.fillText('Atlanticus', a0, b0 + 14 * dpr);
+  [a0, b0] = G([75, -22]); x.fillText('Mare Indicum', a0, b0);
+  [a0, b0] = G([20, 8]); x.fillText('Africa', a0, b0);
+  [a0, b0] = G([40, 55]); x.fillText('Europa', a0, b0);
+  [a0, b0] = G([90, 40]); x.fillText('Asia', a0, b0);
+  if (S.flags.brouwer) { [a0, b0] = G([62, -45]); x.fillText('the roaring forties', a0, b0); }
+  // route
+  x.setLineDash([5 * dpr, 4 * dpr]); x.strokeStyle = delft; x.globalAlpha = 0.45; x.lineWidth = 1.4 * dpr; x.beginPath();
+  route().pts.forEach((pt, i) => { const [a, b] = P(pt); i ? x.lineTo(a, b) : x.moveTo(a, b); });
+  x.stroke(); x.setLineDash([]); x.globalAlpha = 1;
+  // posts
+  const y = yearOf(S.t), known = S.report ? S.report.posts : [];
+  const open = foundablePosts(S, y);
+  const [ba, bb] = G(PORTS.batavia);
+  for (const id in POSTS) {
+    const p = POSTS[id]; const has = known.includes(id) || (id === 'cape' && S.asia.posts.cape);
+    const can = open.includes(id) && !has;
+    if (!has && !can) continue;
+    const [a, b] = G([p.lon, p.lat]);
+    if (has && id !== 'cape') { x.strokeStyle = brass; x.globalAlpha = 0.35; x.lineWidth = 1.1 * dpr; x.beginPath(); x.moveTo(ba, bb); x.lineTo(a, b); x.stroke(); x.globalAlpha = 1; }
+    x.beginPath(); x.arc(a, b, 3.6 * dpr, 0, 7);
+    if (has) { x.fillStyle = brass; x.fill(); } else { x.fillStyle = cssVar('--chart'); x.fill(); x.strokeStyle = brass; x.lineWidth = 1.4 * dpr; x.stroke(); }
+    const [al, dx, dy] = LABEL[id] || ['left', 7, -5];
+    x.fillStyle = has ? ink : ink3; x.font = `${Math.round(11 * dpr)}px Spectral, Georgia, serif`; x.textAlign = al;
+    x.fillText(p.name, a + dx * dpr, b + dy * dpr);
+  }
+  for (const [k, label, al, dx, dy] of [['texel', 'Texel', 'left', 8, -6], ['cape', S.asia.posts.cape ? '' : 'Cape of Good Hope', 'left', 8, 14], ['batavia', S.flags.batavia ? 'Batavia' : '', 'left', 8, -7]]) {
+    const [a, b] = G(PORTS[k]);
+    x.fillStyle = delft; x.beginPath(); x.arc(a, b, 4.6 * dpr, 0, 7); x.fill();
+    if (label) { x.fillStyle = ink; x.font = `${Math.round(13.5 * dpr)}px "IM Fell DW Pica", Georgia, serif`; x.textAlign = al; x.fillText(label, a + dx * dpr, b + dy * dpr); }
+  }
+  // ships
+  let harbour = 0, asia = 0;
+  const tex = proj(PORTS.texel), bat = proj(PORTS.batavia);
+  for (const sh of S.ships) {
+    const v = viewOf(sh);
+    let pos, dir = 1, col = delft;
+    if (v.kind === 'harbour') { pos = [tex[0] - 0.012 - 0.011 * (harbour % 6), tex[1] + 0.03 + 0.028 * Math.floor(harbour / 6)]; harbour++; }
+    else if (v.kind === 'out') pos = routePoint(v.p);
+    else if (v.kind === 'home') { pos = routePoint(v.p); dir = -1; col = brass; }
+    else if (v.kind === 'asia') { const k = asia++; pos = [bat[0] - 0.035 - 0.012 * (k % 8), bat[1] + 0.07 + 0.026 * Math.floor(k / 8)]; }
+    else if (v.kind === 'lost' && S.t - sh.revealT < 60) { pos = sh.state === 'lostOut' ? bat : tex; col = loss; }
+    else continue;
+    const [a, b] = P(pos);
+    let ang = v.kind === 'asia' || v.kind === 'harbour' ? (v.kind === 'asia' ? Math.PI : 0) : 0;
+    if (v.kind === 'out' || v.kind === 'home') { const [a2, b2] = P(routePoint(clamp(v.p + 0.01 * dir, 0, 1))); ang = Math.atan2(b2 - b, a2 - a); }
+    x.save(); x.translate(a, b); x.rotate(ang); x.fillStyle = col; x.strokeStyle = cssVar('--chart'); x.lineWidth = 1 * dpr;
+    x.beginPath(); x.moveTo(6.5 * dpr, 0); x.lineTo(-4.5 * dpr, -4 * dpr); x.lineTo(-4.5 * dpr, 4 * dpr); x.closePath(); x.fill(); x.stroke(); x.restore();
+  }
+}
+
+// ---------- modals ----------
+function showSheet(html) { $('sheet').innerHTML = html; $('modal').hidden = false; modalOpen = true; const b = $('sheet').querySelector('button'); if (b) b.focus(); }
+function closeSheet() { $('modal').hidden = true; modalOpen = false; }
+function pauseForModal() { if (S.speed) resumeSpeed = S.speed; S.speed = 0; }
+function openQueued() {
+  if (modalOpen) return;
+  if (S.ended) { showEnd(); return; }
+  if (!S.queue.length) return;
+  const id = S.queue.shift(); const e = EVENT_BY_ID[id]; if (!e) return;
+  const wasRunning = S.speed > 0 || id !== 'founding';
+  pauseForModal();
+  const info = e.choices.length === 1 && !e.choices[0].fx;
+  const when = id === 'founding' ? '20 March 1602' : fmtDate(S.t);
+  const im = typeof EVENT_IMAGES !== 'undefined' && EVENT_IMAGES[id];
+  const fig = im ? `<figure class="plate"><img src="${im.src}" alt="${esc(im.title)}" onerror="this.closest('figure').remove()"><figcaption><i>${esc(im.title)}</i>, ${esc(im.maker)}, ${esc(im.date)}. <a href="${im.page}" target="_blank" rel="noopener">Rijksmuseum ${esc(im.obj)}</a></figcaption></figure>` : '';
+  showSheet(`${fig}<div class="when">${when}</div><h3 id="m-title">${e.title}</h3><div class="body">${e.body(S)}</div>
+    ${info ? `<div class="hist"><b>Historical note</b>${e.history}</div><div class="actions"><button type="button" class="btn" data-c="0">${e.choices[0].label}</button></div>`
+      : `<div class="choices">${e.choices.map((c, i) => `<button type="button" class="choice" data-c="${i}"><b>${c.label}</b>${c.hint ? `<span>${c.hint}</span>` : ''}</button>`).join('')}</div>`}`);
+  $('sheet').querySelectorAll('[data-c]').forEach(b => b.addEventListener('click', () => {
+    const c = e.choices[+b.dataset.c];
+    if (info) { closeSheet(); S.speed = wasRunning ? resumeSpeed : 5; if (id === 'founding' && tutActive()) { S.speed = 0; render(); tutStart(); return; } render(); openQueued(); return; }
+    track('event_choice', { event: id, choice: +b.dataset.c, label: c.label });
+    const out = c.fx ? c.fx(S) : '';
+    $('sheet').querySelector('.choices').outerHTML = `${out ? `<p class="outcome">${out}</p>` : ''}<div class="hist"><b>What actually happened</b>${e.history}</div><div class="actions"><button type="button" class="btn" id="m-go">Continue</button></div>`;
+    $('m-go').focus();
+    $('m-go').addEventListener('click', () => { closeSheet(); S.speed = resumeSpeed; render(); openQueued(); });
+  }));
+}
+function showAudit(a) {
+  pauseForModal();
+  const ratio = a.equity / a.mcap;
+  showSheet(`<div class="when">${fmtDate(S.t)}</div><h3 id="m-title">An audit of the Company</h3>
+    <div class="body"><p>The Company has never drawn up a single balance sheet. Amsterdam keeps its own books; Batavia keeps others, and they reach Holland a year late. Your clerks have tried to add them up.</p>
+    <dl class="kv"><dt>Cash in Amsterdam</dt><dd>${money(a.cash)}</dd><dt>Debt</dt><dd class="neg">${money(-a.debt)}</dd>
+    <dt>Goods in the warehouse</dt><dd>${money(a.whv)}</dd><dt>Silver and goods in Asia${a.rdate ? `, as of ${fmtMon(a.rdate)}` : ''}</dt><dd>${money(a.asv)}</dd>
+    <dt><b>Estimated worth</b></dt><dd><b>${money(a.equity)}</b></dd><dt>What the market pays for the shares</dt><dd>${money(a.mcap)}</dd></dl>
+    <p style="margin-top:10px">${ratio < 0.6 ? 'The shares trade far above anything the books can show. The figures leak out, and the price slips.' : 'The books roughly support the share price. Shareholders are reassured.'}</p></div>
+    <div class="hist"><b>Historical note</b>The VOC never produced consolidated accounts. In the 1720s its shares traded around six times face value, while profit as a share of turnover was falling from about 18% toward 2–3%.</div>
+    <div class="actions"><button type="button" class="btn" id="m-go">Close</button></div>`);
+  $('m-go').addEventListener('click', () => { closeSheet(); S.speed = resumeSpeed; render(); });
+}
+function showEnd() {
+  S.speed = 0; hideCoach();
+  if (!S.endTracked) { S.endTracked = true; track('game_end', { reason: S.endReason || 'charter', debt: Math.round(S.debt), cash: Math.round(S.cash), dividends: Math.round(S.stats.divPaid), monopolies: AIMS.filter(a => S.mono[a.id] > 0).length, voyages: S.stats.voyages }); }
+  const yrs = Math.max(1, S.stats.divYears);
+  const bankrupt = S.endReason === 'bankrupt';
+  showSheet(`<div class="when">${fmtDate(S.t)}</div><h3 id="m-title">${bankrupt ? 'The States take over' : 'The charter expires'}</h3>
+    <div class="body"><p>${bankrupt ? 'Your debts have passed ƒ120 million. No lender will touch Company paper, and the States General take control of its affairs.' : 'On 31 December 1799 the charter lapses. The Batavian state takes over the Company\'s possessions in Asia, and its debts.'}</p>
+    <div class="endgrid">
+      <span>Voyages sent</span><b class="num">${num(S.stats.voyages)} (${num(S.stats.lost)} lost)</b>
+      <span>Silver shipped east</span><b class="num">${money(S.stats.silver)}</b>
+      <span>Auction sales</span><b class="num">${money(S.stats.auction)}</b>
+      <span>Dividends paid</span><b class="num">${money(S.stats.divPaid)} · avg ${(S.stats.divPaid / NOMINAL * 100 / yrs).toFixed(1)}%/yr</b>
+      <span>Debt left to the state</span><b class="num neg">${money(S.debt)}</b>
+      <span>Men sent east</span><b class="num">${num(S.humans.sent)}</b>
+      <span>Died at sea or in Asia</span><b class="num neg">${num(S.humans.diedSea + S.humans.diedAsia)}</b>
+      <span>Came home</span><b class="num">${num(S.humans.returned)} (${S.humans.sent ? Math.round(S.humans.returned / S.humans.sent * 100) : 0}%)</b>
+    </div></div>
+    <div class="hist"><b>The real Company</b>About a million people sailed east for the VOC between 1602 and 1795; roughly a third came home. It paid an average dividend of around 18% a year on its original capital, from 1730 mostly with money it did not earn. At nationalisation its debt is usually put at about ƒ120 million; sources vary.</div>
+    <div class="actions"><button type="button" class="btn" id="m-new">Start a new company</button></div>`);
+  $('m-new').addEventListener('click', () => { S = newState(); save(); closeSheet(); syncInputs(); render(); track('game_start', { restart: true }); openQueued(); });
+}
+
+// ---------- main loop ----------
+let acc = 0, last = 0, lastRender = 0, lastSave = 0, lastYearSeen = 0;
+function frame(ts) {
+  const dt = last ? Math.min(0.25, (ts - last) / 1000) : 0; last = ts;
+  if (S.speed > 0 && !modalOpen && !S.ended) {
+    acc += dt * S.speed;
+    while (acc >= 1) {
+      acc -= 1; step(S);
+      if (S.queue.length || S.ended) { acc = 0; render(); openQueued(); break; }
+    }
+  }
+  if (ts - lastRender > 200) { lastRender = ts; render(); tutCheck(); positionCoach(); const yy = yearOf(S.t); if (yy !== lastYearSeen) { if (lastYearSeen && yy % 10 === 0) track('decade', { decade: yy }); lastYearSeen = yy; } }
+  drawMap();
+  if (ts - lastSave > 5000) { lastSave = ts; save(); }
+  requestAnimationFrame(frame);
+}
+
+function start(data) {
+  S = (data && data.S) || load() || newState();
+  if (!S.release || !S.books || !S.mono || !S.news || !S.dynCount) S = newState();
+  _S = S;
+  if (!S.tut) S.tut = { i: 0, done: true, seen: {}, ctxOn: false };
+  modalOpen = false;
+  buildStatic(); syncInputs(); render();
+  if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ S }));
+  if (S.speed) resumeSpeed = S.speed;
+  if (S.queue[0] === 'founding') track('game_start', { restart: false }); else track('game_resume');
+  openQueued();
+  if (tutActive() && !S.queue.length && !modalOpen) tutStart();
+  window.addEventListener('scroll', positionCoach, { passive: true }); window.addEventListener('resize', positionCoach);
+  $('credits').addEventListener('click', showCredits);
+  const sn = $('small-screen'); let dismissed = false; try { dismissed = sessionStorage.getItem('rv-small') === '1'; } catch (e) {}
+  if (window.innerWidth < 900 && !dismissed) { sn.hidden = false; $('small-go').addEventListener('click', () => { sn.hidden = true; try { sessionStorage.setItem('rv-small', '1'); } catch (e) {} }); }
+  requestAnimationFrame(frame);
+}
+window.claude?.hot?.ready ? window.claude.hot.ready(start) : start(window.claude?.hot?.data ?? {});
+
+</script>
+</body>
+</html>
