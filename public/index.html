@@ -138,7 +138,7 @@ footer a { color: var(--ink-soft); }
 <body>
 <div class="wrap">
   <header class="mast">
-    <div class="topline"><span class="eyebrow">Small games about the past</span><span class="eyebrow" id="streak"></span></div>
+    <div class="topline"><span class="eyebrow">Small games about the past</span></div>
     <h1>Homo Ludens</h1>
     <p class="lede">Short history games, from a five-minute daily puzzle to an evening at the helm of the Dutch East India Company. One mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book, which argued that play is older than culture.</p>
   </header>
@@ -254,7 +254,6 @@ footer a { color: var(--ink-soft); }
   function onTime(r) { return r && !r.late; }
   if (!onTime(get("borderlines:day:" + i))) i--;
   while (i >= 0 && onTime(get("borderlines:day:" + i))) { streak++; i--; }
-  if (streak) document.getElementById("streak").textContent = "Your streak · " + streak + (streak === 1 ? " day" : " days");
   if (!has) {
     document.getElementById("dTitle").textContent = "New realms coming soon";
     document.getElementById("dMeta").textContent = "Practice is open in the meantime.";
