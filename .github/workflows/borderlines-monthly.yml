@@ -1,0 +1,55 @@
+# Adds the next month of Borderlines dailies on the 1st of every month and pushes them to main.
+# Cloudflare redeploys the site on every push, so nothing else needs doing.
+# Run it by hand from the Actions tab ("Run workflow") if you ever want to check it.
+name: Borderlines monthly dailies
+
+on:
+  schedule:
+    - cron: "17 4 1 * *"   # 1st of each month, 04:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: borderlines-monthly
+  cancel-in-progress: false
+
+jobs:
+  add-days:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install shapely
+        run: pip install "shapely>=2.0,<3"
+
+      - name: Fetch historical-basemaps (pinned)
+        run: |
+          git init -q basemaps
+          cd basemaps
+          git remote add origin https://github.com/aourednik/historical-basemaps.git
+          git fetch -q --depth 1 origin da7a4b735ecef70aebdc9c73e409d8a2500d50f3
+          git checkout -q FETCH_HEAD
+
+      - name: Add new days
+        run: python3 src/borderlines/auto_update.py --data basemaps/geojson
+
+      - name: Commit and push
+        run: |
+          rm -rf basemaps
+          git add -A public src
+          if git diff --cached --quiet; then
+            echo "Nothing to add this month."
+            exit 0
+          fi
+          n=$(ls public/borderlines/days | wc -l)
+          git config user.name "homoludens-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -q -m "Borderlines: dailies through #$n"
+          git push
