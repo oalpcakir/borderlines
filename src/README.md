@@ -23,3 +23,9 @@ Build sources behind the published site (the repo's `public/` folder holds the b
 - `scene1.html`, `scene2.html`, `scene3.html` — one self-contained page per scene (data, puzzle logic, Web Audio sound, the reprinted-receipt card). Design notes and the solution tables live in the project's TASARIM.md.
 - `build_cupoftea.py` — adds the shared head (meta tags, icon, analytics, feedback button) and writes `public/cupoftea/` (scene 1), `public/cupoftea/2/`, `public/cupoftea/3/`, plus `public/og-cupoftea.png` and the portal plate.
 - Progress is kept in the player's browser under `cupoftea.v1` (scenes solved, blots per scene); the portal reads it for the "Continue" card.
+
+## Deploy & feedback
+- `wrangler.jsonc` deploys `public/` to Cloudflare Workers; pushes to main redeploy.
+- `worker.js` adds one route, `/api/feedback`: checks messages (Turnstile, rate limit) and posts them to Discord.
+- Worker secrets: `DISCORD_WEBHOOK_URL`, `TURNSTILE_SECRET` (set with `wrangler secret put`). The public Turnstile site key is in `public/feedback.js`.
+- The feedback form doesn't work on a plain local server; everything else is static.

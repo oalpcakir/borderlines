@@ -27,6 +27,6 @@ History is messy and some of it is disputed. Use the **Feedback** button on any 
 
 Game code is released under GPL-3.0, matching the historical borders dataset Borderlines is built on.
 
-## Running it yourself
+## How it's made
 
-Everything is static. `public/index.html` is the portal, and each game lives in its own folder under `public/`. Sources and build scripts are in `src/` (see `src/README.md`). The included `wrangler.jsonc` deploys the site to Cloudflare Workers; `worker.js` adds one route, `/api/feedback`, which checks messages (Turnstile, rate limit) and posts them to Discord. It needs two secrets, `DISCORD_WEBHOOK_URL` and `TURNSTILE_SECRET`, and the Turnstile site key in `public/feedback.js`.
+Plain HTML, CSS and JavaScript, with no framework. Each game lives in its own folder under `public/`; data sources and build scripts are in `src/`.
