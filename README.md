@@ -1,10 +1,24 @@
-# Borderlines
+# Homo Ludens
+
+Small games about the past: short history games with one mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book.
+
+▶ **Visit:** [borderlines.oalpcakir.workers.dev](https://borderlines.oalpcakir.workers.dev)
+
+## Games
+
+| No. | Game | |
+|---|---|---|
+| 1 | **Borderlines** | Paint the land a historical realm ruled. Daily challenge. |
+
+---
+
+## No. 1 — Borderlines
 
 **Every empire had its edges. Can you find them?**
 
 Borderlines is a daily history map game. You get a year and the name of a realm — the Ottoman Empire in 1530, the Inca in 1530, Aksum in 500 — and a world map with no modern borders. Paint the land you think it ruled, then see how close you came.
 
-▶ **Play:** [borderlines.oalpcakir.workers.dev](https://borderlines.oalpcakir.workers.dev)
+▶ **Play:** [borderlines.oalpcakir.workers.dev/borderlines/](https://borderlines.oalpcakir.workers.dev/borderlines/)
 
 ## How to play
 
@@ -46,8 +60,8 @@ The game code is released under GPL-3.0 to match the historical borders dataset 
 
 ## Running it yourself
 
-It's a single static file: open `public/index.html` in a browser, or deploy the repo to any static host. The included `wrangler.jsonc` deploys it to Cloudflare Workers as a static site.
+Everything is static: `public/index.html` is the portal and each game lives in its own folder (`public/borderlines/`). Deploy the repo to any static host. The included `wrangler.jsonc` deploys it to Cloudflare Workers as a static site.
 
 ---
 
-Part of **Small Histories**, a series of short games about the past.
+Part of **Homo Ludens**.
