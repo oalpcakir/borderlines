@@ -149,9 +149,9 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
   .year { font-size: 40px; }
   .hint, kbd, .coords, #brush { display: none; }
   #tools { gap: 6px; }
-  .zoomctl { bottom: auto; top: 45%; }
   button { padding: 10px 10px; }
 }
+@media (max-width: 1100px) { .zoomctl { bottom: auto; top: 45%; } }
 @media (max-width: 420px) { .modes { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: no-preference) {
   .truth { animation: draw-in .6s ease-out; }
@@ -561,7 +561,23 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
     const t = d3.zoomIdentity.translate(W / 2 + ox, H / 2 + oy).scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
     d3.select(stage).transition().duration(650).call(zoom.transform, t);
   }
-  function resetZoom() { d3.select(stage).call(zoom.transform, d3.zoomIdentity); }
+  // Opening view: fill the screen instead of letterboxing the whole world, centred on the Old World.
+  function defaultTransform() {
+    const mobile = W < 640;
+    const top = mobile ? 110 : 20, bottom = mobile ? 140 : 90;
+    const ww = worldPx[2] - worldPx[0], wh = worldPx[3] - worldPx[1];
+    const availW = W, availH = H - top - bottom;
+    const cover = Math.max(availW / ww, availH / wh);
+    const k = Math.max(1, Math.min(cover * 0.96, mobile ? 2.2 : 2.6));
+    const [fx, fy] = projection([22, 28]);
+    let tx = W / 2 - fx * k, ty = top + availH / 2 - fy * k;
+    // keep the map edges from pulling away from the screen edges
+    const mw = ww * k, mh = wh * k;
+    if (mw >= W) tx = Math.min(-worldPx[0] * k, Math.max(W - worldPx[2] * k, tx)); else tx = (W - mw) / 2 - worldPx[0] * k;
+    if (mh >= availH) ty = Math.min(top - worldPx[1] * k, Math.max(top + availH - worldPx[3] * k, ty)); else ty = top + (availH - mh) / 2 - worldPx[1] * k;
+    return d3.zoomIdentity.translate(tx, ty).scale(k);
+  }
+  function resetZoom() { d3.select(stage).call(zoom.transform, defaultTransform()); }
 
   // ---------- input ----------
   const pointers = new Set();
