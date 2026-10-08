@@ -6,10 +6,12 @@ Build sources behind the published site (the repo's `public/` folder holds the b
 - `portal.html` — portal template ({{POSTHOG}}, {{LAND}}, {{REALM}}, {{W}}, {{H}} placeholders for the analytics snippet and the map plate).
 
 ## borderlines/ (No. 1)
-- `game.html` — game template; `/*DATA*/` is replaced by the generated `game-data.js`.
-- `questions.py`, `basics.py`, `daily30.py`, `meta.py` — realm lists (dailies and practice pool), capitals and colours.
-- `prep3.py` — builds `game-data.js` from historical-basemaps and Natural Earth. `DAILY_START` sets launch day.
-- `build_site.py` — writes `public/borderlines/` and the portal.
+- `game.html` — game template; `/*DATA*/` is replaced by the page data (practice pool, base map, each daily's difficulty tiers).
+- Each daily's realms live in `public/borderlines/days/<n>.json` and are fetched when that day is played, so the page stays the same size however many days there are.
+- `data/base.json` — practice pool + base map. `data/history.json` — which realm and year every daily used (the updater's memory).
+- `build_borderlines.py` — writes `public/borderlines/index.html` and updates the daily count in the portal.
+- `auto_update.py` + `catalog.py` — the monthly updater. `.github/workflows/borderlines-monthly.yml` runs it on the 1st of every month: it adds enough days to stay ~5 weeks ahead (about 30), checks each realm against historical-basemaps (shape exists, big enough, capital inside), commits and pushes; Cloudflare redeploys. To add realms, add lines to `catalog.py`. To test locally: `python3 src/borderlines/auto_update.py --data <historical-basemaps>/geojson --today 2026-12-01 --dry-run`.
+- `questions.py`, `basics.py`, `daily30.py`, `meta.py`, `prep3.py`, `build_site.py` — the original hand-made lists and one-off builders for days 1–42 and the pool. The updater reads the lists (old realms can come back as reruns) but the builders are no longer part of the pipeline.
 - `posthog_head.html` — shared analytics snippet (PostHog US, cookieless), also used by Retourvloot.
 
 ## retourvloot/ (No. 2)

@@ -318,7 +318,26 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
   const todayIdx = () => dayIndex(today());
   const dayDate = (i) => { const [y, m, d] = DATA.dailyStart.split("-").map(Number); return new Date(y, m - 1, d + i); };
   const fmtDate = (d) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-  const practicePool = () => DATA.pool.concat(...DATA.daily.slice(0, Math.max(0, Math.min(todayIdx(), DATA.daily.length))));
+  // Each daily's realms live in their own file (days/<n>.json) and are fetched when needed.
+  // The page itself only knows how many dailies exist and each one's difficulty tiers.
+  const NDAYS = (DATA.days || DATA.daily).length;
+  const DAYS_URL = (window.BORDERLINES_CONFIG || {}).daysUrl || "days/";
+  const dayCache = {};
+  function getDay(i) {
+    if (DATA.daily) return Promise.resolve(DATA.daily[i]);
+    if (!dayCache[i]) dayCache[i] = fetch(DAYS_URL + (i + 1) + ".json")
+      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+      .catch((e) => { delete dayCache[i]; throw e; });
+    return dayCache[i];
+  }
+  const pastDays = () => Math.max(0, Math.min(todayIdx(), NDAYS));
+  // Practice candidates: the pool itself plus a light reference to every realm of every past daily.
+  function practicePool() {
+    const refs = DATA.pool.map((q) => ({ id: q.id, tier: q.tier, q }));
+    const tiers = DATA.days || DATA.daily.map((d) => d.map((q) => q.tier));
+    for (let d = 0; d < pastDays(); d++) tiers[d].forEach((t, j) => refs.push({ id: `d${d + 1}-${j + 1}`, tier: t, day: d, j }));
+    return refs;
+  }
   const store = {
     get(k) { try { return JSON.parse(localStorage.getItem("borderlines:" + k)); } catch (_) { return null; } },
     set(k, v) { try { localStorage.setItem("borderlines:" + k, JSON.stringify(v)); } catch (_) {} },
@@ -338,7 +357,7 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
   }
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
   // Practice: random 2 easy + 2 medium + 1 hard, preferring realms this player hasn't seen in practice yet.
-  function practiceSet() {
+  async function practiceSet() {
     const pool = practicePool();
     let seen = new Set(store.get("practiceSeen") || []);
     if (pool.every((q) => seen.has(q.id))) seen = new Set();
@@ -346,9 +365,10 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
     const by = (t) => p.filter((q) => q.tier === t);
     const pick = [...by(1).slice(0, 2), ...by(2).slice(0, 2), ...by(3).slice(0, 1)];
     for (const q of p) if (pick.length < 5 && !pick.includes(q)) pick.push(q);
+    const qs = await Promise.all(pick.map((r) => r.q || getDay(r.day).then((d) => d[r.j])));
     pick.forEach((q) => seen.add(q.id));
     store.set("practiceSeen", [...seen]);
-    return pick.sort((a, b) => a.tier - b.tier);
+    return qs.sort((a, b) => a.tier - b.tier);
   }
 
   // ---------- analytics ----------
@@ -827,35 +847,49 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
     $("end").hidden = false;
   }
 
-  function play(mode, day) {
+  let loading = false;
+  async function loadRealms(get) {
+    if (loading) return null;
+    loading = true; document.body.style.cursor = "progress";
+    try { return await get(); }
+    catch (e) { toast("Couldn't load the realms. Check your connection and try again."); return null; }
+    finally { loading = false; document.body.style.cursor = ""; }
+  }
+  async function play(mode, day) {
     if (mode !== "tutorial" && !store.get("tutorialDone")) { state.afterTutorial = [mode, day]; return startTutorial(); }
+    const qs = await loadRealms(() => (mode === "practice" ? practiceSet() : getDay(day)));
+    if (!qs) return;
     state.mode = mode; state.round = 0; state.scores = []; state.raw = []; state.hints = [];
     track("game_start", { mode, day: mode === "practice" ? null : day });
     setSize(1);
-    if (mode === "practice") Q = practiceSet(); else { state.day = day; Q = DATA.daily[day]; }
+    if (mode !== "practice") state.day = day;
+    Q = qs;
     startRound();
   }
-  function showSaved(day) {
+  async function showSaved(day) {
     const rec = dayRec(day);
-    state.mode = rec.late ? "archive" : "daily"; state.day = day; Q = DATA.daily[day]; state.scores = rec.scores; state.round = Q.length - 1;
+    const qs = await loadRealms(() => getDay(day));
+    if (!qs) return;
+    state.mode = rec.late ? "archive" : "daily"; state.day = day; Q = qs; state.scores = rec.scores; state.round = Q.length - 1;
     showEnd(true);
   }
 
   function renderHome() {
     state.phase = "intro"; Q = []; hideGame();
     ["end", "archive", "stats", "report", "tutDone", "coach"].forEach((id) => ($(id).hidden = true));
-    const i = todayIdx(), has = i >= 0 && i < DATA.daily.length, rec = has && dayRec(i), st = streak();
+    const i = todayIdx(), has = i >= 0 && i < NDAYS, rec = has && dayRec(i), st = streak();
     $("streak").textContent = st ? `Streak ${st}` : "";
     if (!has) { $("dailyTitle").textContent = "Daily Challenge"; $("dailySub").textContent = "New realms coming soon"; $("btnDaily").disabled = true; }
     else if (rec) { $("dailyTitle").textContent = `Daily #${i + 1} · ${sum(rec.scores)}/500`; $("dailySub").textContent = `Done · next in ${untilMidnight()}`; $("btnDaily").disabled = false; }
     else { $("dailyTitle").textContent = `Daily #${i + 1}`; $("dailySub").textContent = `5 new realms · ${fmtDate(today())}`; $("btnDaily").disabled = false; }
-    $("practiceSub").textContent = `5 random realms from ${practicePool().length}`;
+    $("practiceSub").textContent = `5 random realms from ${DATA.pool.length + 5 * pastDays()}`;
+    if (has && !rec) getDay(i).catch(() => {}); // warm up today's realms
     $("intro").hidden = false;
   }
   function renderArchive() {
     $("intro").hidden = true;
     track("archive_open");
-    const last = Math.min(todayIdx(), DATA.daily.length) - 1;
+    const last = Math.min(todayIdx(), NDAYS) - 1;
     const rows = [];
     for (let d = last; d >= 0; d--) {
       const rec = dayRec(d);
@@ -931,7 +965,7 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
   function renderStats() {
     $("intro").hidden = true;
     track("stats_open");
-    const last = Math.min(todayIdx(), DATA.daily.length - 1);
+    const last = Math.min(todayIdx(), NDAYS - 1);
     const recs = []; let best = 0, run = 0, bestRun = 0;
     for (let d = 0; d <= last; d++) {
       const r = dayRec(d);

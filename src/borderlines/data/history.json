@@ -1,0 +1,1790 @@
+{
+"pool": [
+[
+"bc500",
+"Achaemenid Empire"
+],
+[
+"bc200",
+"Mauryan Empire"
+],
+[
+"bc200",
+"Ptolemaic Kingdom"
+],
+[
+"bc200",
+"Seleucid Kingdom"
+],
+[
+"bc200",
+"Han Empire"
+],
+[
+"400",
+"Western Roman Empire"
+],
+[
+"500",
+"Ostrogoths"
+],
+[
+"500",
+"Visigoths"
+],
+[
+"800",
+"Carolingian Empire"
+],
+[
+"900",
+"Khmer Empire"
+],
+[
+"1100",
+"Hungary"
+],
+[
+"1100",
+"Poland"
+],
+[
+"1100",
+"England"
+],
+[
+"1200",
+"Angevin Empire"
+],
+[
+"1300",
+"Castile"
+],
+[
+"1400",
+"Kalmar Union"
+],
+[
+"1492",
+"Songhai"
+],
+[
+"1492",
+"Portugal"
+],
+[
+"1492",
+"Vijayanagara"
+],
+[
+"1530",
+"Spain"
+],
+[
+"1530",
+"Japan (Warring States)"
+],
+[
+"1530",
+"Sweden"
+],
+[
+"1650",
+"England and Ireland"
+],
+[
+"1700",
+"France"
+],
+[
+"1700",
+"Spain"
+],
+[
+"1783",
+"Prussia"
+],
+[
+"1783",
+"Viceroyalty of Peru"
+],
+[
+"1783",
+"Viceroyalty of New Granada"
+],
+[
+"1783",
+"Viceroyalty of Brazil"
+],
+[
+"1815",
+"France"
+],
+[
+"1815",
+"United Kingdom of Great Britain and Ireland"
+],
+[
+"1880",
+"Germany"
+],
+[
+"1880",
+"Italy"
+],
+[
+"1880",
+"Mexico"
+],
+[
+"1880",
+"Chile"
+],
+[
+"1880",
+"Bolivia"
+],
+[
+"1880",
+"Korea"
+],
+[
+"1880",
+"Rattanakosin Kingdom"
+],
+[
+"1880",
+"Kingdom of Brazil"
+],
+[
+"1914",
+"British Raj"
+],
+[
+"1914",
+"Norway"
+],
+[
+"1914",
+"Belgian Congo"
+],
+[
+"1914",
+"Argentina"
+],
+[
+"1914",
+"Australia"
+],
+[
+"1914",
+"Canada"
+],
+[
+"1914",
+"South Africa"
+],
+[
+"1938",
+"Poland"
+],
+[
+"1938",
+"Czechoslovakia"
+],
+[
+"1938",
+"Yugoslavia"
+],
+[
+"1938",
+"Finland"
+]
+],
+"days": [
+[
+[
+"1938",
+"Germany"
+],
+[
+"1783",
+"United States of America"
+],
+[
+"700",
+"Tufan Empire"
+],
+[
+"1400",
+"Timurid Empire"
+],
+[
+"900",
+"Samanid Empire"
+]
+],
+[
+[
+"1530",
+"Ottoman Empire"
+],
+[
+"700",
+"Frankish Kingdom"
+],
+[
+"200",
+"Parthian Empire"
+],
+[
+"1530",
+"Mughal Empire"
+],
+[
+"1492",
+"Emirate of the White Sheep Turks"
+]
+],
+[
+[
+"1700",
+"Mughal Empire"
+],
+[
+"700",
+"Umayyad Caliphate"
+],
+[
+"500",
+"Sasanian Empire"
+],
+[
+"1279",
+"Great Khanate"
+],
+[
+"900",
+"Khazars"
+]
+],
+[
+[
+"1492",
+"Ming Empire"
+],
+[
+"1700",
+"Polish–Lithuanian Commonwealth"
+],
+[
+"1914",
+"Abyssinia"
+],
+[
+"1815",
+"Viceroyalty of New Spain"
+],
+[
+"bc1",
+"Xiongnu"
+]
+],
+[
+[
+"bc1",
+"Roman Empire"
+],
+[
+"1279",
+"Ilkhanate"
+],
+[
+"1100",
+"Kievan Rus"
+],
+[
+"1914",
+"Mongolia"
+],
+[
+"700",
+"Göktürks"
+]
+],
+[
+[
+"bc323",
+"Empire of Alexander"
+],
+[
+"900",
+"Abbasid Caliphate"
+],
+[
+"1279",
+"Mamluke Sultanate"
+],
+[
+"1492",
+"Grand Duchy of Moscow"
+],
+[
+"1279",
+"Mali"
+]
+],
+[
+[
+"500",
+"Eastern Roman Empire"
+],
+[
+"900",
+"Tang Empire"
+],
+[
+"1100",
+"Almoravid dynasty"
+],
+[
+"1100",
+"Byzantine Empire"
+],
+[
+"1279",
+"Novgorod"
+]
+],
+[
+[
+"1880",
+"Egypt"
+],
+[
+"1530",
+"Holy Roman Empire"
+],
+[
+"1815",
+"Austrian Empire"
+],
+[
+"1880",
+"Persia"
+],
+[
+"1279",
+"Chagatai Khanate"
+]
+],
+[
+[
+"1530",
+"Inca Empire"
+],
+[
+"1100",
+"Fatimid Caliphate"
+],
+[
+"500",
+"Gupta Empire"
+],
+[
+"1650",
+"Safavid Empire"
+],
+[
+"1880",
+"Sokoto Caliphate"
+]
+],
+[
+[
+"1914",
+"Austro-Hungarian Empire"
+],
+[
+"1914",
+"Ottoman Empire"
+],
+[
+"1200",
+"Song Empire"
+],
+[
+"1700",
+"Sweden"
+],
+[
+"1783",
+"Viceroyalty of the Río de la Plata"
+]
+],
+[
+[
+"1938",
+"Empire of Japan"
+],
+[
+"bc323",
+"Carthaginian Empire"
+],
+[
+"1279",
+"Khanate of the Golden Horde"
+],
+[
+"1100",
+"Seljuk Empire"
+],
+[
+"1783",
+"Maratha Confederacy"
+]
+],
+[
+[
+"200",
+"Han"
+],
+[
+"1650",
+"Manchu Empire"
+],
+[
+"1400",
+"Sultanate of Delhi"
+],
+[
+"1200",
+"Kara Khitai Khaganate"
+],
+[
+"500",
+"Axum"
+]
+],
+[
+[
+"1938",
+"Iran"
+],
+[
+"1530",
+"Tsardom of Muscovy"
+],
+[
+"1815",
+"United Provinces of the Río de la Plata"
+],
+[
+"1715",
+"Algiers"
+],
+[
+"900",
+"Rashtrakuta"
+]
+],
+[
+[
+"1945",
+"Sweden"
+],
+[
+"1880",
+"Venezuela"
+],
+[
+"1914",
+"Denmark"
+],
+[
+"1715",
+"Rupert's Land"
+],
+[
+"bc1",
+"Himyarite Kingdom"
+]
+],
+[
+[
+"1938",
+"Turkey"
+],
+[
+"1880",
+"Paraguay"
+],
+[
+"1815",
+"New South Wales"
+],
+[
+"1914",
+"Colombia"
+],
+[
+"1100",
+"Kingdom of Georgia"
+]
+],
+[
+[
+"1945",
+"Norway"
+],
+[
+"300",
+"Jin"
+],
+[
+"800",
+"Srivijaya Empire"
+],
+[
+"1938",
+"Romania"
+],
+[
+"bc1",
+"Armenia"
+]
+],
+[
+[
+"1938",
+"Brazil"
+],
+[
+"1279",
+"Shogun Japan (Kamakura)"
+],
+[
+"1914",
+"Bulgaria"
+],
+[
+"1279",
+"Đại Việt"
+],
+[
+"1279",
+"Ryazan"
+]
+],
+[
+[
+"1783",
+"France"
+],
+[
+"1914",
+"Afghanistan"
+],
+[
+"1400",
+"Poland-Lithuania"
+],
+[
+"1783",
+"Luisiana"
+],
+[
+"600",
+"Chalukyas"
+]
+],
+[
+[
+"600",
+"Eastern Roman Empire"
+],
+[
+"1880",
+"Annam"
+],
+[
+"bc1000",
+"Kingdom of David and Solomon"
+],
+[
+"1914",
+"Anglo-Egyptian Sudan"
+],
+[
+"800",
+"Parhae"
+]
+],
+[
+[
+"1914",
+"France"
+],
+[
+"1914",
+"Rhodesia"
+],
+[
+"1914",
+"British East Africa"
+],
+[
+"1400",
+"Ayutthaya"
+],
+[
+"600",
+"Tiahuanaco Empire"
+]
+],
+[
+[
+"1880",
+"Sweden–Norway"
+],
+[
+"1492",
+"England"
+],
+[
+"1000",
+"Icelandic Commonwealth"
+],
+[
+"1815",
+"British East India Company"
+],
+[
+"1279",
+"Hafsid Caliphate"
+]
+],
+[
+[
+"1880",
+"Imperial Japan"
+],
+[
+"1914",
+"German South-West Africa"
+],
+[
+"1914",
+"Angola"
+],
+[
+"1914",
+"French West Africa"
+],
+[
+"1914",
+"Xinjiang"
+]
+],
+[
+[
+"1914",
+"Mexico"
+],
+[
+"1938",
+"Hungary"
+],
+[
+"900",
+"East Francia"
+],
+[
+"bc200",
+"Macedon and Hellenic League"
+],
+[
+"1500",
+"Crimean Khanate"
+]
+],
+[
+[
+"1914",
+"United States"
+],
+[
+"1783",
+"Burma"
+],
+[
+"bc500",
+"Greek city-states"
+],
+[
+"1938",
+"Ethiopia (Italy)"
+],
+[
+"bc400",
+"Gojoseon"
+]
+],
+[
+[
+"1938",
+"Saudi Arabia"
+],
+[
+"1914",
+"Netherlands Indies"
+],
+[
+"1400",
+"Teutonic Knights"
+],
+[
+"1880",
+"Colombia"
+],
+[
+"100",
+"Koguryo"
+]
+],
+[
+[
+"100",
+"Roman Empire"
+],
+[
+"500",
+"Vandals"
+],
+[
+"1279",
+"Sukhothai"
+],
+[
+"bc300",
+"Nabatean Kingdom"
+],
+[
+"bc323",
+"Qin"
+]
+],
+[
+[
+"1783",
+"Russian Empire"
+],
+[
+"bc1500",
+"Hittites"
+],
+[
+"1880",
+"Peru"
+],
+[
+"1880",
+"Transvaal"
+],
+[
+"bc2000",
+"Ur"
+]
+],
+[
+[
+"1650",
+"Tokugawa shogunate"
+],
+[
+"1815",
+"Philippines"
+],
+[
+"1279",
+"Sweden"
+],
+[
+"1800",
+"Sikhs"
+],
+[
+"bc100",
+"Numidia"
+]
+],
+[
+[
+"600",
+"Sui Empire"
+],
+[
+"1783",
+"Qing Empire"
+],
+[
+"bc200",
+"Bactria"
+],
+[
+"1279",
+"Norway"
+],
+[
+"bc200",
+"Nan-Yue"
+]
+],
+[
+[
+"bc100",
+"Roman Republic"
+],
+[
+"1650",
+"Dutch East Indies"
+],
+[
+"1914",
+"Mozambique"
+],
+[
+"1000",
+"Byzantine Empire"
+],
+[
+"1650",
+"Ava"
+]
+],
+[
+[
+"1914",
+"French Indochina"
+],
+[
+"bc1000",
+"Zhoa"
+],
+[
+"1279",
+"Holy Roman Empire"
+],
+[
+"1000",
+"Chola Empire"
+],
+[
+"1279",
+"Lithuania"
+]
+],
+[
+[
+"bc200",
+"Rome"
+],
+[
+"1880",
+"Cape Colony"
+],
+[
+"1880",
+"Ecuador"
+],
+[
+"1492",
+"Denmark-Norway"
+],
+[
+"600",
+"Pallavas"
+]
+],
+[
+[
+"1938",
+"Siam"
+],
+[
+"1914",
+"German Empire"
+],
+[
+"1914",
+"Tibet"
+],
+[
+"1914",
+"Libya"
+],
+[
+"1815",
+"Portuguese East Africa"
+]
+],
+[
+[
+"1914",
+"Portugal"
+],
+[
+"500",
+"Franks"
+],
+[
+"1783",
+"Quebec"
+],
+[
+"900",
+"West Francia"
+],
+[
+"1200",
+"Principality of Vladimir-Suzdal"
+]
+],
+[
+[
+"1715",
+"Austrian Empire"
+],
+[
+"1914",
+"Greece"
+],
+[
+"1715",
+"Ethiopia"
+],
+[
+"800",
+"Japan"
+],
+[
+"1500",
+"Bengal"
+]
+],
+[
+[
+"1783",
+"Poland"
+],
+[
+"1200",
+"Almohad Caliphate"
+],
+[
+"1914",
+"Nigeria"
+],
+[
+"1000",
+"Caliphate of Córdoba"
+],
+[
+"1100",
+"Western Chalukyas"
+]
+],
+[
+[
+"1914",
+"Spain"
+],
+[
+"1914",
+"United Kingdom of Great Britain and Ireland"
+],
+[
+"1914",
+"Persia"
+],
+[
+"1914",
+"Serbia"
+],
+[
+"1200",
+"Principality of Galicia-Volhynia"
+]
+],
+[
+[
+"1945",
+"Egypt"
+],
+[
+"600",
+"Yamato"
+],
+[
+"500",
+"Toba Wei"
+],
+[
+"1815",
+"Paraguay"
+],
+[
+"1530",
+"Adal"
+]
+],
+[
+[
+"1945",
+"China"
+],
+[
+"bc323",
+"Magadha"
+],
+[
+"bc2000",
+"Indus valley civilization"
+],
+[
+"1914",
+"Algeria"
+],
+[
+"bc1000",
+"Phrygians"
+]
+],
+[
+[
+"1945",
+"Indonesia"
+],
+[
+"1000",
+"Liao"
+],
+[
+"1279",
+"France"
+],
+[
+"1783",
+"Afghanistan"
+],
+[
+"1000",
+"Bulgar Khanate"
+]
+],
+[
+[
+"bc1500",
+"Egypt"
+],
+[
+"1000",
+"Holy Roman Empire"
+],
+[
+"600",
+"Visigothic Kingdom"
+],
+[
+"1100",
+"Xixia"
+],
+[
+"600",
+"Huari Empire"
+]
+],
+[
+[
+"1914",
+"Russian Empire"
+],
+[
+"1783",
+"Persia"
+],
+[
+"1914",
+"German E. Africa (Tanganyika)"
+],
+[
+"1279",
+"Pagan"
+],
+[
+"200",
+"Satavahanihara"
+]
+],
+[
+[
+"1800",
+"United Kingdom"
+],
+[
+"1700",
+"Philippines"
+],
+[
+"1878",
+"Western Australia (UK)"
+],
+[
+"1994",
+"Byelarus"
+],
+[
+"1100",
+"Karkhanids"
+]
+],
+[
+[
+"1650",
+"Tsardom of Muscovy"
+],
+[
+"1994",
+"Pakistan"
+],
+[
+"1300",
+"Lithuania"
+],
+[
+"1500",
+"Aragón"
+],
+[
+"1492",
+"Zayyanid Caliphate"
+]
+],
+[
+[
+"1878",
+"Italy"
+],
+[
+"800",
+"Uyghurs"
+],
+[
+"1000",
+"Ghaznavid Emirate"
+],
+[
+"1880",
+"Belgium"
+],
+[
+"1900",
+"Sultanate of Zanzibar"
+]
+],
+[
+[
+"1880",
+"British Raj"
+],
+[
+"1960",
+"Ireland"
+],
+[
+"1000",
+"Kingdom of France"
+],
+[
+"1800",
+"Burma"
+],
+[
+"1650",
+"Golkonda"
+]
+],
+[
+[
+"1960",
+"USSR"
+],
+[
+"1500",
+"Poland-Lithuania"
+],
+[
+"1800",
+"Kingdom of Ireland"
+],
+[
+"1880",
+"Uruguay"
+],
+[
+"bc300",
+"Bosporan Kingdom"
+]
+],
+[
+[
+"bc300",
+"Ptolemaic Kingdom"
+],
+[
+"1994",
+"Kazakhstan"
+],
+[
+"800",
+"Emirate of Córdoba"
+],
+[
+"1815",
+"Kingdom of the Two Sicilies"
+],
+[
+"1000",
+"Buwayhid Emirates"
+]
+],
+[
+[
+"1994",
+"Ukraine"
+],
+[
+"800",
+"Palas"
+],
+[
+"1500",
+"Scotland"
+],
+[
+"1700",
+"Naples"
+],
+[
+"900",
+"Aghlabid Emirate"
+]
+],
+[
+[
+"bc400",
+"Achaemenid Empire"
+],
+[
+"1930",
+"Nigeria"
+],
+[
+"400",
+"Jin"
+],
+[
+"1700",
+"Denmark-Norway"
+],
+[
+"1815",
+"Kingdom of Sardinia"
+]
+],
+[
+[
+"1994",
+"India"
+],
+[
+"1650",
+"Quazaq Khanate"
+],
+[
+"1715",
+"Safavid Empire"
+],
+[
+"1880",
+"Morocco"
+],
+[
+"1530",
+"Nogai Horde"
+]
+],
+[
+[
+"1500",
+"England"
+],
+[
+"1880",
+"Argentina"
+],
+[
+"1500",
+"Aztec Empire"
+],
+[
+"1878",
+"Netherlands"
+],
+[
+"1930",
+"Botswana"
+]
+],
+[
+[
+"1930",
+"Union of South Africa"
+],
+[
+"1000",
+"Poland"
+],
+[
+"1492",
+"Castille"
+],
+[
+"1815",
+"Viceroyalty of Peru"
+],
+[
+"1530",
+"Watassid Morocco"
+]
+],
+[
+[
+"1878",
+"Kingdom of Brazil"
+],
+[
+"1994",
+"New Zealand"
+],
+[
+"1530",
+"Songhai"
+],
+[
+"1815",
+"Viceroyalty of New Granada"
+],
+[
+"600",
+"Neustria"
+]
+],
+[
+[
+"1994",
+"Sudan"
+],
+[
+"bc300",
+"Mauryan Empire"
+],
+[
+"1500",
+"Korea"
+],
+[
+"1530",
+"Vijayanagara"
+],
+[
+"1300",
+"Great Zimbabwe"
+]
+],
+[
+[
+"1800",
+"Viceroyalty of Brazil"
+],
+[
+"1930",
+"Algeria"
+],
+[
+"1100",
+"Khmer Empire"
+],
+[
+"1500",
+"Imperial Hungary"
+],
+[
+"1715",
+"Venice"
+]
+],
+[
+[
+"1960",
+"Chile"
+],
+[
+"bc300",
+"Seleucid Kingdom"
+],
+[
+"1500",
+"Timurid Emirates"
+],
+[
+"1800",
+"Prussia"
+],
+[
+"1492",
+"Malacca"
+]
+],
+[
+[
+"1878",
+"Germany"
+],
+[
+"1994",
+"Canada"
+],
+[
+"bc1",
+"Parthian Empire"
+],
+[
+"800",
+"Tibetan Empire"
+],
+[
+"1000",
+"Burgandy"
+]
+],
+[
+[
+"1945",
+"Australia"
+],
+[
+"bc100",
+"Xiongnu"
+],
+[
+"800",
+"Khazars"
+],
+[
+"1715",
+"Polish–Lithuanian Commonwealth"
+],
+[
+"1100",
+"León"
+]
+],
+[
+[
+"1650",
+"Mughal Empire"
+],
+[
+"1920",
+"Finland"
+],
+[
+"600",
+"Göktürks"
+],
+[
+"1000",
+"Kyivan Rus"
+],
+[
+"1400",
+"Principality of Wallachia"
+]
+],
+[
+[
+"600",
+"Sasanian Empire"
+],
+[
+"1300",
+"Ilkhanate"
+],
+[
+"1400",
+"Mali"
+],
+[
+"1994",
+"Czech Republic"
+],
+[
+"1715",
+"Oyo"
+]
+],
+[
+[
+"1300",
+"Great Khanate"
+],
+[
+"1530",
+"Ming Chinese Empire"
+],
+[
+"1400",
+"Novgorod"
+],
+[
+"1492",
+"Mamluke Sultanate"
+],
+[
+"1938",
+"Italian Somaliland"
+]
+],
+[
+[
+"1700",
+"Viceroyalty of New Spain"
+],
+[
+"1300",
+"Chagatai Khanate"
+],
+[
+"1878",
+"Sokoto Caliphate"
+],
+[
+"1914",
+"Madagascar (France)"
+],
+[
+"1880",
+"Orange Free State"
+]
+],
+[
+[
+"800",
+"Abbasid Caliphate"
+],
+[
+"800",
+"Tang Empire"
+],
+[
+"400",
+"Gupta Empire"
+],
+[
+"1000",
+"Fatimid Caliphate"
+],
+[
+"1938",
+"Guatemala"
+]
+],
+[
+[
+"1960",
+"Mongolia"
+],
+[
+"bc300",
+"Carthaginian Empire"
+],
+[
+"1800",
+"Viceroyalty of the Río de la Plata"
+],
+[
+"1815",
+"Maratha Confederacy"
+],
+[
+"1878",
+"Queensland (UK)"
+]
+],
+[
+[
+"1500",
+"Inca Empire"
+],
+[
+"1880",
+"Ottoman Empire"
+],
+[
+"1300",
+"Sultanate of Delhi"
+],
+[
+"1920",
+"Mesopotamia (GB)"
+],
+[
+"1700",
+"Rozwi"
+]
+],
+[
+[
+"1000",
+"Song Empire"
+],
+[
+"1200",
+"Srivijaya Empire"
+],
+[
+"1500",
+"Grand Duchy of Moscow"
+],
+[
+"1783",
+"Rupert's Land"
+],
+[
+"1938",
+"Dominion of Newfoundland"
+]
+],
+[
+[
+"1300",
+"Khanate of the Golden Horde"
+],
+[
+"1900",
+"Austria Hungary"
+],
+[
+"1650",
+"Đại Việt"
+],
+[
+"1878",
+"Romania"
+],
+[
+"1700",
+"Lunda"
+]
+],
+[
+[
+"bc100",
+"Han Empire"
+],
+[
+"1815",
+"Annam"
+],
+[
+"1880",
+"Afghanistan"
+],
+[
+"1960",
+"Iraq"
+],
+[
+"1279",
+"Seljuk Caliphate"
+]
+],
+[
+[
+"1715",
+"Sweden"
+],
+[
+"1945",
+"Iran"
+],
+[
+"1650",
+"Ayutthaya"
+],
+[
+"1815",
+"Sweden–Norway"
+],
+[
+"1400",
+"Bosnia"
+]
+],
+[
+[
+"1945",
+"Venezuela"
+],
+[
+"bc300",
+"Qin"
+],
+[
+"1279",
+"Hungary"
+],
+[
+"1700",
+"Dutch East Indies"
+],
+[
+"800",
+"Idrisid Caliphate"
+]
+],
+[
+[
+"1878",
+"Colombia"
+],
+[
+"1960",
+"Turkey"
+],
+[
+"1200",
+"Byzantine Empire"
+],
+[
+"1200",
+"Chola Empire"
+],
+[
+"1800",
+"Luba"
+]
+]
+]
+}

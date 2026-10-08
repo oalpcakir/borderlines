@@ -266,7 +266,7 @@ footer a { color: var(--ink-soft); }
 <script>
 (function () {
   // Borderlines schedule (keep in sync with the game data)
-  var BORDERLINES = { start: "2026-09-27", days: 42 };
+  var BORDERLINES = { start: "2026-09-27", days: 72 };
   function get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
   function pad(n) { return String(n).padStart(2, "0"); }
   var now = new Date();
@@ -326,7 +326,7 @@ footer a { color: var(--ink-soft); }
 
   // Your record, across games
   var tiles = [];
-  var BL = { start: "2026-09-27", days: 42 }, s0 = BL.start.split("-").map(Number), now = new Date();
+  var BL = { start: "2026-09-27", days: 72 }, s0 = BL.start.split("-").map(Number), now = new Date();
   var last = Math.min(Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(s0[0], s0[1] - 1, s0[2])) / 864e5), BL.days - 1);
   var played = 0, best = 0, run = 0, bestRun = 0, sumScore = 0;
   for (var d = 0; d <= last; d++) {
