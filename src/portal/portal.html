@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Homo Ludens</title>
+<meta name="description" content="Small games about the past. Short history games with one mechanic, one idea, and a note on what really happened.">
+<meta property="og:title" content="Homo Ludens">
+<meta property="og:description" content="Small games about the past.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f2b4a'/%3E%3Ctext x='16' y='22' font-family='Georgia,serif' font-size='16' text-anchor='middle' fill='%23f7f6f2'%3EHL%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Libre+Caslon+Text:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+{{POSTHOG}}
+<style>
+/* Layout: a single editorial column, like the front matter of an atlas: wordmark, today's play, the games, a colophon. Shares Borderlines' ink and sea so the series reads as one family. */
+:root {
+  --paper: #f7f6f2;
+  --card: #ffffff;
+  --ink: #1f2b4a;
+  --ink-soft: #55617a;
+  --rule: #d6dbe0;
+  --sea: #d9e3e6;
+  --coast: #9fb0b5;
+  --accent: #9c2f45;
+  --f-display: "Libre Caslon Display", "Iowan Old Style", Georgia, serif;
+  --f-text: "Libre Caslon Text", "Iowan Old Style", Georgia, serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--f-body); line-height: 1.5; }
+a { color: inherit; }
+.wrap { max-width: 920px; margin: 0 auto; padding-inline: 20px; padding-block: 48px 40px; }
+.eyebrow { font: 500 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+
+header.mast { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--ink); }
+.mast .topline { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+h1 { font-family: var(--f-display); font-weight: 400; font-size: clamp(56px, 13vw, 128px); line-height: .9; letter-spacing: -.01em; margin: 4px 0 0; }
+.lede { font-family: var(--f-text); font-size: clamp(18px, 2.4vw, 21px); line-height: 1.5; max-width: 34em; margin: 6px 0 0; text-wrap: pretty; }
+.lede em { font-style: italic; }
+
+section { padding-block: 32px; border-bottom: 1px solid var(--rule); }
+section > .eyebrow { display: block; margin-bottom: 16px; }
+
+.today { display: grid; grid-template-columns: 1fr auto; gap: 16px 24px; align-items: center; background: var(--card); border: 1px solid var(--rule); padding: 18px 20px; }
+.today h2 { font-family: var(--f-display); font-weight: 400; font-size: 30px; line-height: 1.05; margin: 6px 0 0; }
+.today .meta { font: 13px var(--f-mono); color: var(--ink-soft); margin-top: 6px; font-variant-numeric: tabular-nums; }
+.today .meta b { color: var(--ink); font-weight: 500; }
+.btn { display: inline-flex; align-items: center; gap: 8px; font: 500 15px/1 var(--f-body); text-decoration: none; padding: 13px 18px; border: 1px solid var(--ink); border-radius: 2px; background: var(--ink); color: var(--paper); white-space: nowrap; }
+.btn:hover { background: #2c3b63; }
+.btn.ghost { background: transparent; color: var(--ink); }
+.btn.ghost:hover { background: #eef0f3; }
+.btn:focus-visible, a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+.games { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; }
+.game { background: var(--card); border: 1px solid var(--rule); display: grid; grid-template-rows: auto 1fr; min-width: 0; text-decoration: none; }
+.game .plate { background: var(--sea); border-bottom: 1px solid var(--rule); aspect-ratio: 620 / 453; max-width: 100%; position: relative; overflow: hidden; }
+.game .plate svg { display: block; width: 100%; height: 100%; }
+.plate .land { fill-rule: evenodd; fill: var(--paper); stroke: var(--coast); stroke-width: .8; }
+.plate .realm { fill: var(--accent); fill-opacity: .55; stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; }
+.plate .grat { stroke: #c7d4d8; stroke-width: 1; }
+.plate .cap { position: absolute; left: 14px; bottom: 12px; font: 500 11px var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); background: rgba(247,246,242,.85); padding: 4px 7px; }
+.game .body { padding: 18px 20px 20px; display: grid; gap: 10px; align-content: start; }
+.game h3 { font-family: var(--f-display); font-weight: 400; font-size: 34px; line-height: 1; margin: 0; }
+.game p { margin: 0; font-size: 15px; color: var(--ink); max-width: 38em; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag { font: 500 11px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 5px 7px; border: 1px solid var(--rule); color: var(--ink-soft); }
+.game .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+.workshop { border: 1px dashed var(--coast); background: transparent; display: grid; align-content: center; gap: 10px; padding: 24px; min-height: 220px; }
+.workshop h3 { font-family: var(--f-display); font-weight: 400; font-size: 26px; margin: 0; }
+.workshop p { margin: 0; font-size: 14px; color: var(--ink-soft); }
+.numeral { font: 500 12px var(--f-mono); color: var(--ink-soft); letter-spacing: .1em; }
+
+.about { display: grid; grid-template-columns: 200px 1fr; gap: 24px; }
+.about p { margin: 0 0 12px; font-family: var(--f-text); font-size: 17px; line-height: 1.6; max-width: 36em; }
+footer { padding-top: 24px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font: 12px var(--f-mono); color: var(--ink-soft); }
+footer a { color: var(--ink-soft); }
+
+@media (max-width: 720px) {
+  .wrap { padding-block: 28px 32px; padding-inline: 16px; }
+  .games { grid-template-columns: 1fr; }
+  .today { grid-template-columns: 1fr; }
+  .about { grid-template-columns: 1fr; gap: 8px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="mast">
+    <div class="topline"><span class="eyebrow">Small games about the past</span><span class="eyebrow" id="streak"></span></div>
+    <h1>Homo Ludens</h1>
+    <p class="lede">Short history games you can finish over a coffee. One mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book, which argued that play is older than culture.</p>
+  </header>
+
+  <section aria-labelledby="todayLabel">
+    <span class="eyebrow" id="todayLabel">Today</span>
+    <div class="today">
+      <div>
+        <div class="eyebrow">Borderlines · Daily challenge</div>
+        <h2 id="dTitle">Daily #—</h2>
+        <div class="meta" id="dMeta">Five realms, from easy to hard.</div>
+      </div>
+      <a class="btn" id="dPlay" href="/borderlines/" data-from="today">Play today's</a>
+    </div>
+  </section>
+
+  <section aria-labelledby="gamesLabel">
+    <span class="eyebrow" id="gamesLabel">The games</span>
+    <div class="games">
+      <article class="game">
+        <a class="plate" href="/borderlines/" data-from="card" aria-label="Play Borderlines">
+          <svg viewBox="0 0 {{W}} {{H}}" preserveAspectRatio="xMidYMid slice" role="img" aria-label="The Roman Empire in 1 BC, painted on a map of the Mediterranean">
+            <path class="land" d="{{LAND}}"/>
+            <path class="realm" d="{{REALM}}"/>
+          </svg>
+          <span class="cap">1 BC · Roman Empire</span>
+        </a>
+        <div class="body">
+          <span class="numeral">No. 1</span>
+          <h3>Borderlines</h3>
+          <p>You get a year and a realm. Paint the land it ruled on a map with no modern borders, then see how close you came.</p>
+          <div class="tags"><span class="tag">Maps</span><span class="tag">Daily</span><span class="tag">5 minutes</span><span class="tag">260 realms</span></div>
+          <div class="row"><a class="btn" href="/borderlines/" data-from="card">Play</a></div>
+        </div>
+      </article>
+      <div class="workshop">
+        <span class="numeral">No. 2</span>
+        <h3>In the workshop</h3>
+        <p>The next game is on the drawing board. Play Borderlines in the meantime; your streak carries over.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" aria-labelledby="aboutLabel">
+    <span class="eyebrow" id="aboutLabel">About</span>
+    <div>
+      <p>Homo Ludens is a small, independent collection of history games, made in Rotterdam. Each game takes one historical idea and turns it into something you can play in a few minutes.</p>
+      <p>Spotted a mistake? Every game has a way to report it, and corrections are welcome.</p>
+    </div>
+  </section>
+
+  <footer>
+    <span>© 2026 Homo Ludens</span>
+    <span>Borders: <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> · Base map: <a href="https://www.naturalearthdata.com/">Natural Earth</a></span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  // Borderlines schedule (keep in sync with the game data)
+  var BORDERLINES = { start: "2026-09-27", days: 42 };
+  function get(k) { try { return JSON.parse(localStorage.getItem(k)); } catch (e) { return null; } }
+  function pad(n) { return String(n).padStart(2, "0"); }
+  var now = new Date();
+  var s = BORDERLINES.start.split("-").map(Number);
+  var idx = Math.round((new Date(now.getFullYear(), now.getMonth(), now.getDate()) - new Date(s[0], s[1] - 1, s[2])) / 864e5);
+  var has = idx >= 0 && idx < BORDERLINES.days;
+  var rec = has ? get("borderlines:day:" + idx) : null;
+  var date = now.toLocaleDateString("en-GB", { day: "numeric", month: "long" });
+  var streak = 0, i = idx;
+  function onTime(r) { return r && !r.late; }
+  if (!onTime(get("borderlines:day:" + i))) i--;
+  while (i >= 0 && onTime(get("borderlines:day:" + i))) { streak++; i--; }
+  if (streak) document.getElementById("streak").textContent = "Your streak · " + streak + (streak === 1 ? " day" : " days");
+  if (!has) {
+    document.getElementById("dTitle").textContent = "New realms coming soon";
+    document.getElementById("dMeta").textContent = "Practice is open in the meantime.";
+    document.getElementById("dPlay").textContent = "Practice";
+  } else if (rec) {
+    var total = (rec.scores || []).reduce(function (a, b) { return a + (b || 0); }, 0);
+    document.getElementById("dTitle").textContent = "Daily #" + (idx + 1) + " · " + date;
+    document.getElementById("dMeta").innerHTML = "Done today · <b>" + total + "/500</b>. Next one at midnight.";
+    document.getElementById("dPlay").textContent = "See result";
+    document.getElementById("dPlay").classList.add("ghost");
+  } else {
+    document.getElementById("dTitle").textContent = "Daily #" + (idx + 1) + " · " + date;
+  }
+  function track(name, props) { try { if (window.posthog && window.posthog.capture) window.posthog.capture(name, props || {}); } catch (e) {} }
+  track("portal_open", { streak: streak, playedToday: !!rec });
+  document.querySelectorAll("a[href='/borderlines/']").forEach(function (a) {
+    a.addEventListener("click", function () { track("portal_play", { game: "borderlines", from: a.getAttribute("data-from") }); });
+  });
+})();
+</script>
+</body>
+</html>

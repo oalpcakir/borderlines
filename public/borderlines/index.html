@@ -7,17 +7,17 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Borderlines">
 <meta property="og:description" content="You get a year and a realm. Paint the land it ruled. A daily history map game.">
-<meta property="og:url" content="https://borderlines.oalpcakir.workers.dev/borderlines/">
-<meta property="og:image" content="https://borderlines.oalpcakir.workers.dev/og-borderlines.png">
+<meta property="og:url" content="https://homoludens.oalpcakir.workers.dev/borderlines/">
+<meta property="og:image" content="https://homoludens.oalpcakir.workers.dev/og-borderlines.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://borderlines.oalpcakir.workers.dev/og-borderlines.png">
+<meta name="twitter:image" content="https://homoludens.oalpcakir.workers.dev/og-borderlines.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f2b4a'/%3E%3Cpath d='M7 22l6-12 5 8 3-4 4 8z' fill='%23f7f6f2'/%3E%3C/svg%3E">
 <script>
   window.BORDERLINES_CONFIG = {
     reportEndpoint: "",
-    siteUrl: "https://borderlines.oalpcakir.workers.dev/borderlines/",
+    siteUrl: "https://homoludens.oalpcakir.workers.dev/borderlines/",
     portalUrl: "/"
   };
 </script>
@@ -145,6 +145,10 @@ kbd { font: 11px var(--f-mono); opacity: .6; margin-left: 6px; }
 .mode { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 16px; text-align: left; line-height: 1.2; }
 .mode .m-t { font-size: 16px; font-weight: 600; }
 .mode .m-s { font-size: 12px; font-weight: 400; opacity: .75; }
+.sharewrap { position: relative; display: inline-flex; }
+.sharemenu { position: absolute; bottom: calc(100% + 6px); left: 0; display: grid; min-width: 160px; padding: 4px; z-index: 5; }
+.sharemenu a { padding: 9px 12px; font: 500 14px var(--f-body); color: var(--ink); text-decoration: none; }
+.sharemenu a:hover { background: #f1f3f6; }
 .portal-link { color: var(--ink-soft); text-decoration: none; }
 .portal-link:hover { color: var(--ink); text-decoration: underline; }
 .morelink { font: 500 14px/1 var(--f-body); color: var(--ink); padding: 11px 6px; align-self: center; }
@@ -324,7 +328,7 @@ textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding:
     <div class="rounds" id="eRounds"></div>
     <div class="share" id="eShare"></div>
     <p class="next" id="eNext"></p>
-    <div class="actions"><button id="btnShare" type="button" class="primary" hidden>Share</button><button id="btnCopy" type="button" class="primary">Copy result</button><button id="btnAgain" type="button">Practice</button><button id="btnMenu" type="button">Menu</button><a id="btnMore" class="morelink" href="/" hidden>More games</a></div>
+    <div class="actions"><span class="sharewrap"><button id="btnShare" type="button" class="primary" aria-haspopup="true" aria-expanded="false">Share</button><span id="shareMenu" class="sharemenu card" hidden><a id="shX" target="_blank" rel="noopener">X / Twitter</a><a id="shWa" target="_blank" rel="noopener">WhatsApp</a><a id="shRd" target="_blank" rel="noopener">Reddit</a><a id="shFb" target="_blank" rel="noopener">Facebook</a></span></span><button id="btnCopy" type="button" class="primary">Copy result</button><button id="btnAgain" type="button">Practice</button><button id="btnMenu" type="button">Menu</button><a id="btnMore" class="morelink" href="/" hidden>More games</a></div>
   </div>
 
   <div class="zoomctl card" id="zoomctl"><button id="zIn" type="button" aria-label="Zoom in">+</button><button id="zOut" type="button" aria-label="Zoom out">−</button></div>
@@ -383,11 +387,17 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
     return `${Math.floor(s / 3600)}h ${pad(Math.floor((s % 3600) / 60))}m`;
   }
   function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  // Practice: random 2 easy + 2 medium + 1 hard, preferring realms this player hasn't seen in practice yet.
   function practiceSet() {
-    const p = shuffle(practicePool());
+    const pool = practicePool();
+    let seen = new Set(store.get("practiceSeen") || []);
+    if (pool.every((q) => seen.has(q.id))) seen = new Set();
+    const p = shuffle(pool).sort((a, b) => (seen.has(a.id) ? 1 : 0) - (seen.has(b.id) ? 1 : 0));
     const by = (t) => p.filter((q) => q.tier === t);
     const pick = [...by(1).slice(0, 2), ...by(2).slice(0, 2), ...by(3).slice(0, 1)];
     for (const q of p) if (pick.length < 5 && !pick.includes(q)) pick.push(q);
+    pick.forEach((q) => seen.add(q.id));
+    store.set("practiceSeen", [...seen]);
     return pick.sort((a, b) => a.tier - b.tier);
   }
 
@@ -843,7 +853,7 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
     }
     $("eLine").textContent = `You averaged ${Math.round(avg)} out of 100 across five realms.`;
     $("eRounds").innerHTML = Q.map((q, i) => `<div><span class="y">${q.yearLabel}</span><span>${q.label}</span><span class="s">${state.scores[i] ?? 0}</span></div>`).join("");
-    const site = (window.BORDERLINES_CONFIG || {}).siteUrl || "https://borderlines.oalpcakir.workers.dev";
+    const site = (window.BORDERLINES_CONFIG || {}).siteUrl || "https://homoludens.oalpcakir.workers.dev/borderlines/";
     $("eShare").textContent = `Borderlines ${isDaily ? "#" + (state.day + 1) : "Practice"} · ${total}/${max}\n${Q.map((q, i) => emoji(state.scores[i] ?? 0)).join("")}\n${site}`;
     const st = streak();
     $("eNext").textContent = state.mode === "daily" ? `Streak: ${st} ${st === 1 ? "day" : "days"} · Next challenge in ${untilMidnight()}` : "";
@@ -1002,23 +1012,34 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
     $("report").hidden = true;
     toast(ok ? "Thanks. Your report was sent." : "Your report couldn't be sent. Please try again later.");
   };
-  // Native share sheet where the browser has one (phones, Safari); copy stays as the fallback.
-  if (navigator.share) {
-    $("btnShare").hidden = false;
-    $("btnCopy").classList.remove("primary");
-    $("btnCopy").textContent = "Copy";
-  }
-  $("btnShare").onclick = async () => {
-    const lines = $("eShare").textContent.split("\n");
-    const url = lines.pop();
-    try {
-      await navigator.share({ text: lines.join("\n"), url });
-      track("share_native", { mode: state.mode, day: state.day, total: sum(state.scores), outcome: "shared" });
-    } catch (e) {
-      track("share_native", { mode: state.mode, day: state.day, outcome: e && e.name === "AbortError" ? "cancelled" : "failed" });
-      if (!(e && e.name === "AbortError")) $("btnCopy").click();
+  // Share: the phone's own share sheet where there is one, otherwise a small menu of share links.
+  $("btnCopy").classList.remove("primary");
+  $("btnCopy").textContent = "Copy";
+  function shareParts() { const lines = $("eShare").textContent.split("\n"); const url = lines.pop(); return { text: lines.join("\n"), url }; }
+  $("btnShare").onclick = async (e) => {
+    const { text, url } = shareParts();
+    if (navigator.share) {
+      try {
+        await navigator.share({ text, url });
+        track("share_native", { mode: state.mode, day: state.day, total: sum(state.scores), outcome: "shared" });
+      } catch (err) {
+        track("share_native", { mode: state.mode, day: state.day, outcome: err && err.name === "AbortError" ? "cancelled" : "failed" });
+      }
+      return;
     }
+    const enc = encodeURIComponent, full = text + "\n" + url;
+    $("shX").href = "https://twitter.com/intent/tweet?text=" + enc(full);
+    $("shWa").href = "https://wa.me/?text=" + enc(full);
+    $("shRd").href = "https://www.reddit.com/submit?url=" + enc(url) + "&title=" + enc(text.split("\n")[0]);
+    $("shFb").href = "https://www.facebook.com/sharer/sharer.php?u=" + enc(url);
+    const m = $("shareMenu"); m.hidden = !m.hidden; $("btnShare").setAttribute("aria-expanded", String(!m.hidden));
+    e.stopPropagation();
   };
+  ["shX", "shWa", "shRd", "shFb"].forEach((id) => $(id).addEventListener("click", () => {
+    track("share_link", { target: id.slice(2).toLowerCase(), mode: state.mode, day: state.day, total: sum(state.scores) });
+    $("shareMenu").hidden = true;
+  }));
+  document.addEventListener("click", (e) => { if (!e.target.closest || !e.target.closest(".sharewrap")) $("shareMenu").hidden = true; });
   $("btnCopy").onclick = () => {
     const txt = $("eShare").textContent;
     track("share_copy", { mode: state.mode, day: state.day, total: sum(state.scores) });

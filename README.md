@@ -2,7 +2,7 @@
 
 Small games about the past: short history games with one mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book.
 
-▶ **Visit:** [borderlines.oalpcakir.workers.dev](https://borderlines.oalpcakir.workers.dev)
+▶ **Visit:** [homoludens.oalpcakir.workers.dev](https://homoludens.oalpcakir.workers.dev)
 
 ## Games
 
@@ -18,7 +18,7 @@ Small games about the past: short history games with one mechanic, one idea, and
 
 Borderlines is a daily history map game. You get a year and the name of a realm — the Ottoman Empire in 1530, the Inca in 1530, Aksum in 500 — and a world map with no modern borders. Paint the land you think it ruled, then see how close you came.
 
-▶ **Play:** [borderlines.oalpcakir.workers.dev/borderlines/](https://borderlines.oalpcakir.workers.dev/borderlines/)
+▶ **Play:** [homoludens.oalpcakir.workers.dev/borderlines/](https://homoludens.oalpcakir.workers.dev/borderlines/)
 
 ## How to play
 

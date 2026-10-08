@@ -1,0 +1,1047 @@
+<title>Borderlines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: full-bleed atlas sheet; question as a map cartouche top-left, tools docked bottom, result card top-right. One deliberate light "atlas" look. */
+:root {
+  --sea: #d9e3e6;
+  --sea-line: #c7d4d8;
+  --land: #f7f6f2;
+  --coast: #9fb0b5;
+  --river: #9cbccb;
+  --ink: #1f2b4a;
+  --ink-soft: #55617a;
+  --paper: #ffffff;
+  --rule: #d6dbe0;
+  --star: #c08a1e;
+  --realm: #b23a3a;
+  --f-display: "Libre Caslon Display", "Iowan Old Style", Georgia, serif;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body { background: var(--sea); color: var(--ink); font-family: var(--f-body); overflow: hidden; }
+#app { position: relative; height: 100%; }
+#stage { position: absolute; inset: 0; touch-action: none; cursor: none; user-select: none; -webkit-user-select: none; }
+#stage.fill { cursor: cell; }
+#stage.pan { cursor: grab; }
+#stage.panning { cursor: grabbing; }
+#stage.idle { cursor: default; }
+#stage > svg, #stage > canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+#top { pointer-events: none; }
+.graticule { fill: none; stroke: var(--sea-line); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.land { fill: var(--land); fill-rule: evenodd; stroke: var(--coast); stroke-width: .8; vector-effect: non-scaling-stroke; }
+.lake { fill: var(--sea); stroke: var(--coast); stroke-width: .6; vector-effect: non-scaling-stroke; }
+.river { fill: none; stroke: var(--river); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.truth { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.cap-dot { fill: var(--paper); stroke: var(--ink); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.cap-label { font-family: var(--f-body); font-weight: 600; fill: var(--ink); paint-order: stroke; stroke: var(--paper); stroke-linejoin: round; }
+#brush { position: absolute; pointer-events: none; border: 1.5px solid var(--ink); border-radius: 50%; transform: translate(-50%, -50%); box-shadow: 0 0 0 1px rgba(255,255,255,.7); }
+#brush.erase { border-style: dashed; }
+
+.card { position: absolute; background: var(--paper); border: 1px solid var(--rule); box-shadow: 0 1px 0 rgba(31,43,74,.04), 0 8px 24px -12px rgba(31,43,74,.25); }
+#cartouche { top: 16px; left: 16px; padding: 14px 18px 16px; max-width: min(360px, calc(100% - 32px)); pointer-events: none; border-top: 4px solid var(--realm); }
+.eyebrow { font: 500 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; color: var(--ink-soft); display: flex; justify-content: space-between; gap: 16px; }
+.year { font-family: var(--f-display); font-size: clamp(44px, 9vw, 64px); line-height: .95; margin-top: 10px; font-variant-numeric: lining-nums; }
+.state { font-size: 17px; font-weight: 600; margin-top: 4px; text-wrap: balance; display: flex; align-items: center; gap: 8px; }
+.swatch { width: 12px; height: 12px; border-radius: 50%; background: var(--realm); flex: none; }
+.hint { font-size: 13px; color: var(--ink-soft); margin-top: 10px; line-height: 1.45; }
+.penalty { font: 500 12px var(--f-mono); color: var(--ink-soft); margin-top: 8px; }
+
+#tools { left: 50%; transform: translateX(-50%); bottom: calc(16px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 10px; padding: 8px; flex-wrap: wrap; justify-content: center; align-items: center; width: max-content; max-width: calc(100% - 32px); }
+.seg { display: flex; border: 1px solid var(--rule); border-radius: 2px; }
+.seg button { border: 0; border-radius: 0; }
+.seg button + button { border-left: 1px solid var(--rule); }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper); }
+.sizes button { padding: 11px 12px; display: inline-flex; align-items: center; justify-content: center; min-width: 40px; }
+.dot { display: inline-block; border-radius: 50%; background: currentColor; }
+button { font: 500 14px/1 var(--f-body); border: 1px solid var(--rule); background: var(--paper); color: var(--ink); padding: 11px 14px; cursor: pointer; border-radius: 2px; }
+button:hover:not(:disabled):not([aria-pressed="true"]):not(.primary) { background: #f1f3f6; }
+button:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+button:disabled { opacity: .4; cursor: default; }
+button.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+button.primary:hover:not(:disabled) { background: #2c3b63; }
+button .cost { font: 11px var(--f-mono); opacity: .65; margin-left: 6px; }
+kbd { font: 11px var(--f-mono); opacity: .6; margin-left: 6px; }
+
+#result { right: 16px; top: 16px; width: min(340px, calc(100% - 32px)); padding: 16px 18px 18px; }
+.score-row { display: flex; align-items: baseline; gap: 10px; margin-top: 8px; }
+.score { font: 500 44px/1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.score small { font-size: 18px; color: var(--ink-soft); }
+.stars { font-size: 18px; letter-spacing: 2px; color: var(--star); }
+.verdict { font-weight: 600; margin-top: 6px; text-wrap: balance; }
+.meters { display: grid; gap: 10px; margin-top: 14px; }
+.meter .lab { display: flex; justify-content: space-between; font-size: 13px; }
+.meter .lab b { font: 500 13px var(--f-mono); font-variant-numeric: tabular-nums; }
+.bar { height: 6px; background: var(--sea); margin-top: 5px; }
+.bar i { display: block; height: 100%; background: var(--ink); }
+.fact { font-size: 14px; line-height: 1.5; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px; color: var(--ink-soft); margin-top: 12px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.sw { width: 16px; height: 11px; display: inline-block; border: 1px solid var(--rule); }
+.sw.ok { background: var(--realm); border-color: var(--realm); }
+.sw.extra { background: color-mix(in srgb, var(--realm) 28%, transparent); }
+.sw.miss { background: repeating-linear-gradient(135deg, var(--ink) 0 1.5px, transparent 1.5px 5px); }
+.note { font-size: 11px; color: var(--ink-soft); margin-top: 10px; }
+#result .actions { margin-top: 14px; display: flex; gap: 8px; }
+
+.panel { inset: 0; margin: auto; width: min(460px, calc(100% - 32px)); height: fit-content; max-height: calc(100% - 32px); overflow: auto; padding: 26px 26px 24px; }
+.panel h1, .panel h2 { font-family: var(--f-display); font-weight: 400; font-size: clamp(40px, 9vw, 56px); line-height: 1; margin: 6px 0 0; }
+.panel p { font-size: 15px; line-height: 1.55; margin: 12px 0 0; max-width: 60ch; }
+.panel ul { font-size: 14px; line-height: 1.55; padding-left: 18px; margin: 12px 0 0; color: var(--ink-soft); }
+.panel .actions { margin-top: 20px; display: flex; gap: 8px; flex-wrap: wrap; }
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+.mode { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 14px 16px; text-align: left; line-height: 1.2; }
+.mode .m-t { font-size: 16px; font-weight: 600; }
+.mode .m-s { font-size: 12px; font-weight: 400; opacity: .75; }
+.sharewrap { position: relative; display: inline-flex; }
+.sharemenu { position: absolute; bottom: calc(100% + 6px); left: 0; display: grid; min-width: 160px; padding: 4px; z-index: 5; }
+.sharemenu a { padding: 9px 12px; font: 500 14px var(--f-body); color: var(--ink); text-decoration: none; }
+.sharemenu a:hover { background: #f1f3f6; }
+.portal-link { color: var(--ink-soft); text-decoration: none; }
+.portal-link:hover { color: var(--ink); text-decoration: underline; }
+.morelink { font: 500 14px/1 var(--f-body); color: var(--ink); padding: 11px 6px; align-self: center; }
+.linkbtn { border: 0; background: none; padding: 6px 0; color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; margin-top: 12px; }
+.linkbtn:hover:not(:disabled):not(.primary) { background: none; color: var(--ink); }
+.rounds { margin-top: 16px; border-top: 1px solid var(--rule); }
+.rounds > div { display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: 14px; align-items: center; }
+.rounds .y { font: 500 13px var(--f-mono); color: var(--ink-soft); }
+.rounds .s { font: 500 14px var(--f-mono); font-variant-numeric: tabular-nums; }
+.rounds button { padding: 7px 12px; font-size: 13px; }
+.share { font: 13px/1.5 var(--f-mono); background: var(--sea); padding: 10px 12px; margin-top: 14px; white-space: pre-wrap; user-select: all; }
+.next { font: 12px var(--f-mono); color: var(--ink-soft); }
+.empty { font-size: 14px; color: var(--ink-soft); padding: 14px 0; }
+#toast { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 9px 14px; font-size: 13px; max-width: calc(100% - 32px); }
+.zoomctl { position: absolute; right: 16px; bottom: calc(44px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; }
+.zoomctl button { width: 40px; height: 40px; padding: 0; font: 400 22px/1 var(--f-body); display: grid; place-items: center; border-radius: 0; }
+.zoomctl button + button { border-top: 0; }
+.zoomctl button:first-child { border-radius: 2px 2px 0 0; }
+.zoomctl button:last-child { border-radius: 0 0 2px 2px; }
+.coords { position: absolute; right: 16px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); font: 11px var(--f-mono); color: var(--ink-soft); pointer-events: none; }
+
+.tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; }
+.tile { border: 1px solid var(--rule); padding: 10px 12px; }
+.tile b { display: block; font: 500 24px/1.1 var(--f-mono); font-variant-numeric: tabular-nums; }
+.tile span { font-size: 12px; color: var(--ink-soft); }
+.hist { margin-top: 16px; display: grid; gap: 6px; }
+.hist div { display: grid; grid-template-columns: 70px 1fr 28px; gap: 8px; align-items: center; font: 12px var(--f-mono); color: var(--ink-soft); }
+.hist i { display: block; height: 14px; background: var(--ink); min-width: 2px; }
+.hist .n { text-align: right; color: var(--ink); }
+.reasons { display: grid; gap: 8px; margin-top: 14px; font-size: 14px; }
+.reasons label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+textarea { width: 100%; margin-top: 12px; font: 14px/1.4 var(--f-body); padding: 8px 10px; border: 1px solid var(--rule); border-radius: 2px; resize: vertical; min-height: 70px; color: var(--ink); background: var(--paper); }
+#coach { left: 50%; transform: translateX(-50%); bottom: calc(84px + env(safe-area-inset-bottom, 0px)); width: min(420px, calc(100% - 32px)); padding: 14px 16px; border-left: 4px solid var(--realm); }
+#coach p { margin: 6px 0 0; font-size: 14px; line-height: 1.5; }
+#coach .actions { margin-top: 10px; display: flex; gap: 8px; }
+.links { display: flex; gap: 16px; flex-wrap: wrap; }
+.result-links { margin-top: 6px; }
+.result-links .linkbtn { margin-top: 4px; font-size: 13px; }
+@media (max-width: 640px) {
+  #coach { bottom: auto; top: 140px; }
+  .tiles { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  #result { top: auto; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); right: 16px; max-height: 58%; overflow: auto; }
+  #cartouche { padding: 10px 14px 12px; }
+  .year { font-size: 40px; }
+  .hint, kbd, .coords, #brush { display: none; }
+  #tools { gap: 6px; }
+  .zoomctl { bottom: auto; top: 45%; }
+  button { padding: 10px 10px; }
+}
+@media (max-width: 420px) { .modes { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: no-preference) {
+  .truth { animation: draw-in .6s ease-out; }
+  @keyframes draw-in { from { stroke-opacity: 0; } }
+  .bar i { transition: width .6s ease-out; }
+}
+</style>
+
+<div id="app">
+  <div id="stage" class="idle" aria-label="Map. Drag to paint the territory.">
+    <svg id="base"><g id="baseG"></g></svg>
+    <canvas id="paint"></canvas>
+    <svg id="top"><g id="topG"></g></svg>
+    <div id="brush" hidden></div>
+  </div>
+
+  <div id="cartouche" class="card" hidden>
+    <div class="eyebrow"><span id="roundLabel">Round 1 / 5</span><span id="tierLabel"></span></div>
+    <div class="year" id="qYear">1530</div>
+    <div class="state"><span class="swatch"></span><span id="qState">Ottoman Empire</span></div>
+    <div class="hint">Paint the land it ruled. Outline an area and use Fill to flood it.<br>Space + drag to move · scroll to zoom</div>
+    <div class="penalty" id="qPenalty" hidden></div>
+  </div>
+
+  <div id="tools" class="card" hidden>
+    <div class="seg" role="group" aria-label="Tool">
+      <button id="tBrush" type="button" aria-pressed="true">Paint<kbd>B</kbd></button>
+      <button id="tFill" type="button" aria-pressed="false">Fill<kbd>F</kbd></button>
+      <button id="tErase" type="button" aria-pressed="false">Erase<kbd>E</kbd></button>
+      <button id="tMove" type="button" aria-pressed="false">Move<kbd>M</kbd></button>
+    </div>
+    <div class="seg sizes" role="group" aria-label="Brush size">
+      <button id="s0" type="button" aria-pressed="false" aria-label="Small brush"><span class="dot" style="width:6px;height:6px"></span></button>
+      <button id="s1" type="button" aria-pressed="true" aria-label="Medium brush"><span class="dot" style="width:11px;height:11px"></span></button>
+      <button id="s2" type="button" aria-pressed="false" aria-label="Large brush"><span class="dot" style="width:17px;height:17px"></span></button>
+    </div>
+    <button id="btnUndo" type="button">Undo</button>
+    <button id="btnClear" type="button">Clear</button>
+    <div class="seg" role="group" aria-label="Hints">
+      <button id="hRegion" type="button">Region<span class="cost">−10</span></button>
+      <button id="hCapital" type="button">Capital<span class="cost">−15</span></button>
+    </div>
+    <button id="btnSubmit" type="button" class="primary">Submit<kbd>↵</kbd></button>
+  </div>
+
+  <div id="result" class="card" hidden>
+    <div class="eyebrow"><span>Score</span><span id="rYear"></span></div>
+    <div class="score-row"><div class="score" id="rScore">0<small>/100</small></div><div class="stars" id="rStars"></div></div>
+    <div class="verdict" id="rVerdict"></div>
+    <div class="meters">
+      <div class="meter"><div class="lab"><span>Coverage</span><b id="rCov">0%</b></div><div class="bar"><i id="rCovBar" style="width:0"></i></div></div>
+      <div class="meter"><div class="lab"><span>Precision</span><b id="rPrec">0%</b></div><div class="bar"><i id="rPrecBar" style="width:0"></i></div></div>
+    </div>
+    <div class="legend"><span><i class="sw ok"></i>Correct</span><span><i class="sw extra"></i>Spilled over</span><span><i class="sw miss"></i>Missed</span></div>
+    <div class="fact" id="rFact"></div>
+    <div class="note">Borders are approximate. Data: historical-basemaps, Natural Earth.</div>
+    <div class="actions"><button id="btnNext" type="button" class="primary">Next round<kbd>↵</kbd></button></div>
+    <div class="result-links"><button id="btnReport" type="button" class="linkbtn">Report a problem with this realm</button></div>
+  </div>
+
+  <div id="coach" class="card" hidden>
+    <div class="eyebrow"><span>How to play</span><span></span></div>
+    <p id="coachText"></p>
+    <div class="actions"><button id="coachSkip" type="button">Skip</button></div>
+  </div>
+
+  <div id="report" class="card panel" hidden>
+    <div class="eyebrow"><span>Report a problem</span><span id="repWhat"></span></div>
+    <h2>What looks wrong?</h2>
+    <div class="reasons" role="radiogroup">
+      <label><input type="radio" name="repReason" value="borders" checked> The borders</label>
+      <label><input type="radio" name="repReason" value="capital"> The capital</label>
+      <label><input type="radio" name="repReason" value="fact"> The history note</label>
+      <label><input type="radio" name="repReason" value="other"> Something else</label>
+    </div>
+    <textarea id="repNote" maxlength="600" placeholder="Optional: tell us what's wrong and, if you know, what's right."></textarea>
+    <div class="actions"><button id="repSend" type="button" class="primary">Send report</button><button id="repCancel" type="button">Cancel</button></div>
+  </div>
+
+  <div id="stats" class="card panel" hidden>
+    <div class="eyebrow"><span>Your record</span><span>Daily challenges</span></div>
+    <h2>Statistics</h2>
+    <div class="tiles" id="sTiles"></div>
+    <div class="hist" id="sHist"></div>
+    <p class="next" id="sNote"></p>
+    <div class="actions"><button id="btnStatsBack" type="button">Back</button></div>
+  </div>
+
+  <div id="tutDone" class="card panel" hidden>
+    <div class="eyebrow"><span>Tutorial complete</span><span></span></div>
+    <h2>You're ready</h2>
+    <p>Every day brings five new realms, from easy to hard. Practice draws from every realm you've unlocked.</p>
+    <div class="actions"><button id="tutDaily" type="button" class="primary">Play today's challenge</button><button id="tutMenu" type="button">Menu</button></div>
+  </div>
+
+  <div id="intro" class="card panel">
+    <div class="eyebrow"><span><a id="portalLink" class="portal-link" href="/" hidden>← Homo Ludens</a><span id="seriesLabel">Homo Ludens · No. 1</span></span><span id="streak"></span></div>
+    <h1>Borderlines</h1>
+    <p>Every empire had its edges. Can you find them?</p>
+    <p>You get a year and a realm. Paint the land it ruled, then see how close you came.</p>
+    <ul>
+      <li>Drag to paint. Draw an outline and Fill floods the inside.</li>
+      <li>Stuck? Hints show the region or the capital, for a price.</li>
+      <li>Paint too little or too much and you lose points.</li>
+    </ul>
+    <div class="modes">
+      <button id="btnDaily" type="button" class="mode primary"><span class="m-t" id="dailyTitle">Daily Challenge</span><span class="m-s" id="dailySub"></span></button>
+      <button id="btnPractice" type="button" class="mode"><span class="m-t">Practice</span><span class="m-s" id="practiceSub"></span></button>
+    </div>
+    <div class="links"><button id="btnArchive" type="button" class="linkbtn">Past challenges</button><button id="btnStats" type="button" class="linkbtn">Statistics</button></div>
+  </div>
+
+  <div id="archive" class="card panel" hidden>
+    <div class="eyebrow"><span>Archive</span><span>Doesn't count toward your streak</span></div>
+    <h2>Past challenges</h2>
+    <div class="rounds" id="aList"></div>
+    <div class="actions"><button id="btnArchiveBack" type="button">Back</button></div>
+  </div>
+
+  <div id="end" class="card panel" hidden>
+    <div class="eyebrow"><span id="eKind">Final score</span><span id="eTotal"></span></div>
+    <h2 id="eTitle">Cartographer</h2>
+    <p id="eLine"></p>
+    <div class="rounds" id="eRounds"></div>
+    <div class="share" id="eShare"></div>
+    <p class="next" id="eNext"></p>
+    <div class="actions"><span class="sharewrap"><button id="btnShare" type="button" class="primary" aria-haspopup="true" aria-expanded="false">Share</button><span id="shareMenu" class="sharemenu card" hidden><a id="shX" target="_blank" rel="noopener">X / Twitter</a><a id="shWa" target="_blank" rel="noopener">WhatsApp</a><a id="shRd" target="_blank" rel="noopener">Reddit</a><a id="shFb" target="_blank" rel="noopener">Facebook</a></span></span><button id="btnCopy" type="button" class="primary">Copy result</button><button id="btnAgain" type="button">Practice</button><button id="btnMenu" type="button">Menu</button><a id="btnMore" class="morelink" href="/" hidden>More games</a></div>
+  </div>
+
+  <div class="zoomctl card" id="zoomctl"><button id="zIn" type="button" aria-label="Zoom in">+</button><button id="zOut" type="button" aria-label="Zoom out">−</button></div>
+  <div class="coords" id="coords"></div>
+  <div id="toast" hidden></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+/*DATA*/
+</script>
+<script>
+(function () {
+  const DATA = window.GAME_DATA;
+  const TIERS = ["", "Easy", "Medium", "Hard"];
+  const WORLD = [-170, -56, 180, 76]; // the whole playable map; no per-question framing
+  const SIZES = [6, 14, 28]; // brush radius in screen px
+  const HINT_COST = { region: 10, capital: 15 };
+  const $ = (id) => document.getElementById(id);
+  const stage = $("stage"), canvas = $("paint"), ctx = canvas.getContext("2d");
+  const off = document.createElement("canvas"), octx = off.getContext("2d");
+  const baseG = d3.select("#baseG"), topG = d3.select("#topG");
+
+  let W = 0, H = 0, DPR = 1, projection, path, zoomT = d3.zoomIdentity, landP, lakeP, worldPx;
+  let tool = "brush", sizeIdx = 1, spaceDown = false;
+  let Q = [], actions = [], live = null, diff = null;
+  const state = { round: 0, scores: [], raw: [], hints: [], phase: "intro", mode: "daily", day: 0 };
+
+  // ---------- days & progress ----------
+  const pad = (n) => String(n).padStart(2, "0");
+  function dayIndex(d) {
+    const [y, m, dd] = DATA.dailyStart.split("-").map(Number);
+    return Math.round((new Date(d.getFullYear(), d.getMonth(), d.getDate()) - new Date(y, m - 1, dd)) / 864e5);
+  }
+  const today = () => new Date();
+  const todayIdx = () => dayIndex(today());
+  const dayDate = (i) => { const [y, m, d] = DATA.dailyStart.split("-").map(Number); return new Date(y, m - 1, d + i); };
+  const fmtDate = (d) => d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  const practicePool = () => DATA.pool.concat(...DATA.daily.slice(0, Math.max(0, Math.min(todayIdx(), DATA.daily.length))));
+  const store = {
+    get(k) { try { return JSON.parse(localStorage.getItem("borderlines:" + k)); } catch (_) { return null; } },
+    set(k, v) { try { localStorage.setItem("borderlines:" + k, JSON.stringify(v)); } catch (_) {} },
+  };
+  const dayRec = (i) => store.get("day:" + i);
+  function streak() {
+    let i = todayIdx(), n = 0;
+    const onTime = (r) => r && !r.late;
+    if (!onTime(dayRec(i))) i--;
+    while (i >= 0 && onTime(dayRec(i))) { n++; i--; }
+    return n;
+  }
+  function untilMidnight() {
+    const n = today(), m = new Date(n.getFullYear(), n.getMonth(), n.getDate() + 1);
+    const s = Math.max(0, Math.floor((m - n) / 1000));
+    return `${Math.floor(s / 3600)}h ${pad(Math.floor((s % 3600) / 60))}m`;
+  }
+  function shuffle(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  // Practice: random 2 easy + 2 medium + 1 hard, preferring realms this player hasn't seen in practice yet.
+  function practiceSet() {
+    const pool = practicePool();
+    let seen = new Set(store.get("practiceSeen") || []);
+    if (pool.every((q) => seen.has(q.id))) seen = new Set();
+    const p = shuffle(pool).sort((a, b) => (seen.has(a.id) ? 1 : 0) - (seen.has(b.id) ? 1 : 0));
+    const by = (t) => p.filter((q) => q.tier === t);
+    const pick = [...by(1).slice(0, 2), ...by(2).slice(0, 2), ...by(3).slice(0, 1)];
+    for (const q of p) if (pick.length < 5 && !pick.includes(q)) pick.push(q);
+    pick.forEach((q) => seen.add(q.id));
+    store.set("practiceSeen", [...seen]);
+    return pick.sort((a, b) => a.tier - b.tier);
+  }
+
+  // ---------- analytics ----------
+  // One call site for every event. Sends to Plausible or GoatCounter when the hosting page loads them,
+  // and to this artifact's database when it runs on claude.ai. Nothing is sent anywhere else.
+  const VERSION = "1.0";
+  const rid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  const player = (() => {
+    // One player id for the whole Homo Ludens site (falls back to the older Borderlines key).
+    const PKEY = "homoludens:player";
+    let p = null;
+    try { p = JSON.parse(localStorage.getItem(PKEY)) || JSON.parse(localStorage.getItem("borderlines:player")); } catch (_) {}
+    if (!p) p = { id: rid(), firstSeen: Date.now(), visits: 0 };
+    const first = !p.visits;
+    p.visits = (p.visits || 0) + 1;
+    try { localStorage.setItem(PKEY, JSON.stringify(p)); } catch (_) {}
+    return { ...p, first };
+  })();
+  let cloud = null; // { db, uid }
+  const pending = [];
+  (async () => {
+    try {
+      if (!window.claude || !window.claude.use) return;
+      const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+      const uid = user && (await user.id());
+      if (!db || !uid) return;
+      cloud = { db, uid };
+      // an index doc per player, so the owner can list who has events/reports
+      db.doc(`events/${uid}`).set({ pid: player.id, lastSeen: Date.now(), firstSeen: player.firstSeen }).catch(() => {});
+      while (pending.length) { const [kind, doc] = pending.shift(); cloudWrite(kind, doc); }
+    } catch (_) {}
+  })();
+  function cloudWrite(kind, doc) {
+    if (!cloud) { if (pending.length < 300) pending.push([kind, doc]); return Promise.resolve(false); }
+    if (kind === "reports") cloud.db.doc(`reports/${cloud.uid}`).set({ lastReport: Date.now() }).catch(() => {});
+    return cloud.db.collection(`${kind}/${cloud.uid}/items`).add(doc).then(() => true, () => false);
+  }
+  function track(name, props = {}) {
+    const ev = { name, ...props, pid: player.id, at: Date.now(), dayIdx: todayIdx(), daysSinceFirst: Math.floor((Date.now() - player.firstSeen) / 864e5), v: VERSION };
+    try { if (window.posthog && window.posthog.capture) window.posthog.capture(name, ev); } catch (_) {}
+    try { if (window.plausible) window.plausible(name, { props }); } catch (_) {}
+    try { if (window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: "event/" + name, title: name, event: true }); } catch (_) {}
+    cloudWrite("events", ev);
+    if (window.__borderlinesLog) window.__borderlinesLog.push(ev);
+  }
+
+  // ---------- titles ----------
+  const RANKS = [[90, "Master Cartographer"], [80, "Royal Geographer"], [70, "Imperial Surveyor"], [60, "Border Commissioner"], [50, "Frontier Scout"], [40, "Map Apprentice"], [25, "Lost Envoy"], [0, "Here Be Dragons"]];
+  const rankOf = (avg) => RANKS.find(([min]) => avg >= min)[1];
+
+  // ---------- map ----------
+  function setup() {
+    const r = stage.getBoundingClientRect(); W = r.width; H = r.height; DPR = Math.min(2, window.devicePixelRatio || 1);
+    canvas.width = off.width = Math.round(W * DPR); canvas.height = off.height = Math.round(H * DPR);
+    const box = { type: "Polygon", coordinates: [[[WORLD[0], WORLD[1]], [WORLD[0], WORLD[3]], [WORLD[2], WORLD[3]], [WORLD[2], WORLD[1]], [WORLD[0], WORLD[1]]]] };
+    const mobile = W < 640;
+    projection = d3.geoMercator().fitExtent([[12, mobile ? 120 : 12], [W - 12, H - (mobile ? 140 : 80)]], box);
+    const pr = projection;
+    path = d3.geoPath(d3.geoTransform({ point(x, y) { const p = pr([x, y]); this.stream.point(p[0], p[1]); } }));
+    const a = pr([WORLD[0], WORLD[3]]), b = pr([WORLD[2], WORLD[1]]);
+    worldPx = [a[0], a[1], b[0], b[1]];
+    baseG.selectAll("*").remove();
+    baseG.append("path").attr("class", "graticule").attr("d", path(d3.geoGraticule().step([15, 15]).extent([[-180, -80], [180, 80]])()));
+    const landD = path(DATA.land), lakeD = path(DATA.lakes);
+    baseG.append("path").attr("class", "land").attr("d", landD);
+    baseG.append("path").attr("class", "lake").attr("d", lakeD);
+    baseG.append("path").attr("class", "river").attr("d", path(DATA.rivers));
+    landP = new Path2D(landD); lakeP = new Path2D(lakeD);
+    zoom.translateExtent([[worldPx[0] - W * 0.3, worldPx[1] - H * 0.3], [worldPx[2] + W * 0.3, worldPx[3] + H * 0.3]]);
+  }
+
+  // ---------- paint model: a list of actions (strokes and fills), rendered as vectors ----------
+  const realmColor = () => (Q[state.round] && Q[state.round].color) || "#1f2b4a";
+  function drawActions(c, list) {
+    c.lineCap = "round"; c.lineJoin = "round";
+    for (const a of list) {
+      if (a.type === "stroke") {
+        c.globalCompositeOperation = a.erase ? "destination-out" : "source-over";
+        c.strokeStyle = c.fillStyle = "#000";
+        c.beginPath();
+        if (a.pts.length === 1) { c.arc(a.pts[0][0], a.pts[0][1], a.r, 0, Math.PI * 2); c.fill(); }
+        else { c.lineWidth = a.r * 2; c.moveTo(a.pts[0][0], a.pts[0][1]); for (let i = 1; i < a.pts.length; i++) c.lineTo(a.pts[i][0], a.pts[i][1]); c.stroke(); }
+      }
+      if (a.patch) { c.globalCompositeOperation = "source-over"; c.drawImage(a.patch.img, a.patch.x, a.patch.y, a.patch.w, a.patch.h); }
+    }
+    c.globalCompositeOperation = "source-over";
+  }
+  function clipLand(c) {
+    c.globalCompositeOperation = "destination-in"; c.fill(landP, "evenodd");
+    c.globalCompositeOperation = "destination-out"; c.fill(lakeP, "evenodd");
+    c.globalCompositeOperation = "source-over";
+  }
+  // Paint mask (black on transparent) in any frame: t = [k, tx, ty] world->pixel.
+  function paintRaster(w, h, t) {
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    const x = c.getContext("2d", { willReadFrequently: true });
+    x.setTransform(t[0], 0, 0, t[0], t[1], t[2]); drawActions(x, actions); clipLand(x);
+    return x;
+  }
+  function landRaster(w, h, t) {
+    const c = document.createElement("canvas"); c.width = w; c.height = h;
+    const x = c.getContext("2d", { willReadFrequently: true });
+    x.setTransform(t[0], 0, 0, t[0], t[1], t[2]); x.fillStyle = "#000"; x.fill(landP, "evenodd");
+    x.globalCompositeOperation = "destination-out"; x.fill(lakeP, "evenodd");
+    return x;
+  }
+
+  let raf = 0;
+  function render() {
+    if (raf) return;
+    raf = requestAnimationFrame(() => {
+      raf = 0;
+      octx.setTransform(1, 0, 0, 1, 0, 0); octx.clearRect(0, 0, off.width, off.height);
+      ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const t = [DPR * zoomT.k, DPR * zoomT.x, DPR * zoomT.y];
+      if (state.phase === "result" && diff) {
+        ctx.setTransform(t[0], 0, 0, t[0], t[1], t[2]);
+        ctx.imageSmoothingEnabled = true;
+        ctx.drawImage(diff.img, diff.x, diff.y, diff.w, diff.h);
+        return;
+      }
+      if (state.phase !== "play" || !actions.length) return;
+      octx.setTransform(t[0], 0, 0, t[0], t[1], t[2]);
+      drawActions(octx, actions); clipLand(octx);
+      // tint the black mask with the realm colour
+      octx.setTransform(1, 0, 0, 1, 0, 0);
+      octx.globalCompositeOperation = "source-in"; octx.fillStyle = realmColor(); octx.fillRect(0, 0, off.width, off.height);
+      octx.globalCompositeOperation = "source-over";
+      ctx.globalAlpha = 0.62; ctx.drawImage(off, 0, 0); ctx.globalAlpha = 1;
+    });
+  }
+
+  // Flood fill on the screen raster. Returns a patch or a reason string.
+  function floodPatch(px, py, onlySmall) {
+    const w = Math.ceil(W), h = Math.ceil(H), t = [zoomT.k, zoomT.x, zoomT.y];
+    const P = paintRaster(w, h, t).getImageData(0, 0, w, h).data;
+    const L = landRaster(w, h, t).getImageData(0, 0, w, h).data;
+    const N = w * h, open = new Uint8Array(N); let painted = 0;
+    for (let i = 0; i < N; i++) { const p = P[i * 4 + 3] > 127; if (p) painted++; open[i] = !p && L[i * 4 + 3] > 127 ? 1 : 0; }
+    const seen = new Uint8Array(N), stack = new Int32Array(N);
+    const comps = [];
+    const grow = (seed, cap = Infinity) => {
+      let sp = 0, size = 0, edge = false, touch = false, x0 = w, y0 = h, x1 = 0, y1 = 0; const cells = [];
+      stack[sp++] = seed; seen[seed] = 1;
+      while (sp) {
+        const i = stack[--sp], x = i % w, y = (i / w) | 0; if (size < cap) cells.push(i); size++;
+        if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+        if (x === 0 || y === 0 || x === w - 1 || y === h - 1) edge = true;
+        const nb = [x > 0 ? i - 1 : -1, x < w - 1 ? i + 1 : -1, y > 0 ? i - w : -1, y < h - 1 ? i + w : -1];
+        for (const j of nb) { if (j < 0) continue; if (open[j]) { if (!seen[j]) { seen[j] = 1; stack[sp++] = j; } } else if (P[j * 4 + 3] > 127) touch = true; }
+      }
+      return { cells, size, edge, touch, x0, y0, x1, y1 };
+    };
+    if (!onlySmall) {
+      const i = Math.floor(py) * w + Math.floor(px);
+      if (i < 0 || i >= N || !open[i]) return null;
+      const c = grow(i);
+      if (c.edge) return "That area isn't closed. Close the outline, or zoom out so all of it is on screen.";
+      comps.push(c);
+    } else {
+      if (!painted) return null;
+      for (let i = 0; i < N; i++) if (open[i] && !seen[i]) {
+        const c = grow(i, painted * 0.05);
+        if (!c.edge && c.touch && c.size < painted * 0.05) comps.push(c);
+      }
+      if (!comps.length) return null;
+    }
+    // build a patch image (dilated by 1px so it tucks under neighbouring paint)
+    let x0 = w, y0 = h, x1 = 0, y1 = 0;
+    for (const c of comps) { x0 = Math.min(x0, c.x0); y0 = Math.min(y0, c.y0); x1 = Math.max(x1, c.x1); y1 = Math.max(y1, c.y1); }
+    x0 = Math.max(0, x0 - 2); y0 = Math.max(0, y0 - 2); x1 = Math.min(w - 1, x1 + 2); y1 = Math.min(h - 1, y1 + 2);
+    const pw = x1 - x0 + 1, ph = y1 - y0 + 1;
+    const img = document.createElement("canvas"); img.width = pw; img.height = ph;
+    const ix = img.getContext("2d"), id = ix.createImageData(pw, ph);
+    for (const c of comps) for (const i of c.cells) {
+      const x = i % w - x0, y = ((i / w) | 0) - y0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        const xx = x + dx, yy = y + dy; if (xx < 0 || yy < 0 || xx >= pw || yy >= ph) continue;
+        id.data[(yy * pw + xx) * 4 + 3] = 255;
+      }
+    }
+    ix.putImageData(id, 0, 0);
+    const k = zoomT.k;
+    return { img, x: (x0 - zoomT.x) / k, y: (y0 - zoomT.y) / k, w: pw / k, h: ph / k };
+  }
+
+  // ---------- zoom / pan ----------
+  const zoom = d3.zoom().scaleExtent([1, 40]).clickDistance(4)
+    .filter((e) => {
+      if (e.type === "wheel") return true;
+      if (e.type === "dblclick") return false;
+      if (e.type === "touchstart") return e.touches.length >= 2 || tool === "move" || state.phase !== "play";
+      if (e.type === "mousedown") return tool === "move" || spaceDown || e.button === 1 || e.button === 2 || state.phase !== "play";
+      return false;
+    })
+    .on("start", (e) => { if (e.sourceEvent && e.sourceEvent.type !== "wheel") stage.classList.add("panning"); })
+    .on("end", () => stage.classList.remove("panning"))
+    .on("zoom", (e) => {
+      zoomT = e.transform;
+      baseG.attr("transform", zoomT); topG.attr("transform", zoomT);
+      topG.selectAll(".cap-dot").attr("r", 5 / zoomT.k);
+      topG.selectAll(".cap-label").attr("font-size", 13 / zoomT.k).attr("stroke-width", 3 / zoomT.k).attr("dx", 8 / zoomT.k).attr("dy", 4 / zoomT.k);
+      render();
+    });
+  d3.select(stage).call(zoom);
+  stage.addEventListener("contextmenu", (e) => e.preventDefault());
+  function zoomTo(x0, y0, x1, y1, maxK, offset, fill = 0.8) {
+    const mobile = W < 640;
+    const k = Math.max(1, Math.min(maxK, fill / Math.max((x1 - x0) / W, (y1 - y0) / (H - (mobile ? 260 : 100)))));
+    const ox = offset && !mobile ? -150 : 0, oy = offset && mobile ? -H * 0.2 : 0;
+    const t = d3.zoomIdentity.translate(W / 2 + ox, H / 2 + oy).scale(k).translate(-(x0 + x1) / 2, -(y0 + y1) / 2);
+    d3.select(stage).transition().duration(650).call(zoom.transform, t);
+  }
+  function resetZoom() { d3.select(stage).call(zoom.transform, d3.zoomIdentity); }
+
+  // ---------- input ----------
+  const pointers = new Set();
+  const local = (e) => { const r = stage.getBoundingClientRect(); return [e.clientX - r.left, e.clientY - r.top]; };
+  const toWorld = (e) => zoomT.invert(local(e));
+  const canPaint = () => state.phase === "play" && (tool === "brush" || tool === "erase") && !spaceDown;
+  stage.addEventListener("pointerdown", (e) => {
+    pointers.add(e.pointerId);
+    if (pointers.size > 1) { if (live) { actions.pop(); live = null; render(); updateButtons(); } return; }
+    if (state.phase !== "play" || e.button !== 0 || spaceDown) return;
+    if (tool === "fill") {
+      const [sx, sy] = local(e);
+      const res = floodPatch(sx, sy, false);
+      if (typeof res === "string") toast(res);
+      else if (res) { actions.push({ type: "fill", patch: res }); render(); updateButtons(); }
+      return;
+    }
+    if (!canPaint()) return;
+    e.preventDefault();
+    try { stage.setPointerCapture(e.pointerId); } catch (_) {}
+    live = { type: "stroke", r: SIZES[sizeIdx] / zoomT.k, erase: tool === "erase", pts: [toWorld(e)], id: e.pointerId };
+    actions.push(live); render();
+  });
+  stage.addEventListener("pointermove", (e) => moveBrush(e));
+  window.addEventListener("pointermove", (e) => {
+    if (!live || e.pointerId !== live.id) return;
+    if (e.pointerType === "mouse" && !(e.buttons & 1)) { finishStroke(); return; }
+    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [];
+    for (const ev of (evs.length ? evs : [e])) live.pts.push(toWorld(ev));
+    render();
+  });
+  function finishStroke() {
+    const s = live; live = null;
+    render(); updateButtons();
+  }
+  const endPtr = (e) => { pointers.delete(e.pointerId); if (live && e.pointerId === live.id) finishStroke(); };
+  window.addEventListener("pointerup", endPtr);
+  window.addEventListener("pointercancel", endPtr);
+  stage.addEventListener("dragstart", (e) => e.preventDefault());
+  stage.addEventListener("pointerleave", () => { $("brush").hidden = true; });
+
+  function moveBrush(e) {
+    const b = $("brush"), [sx, sy] = local(e);
+    const ll = projection.invert(zoomT.invert([sx, sy]));
+    if (ll && W >= 640) {
+      const f = (v, a, c) => `${Math.abs(v).toFixed(1)}°${v >= 0 ? a : c}`;
+      $("coords").textContent = `${f(ll[1], "N", "S")}  ${f(ll[0], "E", "W")}`;
+    }
+    if (e.pointerType !== "mouse" || !canPaint()) { b.hidden = true; return; }
+    const d = SIZES[sizeIdx] * 2;
+    b.hidden = false; b.style.width = d + "px"; b.style.height = d + "px";
+    b.style.left = sx + "px"; b.style.top = sy + "px";
+    b.classList.toggle("erase", tool === "erase");
+  }
+
+  function setTool(t) {
+    tool = t;
+    ["Brush", "Fill", "Erase", "Move"].forEach((n) => $("t" + n).setAttribute("aria-pressed", t === n.toLowerCase()));
+    stage.classList.toggle("pan", t === "move");
+    stage.classList.toggle("fill", t === "fill");
+    if (t === "move" || t === "fill") $("brush").hidden = true;
+  }
+  function setSize(i) { sizeIdx = i; [0, 1, 2].forEach((j) => $("s" + j).setAttribute("aria-pressed", i === j)); }
+  function updateButtons() {
+    const play = state.phase === "play", h = state.hints[state.round] || {};
+    $("btnUndo").disabled = !play || !actions.length;
+    $("btnClear").disabled = !play || !actions.length;
+    $("btnSubmit").disabled = !play || !actions.some((a) => a.type === "fill" || !a.erase);
+    $("hRegion").disabled = !play || !!h.region;
+    $("hCapital").disabled = !play || !!h.capital;
+    const pen = penalty(state.round);
+    $("qPenalty").hidden = !pen; $("qPenalty").textContent = `Hints used: −${pen}`;
+  }
+  const penalty = (i) => { const h = state.hints[i] || {}; return (h.region ? HINT_COST.region : 0) + (h.capital ? HINT_COST.capital : 0); };
+
+  // ---------- hints ----------
+  // Region hint: zoom well in on a frame around the realm, nudged so it is not dead centre.
+  function showRegion() {
+    const q = Q[state.round], [[x0, y0], [x1, y1]] = path.bounds(q.geometry);
+    const bw = Math.max(x1 - x0, 8), bh = Math.max(y1 - y0, 8);
+    let hsh = 0; for (const ch of q.id) hsh = (hsh * 31 + ch.charCodeAt(0)) >>> 0;
+    const rx = ((hsh % 1000) / 1000 - 0.5), ry = (((hsh >> 10) % 1000) / 1000 - 0.5);
+    const vw = bw * 2.2, vh = bh * 2.2;                       // frame 2.2x the realm: it always fits fully
+    const cx = (x0 + x1) / 2 + rx * 0.5 * bw, cy = (y0 + y1) / 2 + ry * 0.5 * bh;
+    zoomTo(cx - vw / 2, cy - vh / 2, cx + vw / 2, cy + vh / 2, 14, false, 1);
+  }
+  function showCapital() {
+    const q = Q[state.round], [lon, lat, name] = q.capital, [x, y] = projection([lon, lat]);
+    topG.selectAll(".cap").remove();
+    const g = topG.append("g").attr("class", "cap");
+    g.append("circle").attr("class", "cap-dot").attr("cx", x).attr("cy", y).attr("r", 5 / zoomT.k);
+    g.append("text").attr("class", "cap-label").attr("x", x).attr("y", y).attr("dx", 8 / zoomT.k).attr("dy", 4 / zoomT.k)
+      .attr("font-size", 13 / zoomT.k).attr("stroke-width", 3 / zoomT.k).text(name);
+  }
+  function useHint(kind) {
+    if (state.phase !== "play") return;
+    const h = (state.hints[state.round] = state.hints[state.round] || {});
+    if (h[kind]) return;
+    h[kind] = true;
+    kind === "region" ? showRegion() : showCapital();
+    track("hint_used", { kind, qid: Q[state.round].id, mode: state.mode });
+    updateButtons();
+  }
+
+  // ---------- rounds ----------
+  function setRealmColor() { document.documentElement.style.setProperty("--realm", realmColor()); }
+  function startRound() {
+    state.phase = "play"; actions = []; live = null; diff = null;
+    const q = Q[state.round];
+    const modeName = state.mode === "practice" ? "Practice" : state.mode === "tutorial" ? "Tutorial" : `Daily #${state.day + 1}`;
+    state.roundStart = Date.now();
+    track("round_start", { mode: state.mode, day: state.day, round: state.round, qid: q.id, tier: q.tier });
+    $("roundLabel").textContent = `${modeName} · ${state.round + 1}/${Q.length}`;
+    $("tierLabel").textContent = TIERS[q.tier];
+    $("qYear").textContent = q.yearLabel;
+    $("qState").textContent = q.label;
+    setRealmColor();
+    ["cartouche", "tools"].forEach((id) => ($(id).hidden = false));
+    ["result", "intro", "end", "archive", "stats", "report", "tutDone"].forEach((id) => ($(id).hidden = true));
+    stage.classList.remove("idle");
+    topG.selectAll("*").remove();
+    resetZoom(); setTool("brush"); render(); updateButtons();
+  }
+
+  function paintBounds() {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    for (const a of actions) {
+      if (a.type === "stroke" && !a.erase) for (const p of a.pts) { x0 = Math.min(x0, p[0] - a.r); y0 = Math.min(y0, p[1] - a.r); x1 = Math.max(x1, p[0] + a.r); y1 = Math.max(y1, p[1] + a.r); }
+      if (a.patch) { x0 = Math.min(x0, a.patch.x); y0 = Math.min(y0, a.patch.y); x1 = Math.max(x1, a.patch.x + a.patch.w); y1 = Math.max(y1, a.patch.y + a.patch.h); }
+    }
+    return [x0, y0, x1, y1];
+  }
+
+  // Area-weighted comparison on a raster framed around paint + answer (Mercator area corrected by cos²(lat)).
+  function compare(q) {
+    const [tx0, ty0, tx1, ty1] = path.bounds(q.geometry).flat();
+    const [px0, py0, px1, py1] = paintBounds();
+    const bx0 = Math.min(tx0, px0) - 2, by0 = Math.min(ty0, py0) - 2, bx1 = Math.max(tx1, px1) + 2, by1 = Math.max(ty1, py1) + 2;
+    const s = 1400 / Math.max(bx1 - bx0, by1 - by0);
+    const w = Math.max(1, Math.round((bx1 - bx0) * s)), h = Math.max(1, Math.round((by1 - by0) * s));
+    const t = [s, -bx0 * s, -by0 * s];
+    const Lx = landRaster(w, h, t);
+    const tc = document.createElement("canvas"); tc.width = w; tc.height = h;
+    const tx = tc.getContext("2d", { willReadFrequently: true });
+    tx.setTransform(t[0], 0, 0, t[0], t[1], t[2]); tx.beginPath(); path.context(tx)(q.geometry); path.context(null); tx.fill("evenodd");
+    const A = tx.getImageData(0, 0, w, h).data, B = paintRaster(w, h, t).getImageData(0, 0, w, h).data, L = Lx.getImageData(0, 0, w, h).data;
+    const dimg = document.createElement("canvas"); dimg.width = w; dimg.height = h;
+    const dctx = dimg.getContext("2d"), D = dctx.createImageData(w, h), dd = D.data;
+    const col = realmColor(), cr = parseInt(col.slice(1, 3), 16), cg = parseInt(col.slice(3, 5), 16), cb = parseInt(col.slice(5, 7), 16);
+    let inter = 0, ta = 0, ua = 0;
+    for (let y = 0; y < h; y++) {
+      const lat = projection.invert([0, by0 + y / s])[1] * Math.PI / 180, wt = Math.cos(lat) ** 2;
+      let ri = 0, rt = 0, ru = 0;
+      for (let x = 0; x < w; x++) {
+        const i = (y * w + x) * 4 + 3, a = A[i] > 127 && L[i] > 127, b = B[i] > 127;
+        if (a) rt++; if (b) ru++; if (a && b) ri++;
+        const o = i - 3;
+        if (a && b) { dd[o] = cr; dd[o + 1] = cg; dd[o + 2] = cb; dd[o + 3] = 175; }
+        else if (b) { dd[o] = cr; dd[o + 1] = cg; dd[o + 2] = cb; dd[o + 3] = 60; }
+        else if (a && ((x + y) % 7 < 2)) { dd[o] = 31; dd[o + 1] = 43; dd[o + 2] = 74; dd[o + 3] = 200; }
+      }
+      inter += ri * wt; ta += rt * wt; ua += ru * wt;
+    }
+    dctx.putImageData(D, 0, 0);
+    diff = { img: dimg, x: bx0, y: by0, w: w / s, h: h / s };
+    const coverage = ta ? inter / ta : 0, precision = ua ? inter / ua : 0;
+    const score = ta + ua ? Math.round(100 * 2 * inter / (ta + ua)) : 0;
+    return { coverage, precision, score };
+  }
+
+  function verdict(r) {
+    const c = r.coverage * 100, p = r.precision * 100;
+    if (r.score >= 85) return "Court cartographer material.";
+    if (r.score < 15) return "That looks like somebody else's empire.";
+    if (c - p > 20) return "Too generous. You painted well past the frontier.";
+    if (p - c > 20) return "Too cautious. The realm was bigger than that.";
+    if (r.score >= 65) return "Close. The edges gave you away.";
+    return "Right region, wrong shape.";
+  }
+  const starsOf = (s) => (s >= 80 ? 3 : s >= 60 ? 2 : s >= 40 ? 1 : 0);
+  const sum = (a) => a.reduce((x, y) => x + (y || 0), 0);
+  const emoji = (s) => (s >= 75 ? "🟩" : s >= 50 ? "🟨" : "🟥");
+  const pct = (v) => Math.round(v * 100) + "%";
+
+  function submit() {
+    if (state.phase !== "play" || $("btnSubmit").disabled) return;
+    const q = Q[state.round], r = compare(q), pen = penalty(state.round);
+    const final = Math.max(0, r.score - pen);
+    state.raw[state.round] = r.score; state.scores[state.round] = final;
+    track("round_submit", { mode: state.mode, day: state.day, round: state.round, qid: q.id, tier: q.tier, score: final, raw: r.score, coverage: +r.coverage.toFixed(3), precision: +r.precision.toFixed(3), hintPenalty: pen, ms: Date.now() - state.roundStart, strokes: actions.filter((a) => a.type === "stroke").length, fills: actions.filter((a) => a.type === "fill").length });
+    if (state.mode === "tutorial") coach(-1);
+    state.phase = "result";
+    $("brush").hidden = true;
+    topG.insert("path", ".cap").attr("class", "truth").attr("d", path(q.geometry));
+    if (!(state.hints[state.round] || {}).capital) showCapital();
+    render();
+    const [[x0, y0], [x1, y1]] = path.bounds(q.geometry);
+    zoomTo(x0, y0, x1, y1, 30, true);
+
+    $("rYear").textContent = `${q.yearLabel} · ${q.label}`;
+    $("rScore").innerHTML = `${final}<small>/100${pen ? ` · −${pen} hints` : ""}</small>`;
+    $("rStars").textContent = "★".repeat(starsOf(final)) + "☆".repeat(3 - starsOf(final));
+    $("rVerdict").textContent = verdict(r);
+    $("rCov").textContent = pct(r.coverage); $("rPrec").textContent = pct(r.precision);
+    $("rCovBar").style.width = "0"; $("rPrecBar").style.width = "0";
+    requestAnimationFrame(() => requestAnimationFrame(() => { $("rCovBar").style.width = pct(r.coverage); $("rPrecBar").style.width = pct(r.precision); }));
+    $("rFact").textContent = q.fact;
+    $("btnNext").innerHTML = (state.mode === "tutorial" ? "Finish tutorial" : state.round === Q.length - 1 ? "See final score" : "Next round") + "<kbd>↵</kbd>";
+    $("btnReport").hidden = state.mode === "tutorial";
+    $("result").hidden = false; $("tools").hidden = true;
+    stage.classList.add("pan"); stage.classList.remove("fill");
+    updateButtons();
+    $("btnNext").focus({ preventScroll: true });
+  }
+
+  function hideGame() {
+    ["cartouche", "tools", "result"].forEach((id) => ($(id).hidden = true));
+    topG.selectAll("*").remove(); actions = []; diff = null; render();
+    stage.classList.add("idle"); stage.classList.remove("pan", "fill");
+    resetZoom();
+  }
+
+  function showEnd(saved) {
+    state.phase = "end";
+    hideGame();
+    const total = sum(state.scores), max = Q.length * 100, avg = total / Q.length;
+    const isDaily = state.mode !== "practice";
+    if (isDaily && !saved) {
+      const prev = dayRec(state.day);
+      if (!prev) store.set("day:" + state.day, { scores: state.scores, late: state.mode === "archive" });
+    }
+    $("eKind").textContent = state.mode === "practice" ? "Practice" : `Daily #${state.day + 1} · ${fmtDate(dayDate(state.day))}`;
+    $("eTotal").textContent = `${total} / ${max}`;
+    $("eTitle").textContent = rankOf(avg);
+    if (!saved) {
+      track("game_complete", { mode: state.mode, day: state.day, total, hints: state.hints.filter((h) => h && (h.region || h.capital)).length });
+      if (state.mode === "practice") { const p = store.get("practice") || { games: 0, total: 0 }; p.games++; p.total += total; store.set("practice", p); }
+    }
+    $("eLine").textContent = `You averaged ${Math.round(avg)} out of 100 across five realms.`;
+    $("eRounds").innerHTML = Q.map((q, i) => `<div><span class="y">${q.yearLabel}</span><span>${q.label}</span><span class="s">${state.scores[i] ?? 0}</span></div>`).join("");
+    const site = (window.BORDERLINES_CONFIG || {}).siteUrl || "https://homoludens.oalpcakir.workers.dev/borderlines/";
+    $("eShare").textContent = `Borderlines ${isDaily ? "#" + (state.day + 1) : "Practice"} · ${total}/${max}\n${Q.map((q, i) => emoji(state.scores[i] ?? 0)).join("")}\n${site}`;
+    const st = streak();
+    $("eNext").textContent = state.mode === "daily" ? `Streak: ${st} ${st === 1 ? "day" : "days"} · Next challenge in ${untilMidnight()}` : "";
+    $("btnAgain").textContent = state.mode === "practice" ? "Play again" : "Practice";
+    $("end").hidden = false;
+  }
+
+  function play(mode, day) {
+    if (mode !== "tutorial" && !store.get("tutorialDone")) { state.afterTutorial = [mode, day]; return startTutorial(); }
+    state.mode = mode; state.round = 0; state.scores = []; state.raw = []; state.hints = [];
+    track("game_start", { mode, day: mode === "practice" ? null : day });
+    setSize(1);
+    if (mode === "practice") Q = practiceSet(); else { state.day = day; Q = DATA.daily[day]; }
+    startRound();
+  }
+  function showSaved(day) {
+    const rec = dayRec(day);
+    state.mode = rec.late ? "archive" : "daily"; state.day = day; Q = DATA.daily[day]; state.scores = rec.scores; state.round = Q.length - 1;
+    showEnd(true);
+  }
+
+  function renderHome() {
+    state.phase = "intro"; Q = []; hideGame();
+    ["end", "archive", "stats", "report", "tutDone", "coach"].forEach((id) => ($(id).hidden = true));
+    const i = todayIdx(), has = i >= 0 && i < DATA.daily.length, rec = has && dayRec(i), st = streak();
+    $("streak").textContent = st ? `Streak ${st}` : "";
+    if (!has) { $("dailyTitle").textContent = "Daily Challenge"; $("dailySub").textContent = "New realms coming soon"; $("btnDaily").disabled = true; }
+    else if (rec) { $("dailyTitle").textContent = `Daily #${i + 1} · ${sum(rec.scores)}/500`; $("dailySub").textContent = `Done · next in ${untilMidnight()}`; $("btnDaily").disabled = false; }
+    else { $("dailyTitle").textContent = `Daily #${i + 1}`; $("dailySub").textContent = `5 new realms · ${fmtDate(today())}`; $("btnDaily").disabled = false; }
+    $("practiceSub").textContent = `5 random realms from ${practicePool().length}`;
+    $("intro").hidden = false;
+  }
+  function renderArchive() {
+    $("intro").hidden = true;
+    track("archive_open");
+    const last = Math.min(todayIdx(), DATA.daily.length) - 1;
+    const rows = [];
+    for (let d = last; d >= 0; d--) {
+      const rec = dayRec(d);
+      rows.push(`<div><span class="y">#${d + 1}</span><span>${fmtDate(dayDate(d))}</span>${rec ? `<button type="button" data-view="${d}">${sum(rec.scores)}/500</button>` : `<button type="button" class="primary" data-play="${d}">Play</button>`}</div>`);
+    }
+    $("aList").innerHTML = rows.length ? rows.join("") : `<div class="empty">No past challenges yet. Today's is the first.</div>`;
+    $("archive").hidden = false;
+  }
+  $("aList").addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.dataset.play) play("archive", +b.dataset.play); else if (b.dataset.view) showSaved(+b.dataset.view);
+  });
+
+  function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(() => (t.hidden = true), 2600); }
+
+  // ---------- wiring ----------
+  $("btnDaily").onclick = () => { const i = todayIdx(); dayRec(i) ? showSaved(i) : play("daily", i); };
+  $("btnPractice").onclick = () => play("practice");
+  $("btnArchive").onclick = renderArchive;
+  $("btnArchiveBack").onclick = renderHome;
+  $("btnAgain").onclick = () => play("practice");
+  $("btnMenu").onclick = renderHome;
+  const zoomStep = (f) => d3.select(stage).transition().duration(250).call(zoom.scaleBy, f, [W / 2, H / 2]);
+  $("zIn").onclick = () => zoomStep(1.8);
+  $("zOut").onclick = () => zoomStep(1 / 1.8);
+  $("tBrush").onclick = () => setTool("brush");
+  $("tFill").onclick = () => setTool("fill");
+  $("tErase").onclick = () => setTool("erase");
+  $("tMove").onclick = () => setTool("move");
+  [0, 1, 2].forEach((i) => ($("s" + i).onclick = () => setSize(i)));
+  $("hRegion").onclick = () => useHint("region");
+  $("hCapital").onclick = () => useHint("capital");
+  $("btnUndo").onclick = () => { actions.pop(); render(); updateButtons(); };
+  $("btnClear").onclick = () => { actions = []; render(); updateButtons(); };
+  $("btnSubmit").onclick = submit;
+  $("btnNext").onclick = () => {
+    if (state.mode === "tutorial") return finishTutorial();
+    if (state.round < Q.length - 1) { state.round++; startRound(); } else showEnd();
+  };
+
+  // ---------- tutorial ----------
+  const COACH = "This is Australia in 1914. Drag to paint it; paint only sticks to land. For bigger realms, draw the outline and use Fill to flood it. Press Submit when you're done.";
+  function coach(i) {
+    if (i < 0 || state.mode !== "tutorial") { $("coach").hidden = true; return; }
+    $("coach").hidden = false;
+    $("coachText").textContent = COACH;
+  }
+  function startTutorial() {
+    const aus = DATA.pool.find((q) => q.label === "Australia") || DATA.pool[0];
+    state.mode = "tutorial"; state.round = 0; state.scores = []; state.raw = []; state.hints = []; state.day = 0;
+    Q = [aus];
+    track("tutorial_start", { first: !store.get("tutorialDone") });
+    startRound();
+    const [[x0, y0], [x1, y1]] = path.bounds(aus.geometry);
+    const pw = (x1 - x0) * 0.6, ph = (y1 - y0) * 0.6;
+    zoomTo(x0 - pw, y0 - ph, x1 + pw, y1 + ph, 10, false, 0.9);
+    coach(0);
+  }
+  function finishTutorial(skipped) {
+    store.set("tutorialDone", true);
+    track(skipped ? "tutorial_skip" : "tutorial_complete", { score: state.scores[0] ?? null });
+    coach(-1);
+    const next = state.afterTutorial; state.afterTutorial = null;
+    hideGame(); state.phase = "intro";
+    if (next) return play(next[0], next[1]);
+    $("tutDone").hidden = false;
+  }
+  $("coachSkip").onclick = () => finishTutorial(true);
+  $("tutDaily").onclick = () => { $("tutDone").hidden = true; const i = todayIdx(); dayRec(i) ? showSaved(i) : play("daily", i); };
+  $("tutMenu").onclick = renderHome;
+
+  // ---------- stats ----------
+  function renderStats() {
+    $("intro").hidden = true;
+    track("stats_open");
+    const last = Math.min(todayIdx(), DATA.daily.length - 1);
+    const recs = []; let best = 0, run = 0, bestRun = 0;
+    for (let d = 0; d <= last; d++) {
+      const r = dayRec(d);
+      if (r) { const t = sum(r.scores); recs.push(t); best = Math.max(best, t); }
+      if (r && !r.late) { run++; bestRun = Math.max(bestRun, run); } else if (d < last) run = 0;
+    }
+    const avg = recs.length ? Math.round(recs.reduce((a, b) => a + b, 0) / recs.length) : 0;
+    const p = store.get("practice") || { games: 0, total: 0 };
+    const tiles = [[recs.length, "Dailies played"], [recs.length ? avg : "–", "Average / 500"], [recs.length ? best : "–", "Best / 500"], [streak(), "Current streak"], [bestRun, "Best streak"], [p.games, "Practice games"]];
+    $("sTiles").innerHTML = tiles.map(([v, l]) => `<div class="tile"><b>${v}</b><span>${l}</span></div>`).join("");
+    const bins = [[0, 199], [200, 299], [300, 399], [400, 449], [450, 500]];
+    const counts = bins.map(([a, b]) => recs.filter((t) => t >= a && t <= b).length), mx = Math.max(1, ...counts);
+    $("sHist").innerHTML = bins.map(([a, b], i) => `<div><span>${a}–${b}</span><i style="width:${(counts[i] / mx) * 100}%"></i><span class="n">${counts[i]}</span></div>`).join("");
+    $("sNote").textContent = recs.length ? "Archive games count toward totals but not streaks." : "Play today's challenge to start your record.";
+    $("stats").hidden = false;
+  }
+  $("btnStats").onclick = renderStats;
+  $("btnStatsBack").onclick = renderHome;
+
+  // ---------- reports ----------
+  $("btnReport").onclick = () => {
+    const q = Q[state.round];
+    $("repWhat").textContent = `${q.yearLabel} · ${q.label}`;
+    $("repNote").value = "";
+    $("report").hidden = false;
+    track("report_open", { qid: q.id });
+  };
+  $("repCancel").onclick = () => { $("report").hidden = true; };
+  $("repSend").onclick = async () => {
+    const q = Q[state.round];
+    const reason = (document.querySelector('input[name="repReason"]:checked') || {}).value || "other";
+    const doc = { qid: q.id, year: q.yearLabel, label: q.label, reason, note: $("repNote").value.trim().slice(0, 600), mode: state.mode, day: state.day, pid: player.id, at: Date.now(), v: VERSION };
+    $("repSend").disabled = true;
+    let ok = cloud ? await cloudWrite("reports", doc) : false;
+    const endpoint = (window.BORDERLINES_CONFIG || {}).reportEndpoint;
+    if (!ok && endpoint) {
+      try { const r = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(doc) }); ok = r.ok; } catch (_) { ok = false; }
+    }
+    $("repSend").disabled = false;
+    // Without a database or form endpoint, the report travels as an analytics event (PostHog keeps the note).
+    const viaAnalytics = !ok && !!(window.posthog && window.posthog.capture);
+    track("report_sent", { qid: q.id, label: q.label, year: q.yearLabel, reason, note: doc.note, delivered: ok || viaAnalytics });
+    ok = ok || viaAnalytics;
+    $("report").hidden = true;
+    toast(ok ? "Thanks. Your report was sent." : "Your report couldn't be sent. Please try again later.");
+  };
+  // Share: the phone's own share sheet where there is one, otherwise a small menu of share links.
+  $("btnCopy").classList.remove("primary");
+  $("btnCopy").textContent = "Copy";
+  function shareParts() { const lines = $("eShare").textContent.split("\n"); const url = lines.pop(); return { text: lines.join("\n"), url }; }
+  $("btnShare").onclick = async (e) => {
+    const { text, url } = shareParts();
+    if (navigator.share) {
+      try {
+        await navigator.share({ text, url });
+        track("share_native", { mode: state.mode, day: state.day, total: sum(state.scores), outcome: "shared" });
+      } catch (err) {
+        track("share_native", { mode: state.mode, day: state.day, outcome: err && err.name === "AbortError" ? "cancelled" : "failed" });
+      }
+      return;
+    }
+    const enc = encodeURIComponent, full = text + "\n" + url;
+    $("shX").href = "https://twitter.com/intent/tweet?text=" + enc(full);
+    $("shWa").href = "https://wa.me/?text=" + enc(full);
+    $("shRd").href = "https://www.reddit.com/submit?url=" + enc(url) + "&title=" + enc(text.split("\n")[0]);
+    $("shFb").href = "https://www.facebook.com/sharer/sharer.php?u=" + enc(url);
+    const m = $("shareMenu"); m.hidden = !m.hidden; $("btnShare").setAttribute("aria-expanded", String(!m.hidden));
+    e.stopPropagation();
+  };
+  ["shX", "shWa", "shRd", "shFb"].forEach((id) => $(id).addEventListener("click", () => {
+    track("share_link", { target: id.slice(2).toLowerCase(), mode: state.mode, day: state.day, total: sum(state.scores) });
+    $("shareMenu").hidden = true;
+  }));
+  document.addEventListener("click", (e) => { if (!e.target.closest || !e.target.closest(".sharewrap")) $("shareMenu").hidden = true; });
+  $("btnCopy").onclick = () => {
+    const txt = $("eShare").textContent;
+    track("share_copy", { mode: state.mode, day: state.day, total: sum(state.scores) });
+    try { navigator.clipboard.writeText(txt).then(() => toast("Result copied"), () => toast("Select the text to copy it")); }
+    catch (_) { toast("Select the text to copy it"); }
+  };
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Space") { if (!spaceDown) { spaceDown = true; stage.classList.add("pan"); $("brush").hidden = true; } e.preventDefault(); return; }
+    if (state.phase === "play") {
+      const k = e.key.toLowerCase();
+      if (e.key === "Enter") { e.preventDefault(); submit(); }
+      else if ((k === "z" && (e.metaKey || e.ctrlKey)) || e.key === "Backspace") { e.preventDefault(); if (actions.length) $("btnUndo").click(); }
+      else if (k === "b") setTool("brush");
+      else if (k === "f") setTool("fill");
+      else if (k === "e") setTool("erase");
+      else if (k === "m") setTool("move");
+      else if (e.key === "[") setSize(Math.max(0, sizeIdx - 1));
+      else if (e.key === "]") setSize(Math.min(2, sizeIdx + 1));
+      else if (["1", "2", "3"].includes(e.key)) setSize(+e.key - 1);
+    } else if (state.phase === "result" && e.key === "Enter") { e.preventDefault(); $("btnNext").click(); }
+  });
+  document.addEventListener("keyup", (e) => { if (e.code === "Space") { spaceDown = false; stage.classList.toggle("pan", tool === "move" || state.phase === "result"); } });
+
+  window.addEventListener("resize", () => {
+    // Paint lives in map coordinates of the old size; rescale it to the new map.
+    const oldW = worldPx[2] - worldPx[0], ox = worldPx[0], oy = worldPx[1];
+    setup();
+    const f = (worldPx[2] - worldPx[0]) / oldW;
+    if (Math.abs(f - 1) > 1e-6) {
+      const m = (p) => [worldPx[0] + (p[0] - ox) * f, worldPx[1] + (p[1] - oy) * f];
+      for (const a of actions) {
+        if (a.type === "stroke") { a.pts = a.pts.map(m); a.r *= f; }
+        if (a.patch) { const [x, y] = m([a.patch.x, a.patch.y]); a.patch.x = x; a.patch.y = y; a.patch.w *= f; a.patch.h *= f; }
+      }
+      if (state.phase === "result") { compare(Q[state.round]); topG.select(".truth").attr("d", path(Q[state.round].geometry)); }
+      topG.selectAll(".cap").remove();
+      const h = state.hints[state.round] || {};
+      if (state.phase === "play" && h.capital) showCapital();
+      if (state.phase === "result") showCapital();
+    }
+    render();
+  });
+
+  window.__borderlines = { proj: () => projection, z: () => zoomT, q: () => Q[state.round], state, path: () => path };
+  setup(); renderHome();
+  const portal = (window.BORDERLINES_CONFIG || {}).portalUrl;
+  if (portal) {
+    $("portalLink").href = $("btnMore").href = portal;
+    $("portalLink").hidden = false; $("seriesLabel").hidden = true; $("btnMore").hidden = false;
+    $("portalLink").addEventListener("click", () => track("portal_return", { from: "home" }));
+    $("btnMore").addEventListener("click", () => track("portal_return", { from: "end" }));
+  }
+  track("app_open", { firstVisit: player.first, visits: player.visits, tutorialDone: !!store.get("tutorialDone") });
+})();
+</script>
