@@ -1005,6 +1005,17 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
   // ---------- reports ----------
   $("btnReport").onclick = () => {
     const q = Q[state.round];
+    if (window.HomoLudensFeedback) {
+      window.HomoLudensFeedback.open({
+        kind: "history",
+        title: "Report a problem",
+        intro: `${q.yearLabel} · ${q.label}. Wrong borders, a misplaced capital, a mistake in the note? Tell me what you know.`,
+        placeholder: "What is wrong with this realm?",
+        context: `Realm: ${q.label} (${q.yearLabel}) · id ${q.id} · ${state.mode}${state.day != null ? " day " + state.day : ""}`,
+      });
+      track("report_open", { qid: q.id, via: "feedback" });
+      return;
+    }
     $("repWhat").textContent = `${q.yearLabel} · ${q.label}`;
     $("repNote").value = "";
     $("report").hidden = false;

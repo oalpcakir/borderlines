@@ -40,7 +40,7 @@
     var btn = el('<button type="button" class="hlfb-btn" aria-haspopup="dialog">Feedback</button>');
     var ov = el('<div class="hlfb-ov" hidden><form class="hlfb-box" role="dialog" aria-modal="true" aria-labelledby="hlfb-t" novalidate>' +
       '<h2 id="hlfb-t">Send feedback</h2>' +
-      '<p>Ideas, bugs, a historical mistake? This goes straight to the person who makes these games.</p>' +
+      '<p id="hlfb-intro">Ideas, bugs, a historical mistake? This goes straight to the person who makes these games.</p>' +
       '<fieldset class="hlfb-kinds"><legend class="hlfb-hp">Kind</legend>' +
       '<label><input type="radio" name="hlfb-kind" value="idea" checked>Idea</label>' +
       '<label><input type="radio" name="hlfb-kind" value="bug">Bug</label>' +
@@ -57,7 +57,9 @@
       '</form></div>');
     document.body.appendChild(btn); document.body.appendChild(ov);
     var form = ov.querySelector('form'), msg = ov.querySelector('#hlfb-msg'), status = ov.querySelector('#hlfb-st'), send = ov.querySelector('.hlfb-send');
-    var lastFocus = null;
+    var lastFocus = null, extraContext = '';
+    var title = ov.querySelector('#hlfb-t'), intro = ov.querySelector('#hlfb-intro');
+    var DEF = { title: title.textContent, intro: intro.textContent, ph: msg.placeholder };
 
     function say(t, cls) { status.textContent = t; status.className = 'hlfb-st' + (cls ? ' ' + cls : ''); }
     function open(opts) {
@@ -65,6 +67,10 @@
       lastFocus = document.activeElement;
       if (opts.kind) { var r = ov.querySelector('input[value="' + opts.kind + '"]'); if (r) r.checked = true; }
       if (opts.message) msg.value = opts.message;
+      title.textContent = opts.title || DEF.title;
+      intro.textContent = opts.intro || DEF.intro;
+      msg.placeholder = opts.placeholder || DEF.ph;
+      extraContext = opts.context || '';
       say(''); ov.hidden = false; setTimeout(function () { msg.focus(); }, 30);
       loadTurnstile();
     }
@@ -101,6 +107,7 @@
       if (!token) { say('One moment: the spam check is still running.', 'err'); return; }
       var ctx = '';
       try { if (typeof window.HL_FEEDBACK_CONTEXT === 'function') ctx = String(window.HL_FEEDBACK_CONTEXT() || ''); } catch (err) {}
+      if (extraContext) ctx = extraContext + (ctx ? ' · ' + ctx : '');
       send.disabled = true; say('Sending…');
       fetch(ENDPOINT, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -113,10 +120,10 @@
         .then(function (res) {
           send.disabled = false;
           token = null; if (window.turnstile && widgetId !== null) window.turnstile.reset(widgetId);
-          if (res.j && res.j.ok) { say('Thank you. Your message was sent.', 'ok'); msg.value = ''; setTimeout(close, 1600); return; }
+          if (res.j && res.j.ok) { try { document.dispatchEvent(new CustomEvent('hlfeedback:sent', { detail: { kind: (ov.querySelector('input[name="hlfb-kind"]:checked') || {}).value } })); } catch (err) {} say('Thank you. Your message was sent.', 'ok'); msg.value = ''; setTimeout(close, 1600); return; }
           if (res.status === 429) say('You have sent a few already. Please try again in a minute.', 'err');
           else if (res.j && res.j.error === 'captcha') say('The spam check did not pass. Please try again.', 'err');
-          else say('Your message could not be sent. Please try again later.', 'err');
+          else say('Your message could not be sent. Please try again later. (' + ((res.j && res.j.error) || ('HTTP ' + res.status)) + ')', 'err');
         })
         .catch(function () { send.disabled = false; say('Your message could not be sent. Check your connection and try again.', 'err'); });
     });
