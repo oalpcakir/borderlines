@@ -46,7 +46,7 @@ for n, (path, title, desc) in SCENES.items():
     open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(html)
 
 os.makedirs(os.path.join(OUT, "img"), exist_ok=True)
-for f in ("portal-plate.jpg",):
+for f in ("portal-plate.jpg", "flor-de-cuba.jpg"):
     if os.path.exists(os.path.join(H, f)):
         shutil.copy(os.path.join(H, f), os.path.join(OUT, "img", f))
 if os.path.exists(os.path.join(H, "og-cupoftea.png")):
