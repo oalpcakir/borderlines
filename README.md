@@ -4,7 +4,7 @@
 
 Borderlines is a daily history map game. You get a year and the name of a realm — the Ottoman Empire in 1530, the Inca in 1530, Aksum in 500 — and a world map with no modern borders. Paint the land you think it ruled, then see how close you came.
 
-▶ **Play:** _add your link here_
+▶ **Play:** [borderlines.oalpcakir.workers.dev](https://borderlines.oalpcakir.workers.dev)
 
 ## How to play
 
