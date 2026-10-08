@@ -29,6 +29,7 @@ html = f'''<!doctype html>
 {og}
 {icon}
 {ph}
+<script src="/feedback.js" defer data-game="retourvloot"></script>
 <style>html,body{{margin:0}}</style>
 {r("head.html")}
 </head>

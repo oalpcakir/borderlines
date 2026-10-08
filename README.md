@@ -13,7 +13,7 @@ Small games about the past: short history games with one mechanic, one idea, and
 
 ## Spotted a mistake?
 
-History is messy and some of it is disputed. Use the report button in the game, or open an issue in this repository.
+History is messy and some of it is disputed. Use the **Feedback** button on any page, or open an issue in this repository.
 
 ## Credits
 
@@ -27,4 +27,4 @@ Game code is released under GPL-3.0, matching the historical borders dataset Bor
 
 ## Running it yourself
 
-Everything is static. `public/index.html` is the portal, and each game lives in its own folder under `public/`. Sources and build scripts are in `src/` (see `src/README.md`). The included `wrangler.jsonc` deploys the site to Cloudflare Workers.
+Everything is static. `public/index.html` is the portal, and each game lives in its own folder under `public/`. Sources and build scripts are in `src/` (see `src/README.md`). The included `wrangler.jsonc` deploys the site to Cloudflare Workers; `worker.js` adds one route, `/api/feedback`, which checks messages (Turnstile, rate limit) and posts them to Discord. It needs two secrets, `DISCORD_WEBHOOK_URL` and `TURNSTILE_SECRET`, and the Turnstile site key in `public/feedback.js`.

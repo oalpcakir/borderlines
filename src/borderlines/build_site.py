@@ -28,6 +28,7 @@ head = f'''<!doctype html>
   }};
 </script>
 {ph}
+<script src="/feedback.js" defer data-game="borderlines"></script>
 <style>html,body{{margin:0}}[hidden]{{display:none!important}}</style>
 '''
 i = g.index('<div id="app">')

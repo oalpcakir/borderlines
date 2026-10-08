@@ -557,6 +557,7 @@ function start(data) {
   if (!S.tut) S.tut = { i: 0, done: true, seen: {}, ctxOn: false };
   modalOpen = false;
   buildStatic(); syncInputs(); render();
+  window.HL_FEEDBACK_CONTEXT = () => S ? `${fmtDate(S.t)} · cash ${money(S.cash)} · debt ${money(S.debt)} · share ${Math.round(S.share)}% · ${S.stats.voyages} voyages` : '';
   if (window.claude && window.claude.hot && window.claude.hot.snapshot) window.claude.hot.snapshot(() => ({ S }));
   if (S.speed) resumeSpeed = S.speed;
   if (S.queue[0] === 'founding') track('game_start', { restart: false }); else track('game_resume');
