@@ -11,13 +11,15 @@
 <script>
   window.BORDERLINES_CONFIG = {
     // Where "Report a problem" sends its JSON (e.g. a Formspree form URL). Leave empty to disable.
-    reportEndpoint: ""
+    reportEndpoint: "",
+    // Public address used in the share text.
+    siteUrl: "https://borderlines.oalpcakir.workers.dev"
   };
 </script>
-<!-- Analytics: PostHog (EU), cookieless; the game's own anonymous player id is the distinct id -->
+<!-- Analytics: PostHog (US), cookieless; the game's own anonymous player id is the distinct id -->
 <script>
   (function () {
-    var KEY = "phc_mdtcrAHaV5sKPL9TXqZrqqmBnwBE7Fq2nxoTkEK7cP5G", HOST = "https://eu.i.posthog.com";
+    var KEY = "phc_mdtcrAHaV5sKPL9TXqZrqqmBnwBE7Fq2nxoTkEK7cP5G", HOST = "https://us.i.posthog.com";
     var pid;
     try {
       var p = JSON.parse(localStorage.getItem("borderlines:player") || "null");
@@ -830,7 +832,8 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
     }
     $("eLine").textContent = `You averaged ${Math.round(avg)} out of 100 across five realms.`;
     $("eRounds").innerHTML = Q.map((q, i) => `<div><span class="y">${q.yearLabel}</span><span>${q.label}</span><span class="s">${state.scores[i] ?? 0}</span></div>`).join("");
-    $("eShare").textContent = `Borderlines ${isDaily ? "#" + (state.day + 1) : "Practice"} · ${total}/${max}\n${Q.map((q, i) => emoji(state.scores[i] ?? 0)).join("")}`;
+    const site = (window.BORDERLINES_CONFIG || {}).siteUrl || "https://borderlines.oalpcakir.workers.dev";
+    $("eShare").textContent = `Borderlines ${isDaily ? "#" + (state.day + 1) : "Practice"} · ${total}/${max}\n${Q.map((q, i) => emoji(state.scores[i] ?? 0)).join("")}\n${site}`;
     const st = streak();
     $("eNext").textContent = state.mode === "daily" ? `Streak: ${st} ${st === 1 ? "day" : "days"} · Next challenge in ${untilMidnight()}` : "";
     $("btnAgain").textContent = state.mode === "practice" ? "Play again" : "Practice";
@@ -981,7 +984,10 @@ window.GAME_DATA = {"dailyStart":"2026-09-27","pool":[{"id":"b1","year":-500,"ye
       try { const r = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(doc) }); ok = r.ok; } catch (_) { ok = false; }
     }
     $("repSend").disabled = false;
-    track("report_sent", { qid: q.id, reason, delivered: ok });
+    // Without a database or form endpoint, the report travels as an analytics event (PostHog keeps the note).
+    const viaAnalytics = !ok && !!(window.posthog && window.posthog.capture);
+    track("report_sent", { qid: q.id, label: q.label, year: q.yearLabel, reason, note: doc.note, delivered: ok || viaAnalytics });
+    ok = ok || viaAnalytics;
     $("report").hidden = true;
     toast(ok ? "Thanks. Your report was sent." : "Your report couldn't be sent. Please try again later.");
   };
