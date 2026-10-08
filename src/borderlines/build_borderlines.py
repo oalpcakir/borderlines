@@ -4,7 +4,7 @@ The page only carries the practice pool, the base map and each day's difficulty 
 daily live in public/borderlines/days/<n>.json and are fetched when that day is played, so the page stays
 small however many days there are and future answers are not in the page source.
 
-Also updates the daily count the portal uses for its "Today" box (public/index.html, src/portal/portal.html).
+Also writes public/borderlines/tiers.json (read by the itch.io build) and updates the daily count the portal uses for its "Today" box (public/index.html, src/portal/portal.html).
 Run from anywhere: python3 src/borderlines/build_borderlines.py
 """
 import json, os, re, glob
@@ -68,6 +68,11 @@ def build():
     out = os.path.join(PUB, "borderlines", "index.html")
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
         fh.write(head + g[:i] + "</head>\n<body>\n" + g[i:] + "\n</body>\n</html>\n")
+
+    # The itch.io build ships with the tiers it was built with and refreshes them from this file,
+    # so new monthly dailies reach it without a re-upload (CORS for it is set in public/_headers).
+    with open(os.path.join(PUB, "borderlines", "tiers.json"), "w", encoding="utf-8", newline="\n") as fh:
+        json.dump({"start": base["dailyStart"], "days": tiers}, fh, separators=(",", ":"))
 
     # The portal's "Today" box needs to know how many dailies exist.
     for p in (os.path.join(PUB, "index.html"), os.path.join(ROOT, "src", "portal", "portal.html")):
