@@ -16,5 +16,14 @@
     "image": "/og-retourvloot.png",
     "short": "Run the Dutch East India Company from Amsterdam, 1602 to 1799. Letters from Batavia take a year.",
     "announce": "You are a director of the Dutch East India Company in Amsterdam, from its founding in 1602 to its end in 1799. Equip ships, send silver east and wait a year for letters from Batavia. Chase the spice monopolies and keep the shareholders paid, while the Company slowly hollows out. Every event card shows a real painting or print from the Rijksmuseum, and the other ledger keeps count of what the trade cost. Best on a laptop or desktop; 30 to 80 minutes."
+  },
+  {
+    "id": "cupoftea",
+    "no": 3,
+    "title": "A Cup of Tea",
+    "url": "/cupoftea/",
+    "image": "/og-cupoftea.png",
+    "short": "A grocer's receipt from East London, 1850. Read the papers of the day, do the sums, and find out who got every farthing.",
+    "announce": "East London, March 1850. A working family's grocer's receipt: one pound of brown sugar for 4½d, two ounces of Congou tea for 5d. You are a nameless detective with a desk of real papers: Parliamentary debates, newspaper letters, price lists. Fill the ledger, line by line, until every farthing is accounted for: the grocer, Her Majesty's Customs, the shipowner, and the money that never reached London. Three scenes, from a London shop to a sugar estate outside Havana and back to the tea. Every figure comes from a source of the time. Best on a laptop or desktop."
   }
 ]

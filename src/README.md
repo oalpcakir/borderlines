@@ -17,3 +17,7 @@ Build sources behind the published site (the repo's `public/` folder holds the b
 - `build_retourvloot.py` — writes `public/retourvloot/` and `public/og-retourvloot.png`. `node test.js` runs a headless balance test.
 - See `retourvloot/README.md` for details.
 
+## cupoftea/ (No. 3)
+- `scene1.html`, `scene2.html`, `scene3.html` — one self-contained page per scene (data, puzzle logic, Web Audio sound, the reprinted-receipt card). Design notes and the solution tables live in the project's TASARIM.md.
+- `build_cupoftea.py` — adds the shared head (meta tags, icon, analytics, feedback button) and writes `public/cupoftea/` (scene 1), `public/cupoftea/2/`, `public/cupoftea/3/`, plus `public/og-cupoftea.png` and the portal plate.
+- Progress is kept in the player's browser under `cupoftea.v1` (scenes solved, blots per scene); the portal reads it for the "Continue" card.

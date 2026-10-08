@@ -100,6 +100,8 @@ section > .eyebrow { display: block; margin-bottom: 16px; }
 .tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .tag { font: 500 11px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; padding: 5px 7px; border: 1px solid var(--rule); color: var(--ink-soft); }
 .game .row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; padding-top: 6px; }
+.game.wide { grid-column: 1 / -1; grid-template-columns: 1.15fr 1fr; grid-template-rows: auto; }
+.game.wide .plate { border-bottom: 0; border-right: 1px solid var(--rule); aspect-ratio: auto; min-height: 100%; }
 .workshop { border: 1px dashed var(--coast); background: transparent; display: grid; align-content: center; gap: 10px; padding: 24px; min-height: 220px; }
 .workshop h3 { font-family: var(--f-display); font-weight: 400; font-size: 26px; margin: 0; }
 .workshop p { margin: 0; font-size: 14px; color: var(--ink-soft); }
@@ -130,6 +132,8 @@ footer a { color: var(--ink-soft); }
 @media (max-width: 720px) {
   .wrap { padding-block: 28px 32px; padding-inline: 16px; }
   .games { grid-template-columns: 1fr; }
+  .game.wide { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+  .game.wide .plate { border-right: 0; border-bottom: 1px solid var(--rule); aspect-ratio: 620 / 453; }
   .today { grid-template-columns: 1fr; }
   .about { grid-template-columns: 1fr; gap: 8px; }
 }
@@ -140,7 +144,7 @@ footer a { color: var(--ink-soft); }
   <header class="mast">
     <div class="topline"><span class="eyebrow">Small games about the past</span></div>
     <h1>Homo Ludens</h1>
-    <p class="lede">Short history games, from a five-minute daily puzzle to an evening at the helm of the Dutch East India Company. One mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book, which argued that play is older than culture.</p>
+    <p class="lede">Short history games, from a five-minute daily puzzle to an evening at the helm of the Dutch East India Company or a detective's desk in 1850 London. One mechanic, one idea, and a note on what really happened. Named after Johan Huizinga's 1938 book, which argued that play is older than culture.</p>
   </header>
 
   <section aria-labelledby="todayLabel">
@@ -160,6 +164,14 @@ footer a { color: var(--ink-soft); }
         <div class="meta" id="rvMeta"></div>
       </div>
       <a class="btn" id="rvPlay" href="/retourvloot/" data-from="today">Continue</a>
+    </div>
+    <div class="today" id="teaToday" hidden>
+      <div>
+        <div class="eyebrow">A Cup of Tea · Your investigation</div>
+        <h2 id="teaTitle">Scene 1</h2>
+        <div class="meta" id="teaMeta"></div>
+      </div>
+      <a class="btn" id="teaGo" href="/cupoftea/" data-from="today">Continue</a>
     </div>
   </section>
 
@@ -200,6 +212,19 @@ footer a { color: var(--ink-soft); }
           <div class="row"><a class="btn" href="/retourvloot/" data-from="card">Play</a></div>
         </div>
       </article>
+      <article class="game wide">
+        <a class="plate" href="/cupoftea/" data-from="card" aria-label="Play A Cup of Tea">
+          <img src="/cupoftea/img/portal-plate.jpg" alt="Two grocer's receipts from 1850, reprinted with every farthing of the price assigned" loading="lazy">
+          <span class="cap">1850 · A grocer's receipt</span>
+        </a>
+        <div class="body">
+          <span class="numeral">No. 3 · New</span>
+          <h3>A Cup of Tea</h3>
+          <p>A grocer's receipt from East London, 1850: a pound of sugar and two ounces of tea. Read the papers of the day, do the sums, and find out who got every farthing, from the Customs House to a sugar estate outside Havana.</p>
+          <div class="tags"><span class="tag">Detective</span><span class="tag">Real prices</span><span class="tag">3 scenes</span><span class="tag">Desktop</span></div>
+          <div class="row"><a class="btn" id="teaPlay" href="/cupoftea/" data-from="card">Play</a></div>
+        </div>
+      </article>
     </div>
   </section>
 
@@ -234,7 +259,7 @@ footer a { color: var(--ink-soft); }
 
   <footer>
     <span>© 2026 Homo Ludens</span>
-    <span>Borders: <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> · Base map: <a href="https://www.naturalearthdata.com/">Natural Earth</a> · Paintings and prints: <a href="https://www.rijksmuseum.nl/">Rijksmuseum</a> (public domain) · <a href="/privacy/">Privacy</a></span>
+    <span>Borders: <a href="https://github.com/aourednik/historical-basemaps">historical-basemaps</a> · Base map: <a href="https://www.naturalearthdata.com/">Natural Earth</a> · Paintings and prints: <a href="https://www.rijksmuseum.nl/">Rijksmuseum</a> (public domain) · Engravings: <a href="https://commons.wikimedia.org/">Wikimedia Commons</a> (public domain) · <a href="/privacy/">Privacy</a></span>
   </footer>
 </div>
 
@@ -327,6 +352,23 @@ footer a { color: var(--ink-soft); }
   }
   document.querySelectorAll("a[href='/retourvloot/']").forEach(function (a) {
     a.addEventListener("click", function () { track("portal_play", { game: "retourvloot", from: a.getAttribute("data-from") }); });
+  });
+
+  // A Cup of Tea: continue an investigation (progress kept in this browser by the game)
+  var T = get("cupoftea.v1");
+  if (T && T.done && T.done.length) {
+    var tDone = T.done.slice().sort(), next = [1, 2, 3].filter(function (k) { return tDone.indexOf(k) < 0; })[0];
+    var NAMES = { 1: "The sugar, London", 2: "Havana, the harvest", 3: "The tea, London" };
+    if (next) {
+      document.getElementById("teaTitle").textContent = "Scene " + next + ": " + NAMES[next];
+      document.getElementById("teaMeta").textContent = tDone.length + " of 3 scenes solved.";
+      var href = "/cupoftea/" + (next > 1 ? next + "/" : "");
+      document.getElementById("teaGo").href = href; document.getElementById("teaPlay").href = href;
+      document.getElementById("teaToday").hidden = false;
+    }
+  }
+  document.querySelectorAll("a[href^='/cupoftea/']").forEach(function (a) {
+    a.addEventListener("click", function () { track("portal_play", { game: "cupoftea", from: a.getAttribute("data-from") }); });
   });
 
   // New games by email (shown only when the server side is configured)

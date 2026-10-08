@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>A Cup of Tea · Scene 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#efe5cc; --paper2:#e6d9b8; --desk:#3b2a1e; --ink:#2a1f17; --ink2:#5a4a3a;
+  --red:#8b2a1f; --green:#2f5d3a; --blue:#2c4a6b; --gold:#a07a2c; --line:#c9b78f;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--desk);color:var(--ink);font-family:"EB Garamond",Georgia,serif;font-size:17px;
+  background-image:radial-gradient(ellipse at 30% 20%,#4a3526 0,#2b1e15 70%)}
+h1,h2,h3,.fell{font-family:"IM Fell English",Georgia,serif;font-weight:400}
+header{display:flex;align-items:baseline;gap:16px;padding:10px 20px;color:#e9dcc0}
+header h1{margin:0;font-size:28px}
+header .sub{opacity:.75;font-style:italic}
+header .prog{margin-left:auto;font-size:15px;opacity:.85}
+#app{display:grid;grid-template-columns:210px minmax(380px,1fr) minmax(460px,1.15fr);gap:14px;padding:0 14px 14px;height:calc(100% - 56px)}
+.panel{background:var(--paper);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,.45);overflow:auto;position:relative;
+  background-image:linear-gradient(rgba(255,255,255,.12),rgba(0,0,0,.03))}
+/* masa: belge listesi */
+#desk{padding:12px;background:var(--paper2)}
+#desk h2{margin:0 0 8px;font-size:20px}
+.doctab{display:block;width:100%;text-align:left;margin:0 0 8px;padding:8px 10px;border:1px solid var(--line);background:var(--paper);
+  font:inherit;font-size:15px;cursor:pointer;border-radius:2px;color:var(--ink);position:relative}
+.doctab:hover{border-color:var(--ink2)}
+.doctab.on{border-color:var(--ink);box-shadow:inset 3px 0 0 var(--red)}
+.doctab small{display:block;color:var(--ink2);font-style:italic;font-size:13px}
+.doctab .new{position:absolute;right:6px;top:6px;font-size:11px;color:var(--red);font-weight:600}
+.doctab.fresh{animation:pulse 1.4s ease-in-out 3}
+@keyframes pulse{50%{background:#f6e3a8}}
+/* belge */
+#doc{padding:22px 28px}
+.dtype{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+#doc h2{margin:2px 0 12px;font-size:26px}
+.quote{font-family:"IM Fell English",Georgia,serif;font-size:19px;line-height:1.45;border-left:3px solid var(--line);padding:4px 0 4px 14px;margin:14px 0 4px}
+.tr{font-size:15px;color:var(--ink2);margin:0 0 12px 17px;font-style:italic}
+.src{font-size:13px;color:var(--ink2);border-top:1px dashed var(--line);margin-top:18px;padding-top:8px}
+.verify{display:inline-block;font-size:11px;border:1px solid var(--red);color:var(--red);padding:0 5px;border-radius:2px;margin-left:4px;vertical-align:middle;font-style:normal}
+.c{border-bottom:1.5px dotted var(--blue);cursor:pointer;padding:0 1px;transition:background .15s}
+.c:hover{background:rgba(44,74,107,.12)}
+.c.got{border-bottom:1.5px solid var(--green);background:rgba(47,93,58,.10)}
+table.t{border-collapse:collapse;width:100%;font-size:16px;margin:10px 0}
+table.t td,table.t th{border-bottom:1px solid var(--line);padding:5px 6px;text-align:left}
+table.t th{font-weight:600;font-size:14px;color:var(--ink2)}
+.receipt{background:#fbf6e8;border:1px solid var(--line);max-width:340px;margin:8px auto;padding:16px 20px;font-family:"IM Fell English",Georgia,serif;
+  box-shadow:2px 3px 0 rgba(0,0,0,.08);transform:rotate(-.6deg)}
+.receipt .row{display:flex;justify-content:space-between;border-bottom:1px dotted var(--line);padding:4px 0}
+.receipt .tot{font-size:20px;border-bottom:none;padding-top:8px}
+.note{background:rgba(160,122,44,.10);border-left:3px solid var(--gold);padding:8px 12px;font-size:15px;margin:12px 0}
+.conflict{background:rgba(139,42,31,.07);border-left:3px solid var(--red);padding:8px 12px;font-size:15px;margin:12px 0}
+/* sağ: not defteri + defter */
+#right{display:flex;flex-direction:column;gap:14px;overflow:visible;background:none;box-shadow:none}
+#notes,#ledger{background:var(--paper);border-radius:3px;box-shadow:0 6px 20px rgba(0,0,0,.45);padding:12px 16px}
+#notes{flex:0 0 auto;max-height:38%;overflow:auto}
+#ledger{flex:1 1 auto;overflow:auto}
+#notes h3,#ledger h3{margin:0 0 6px;font-size:21px}
+.hint{font-size:14px;color:var(--ink2);font-style:italic;margin:0 0 8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.grp{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2);margin:8px 0 4px;width:100%}
+.chip{font-size:15px;padding:3px 9px;border:1.5px solid var(--ink2);border-radius:14px;background:#fbf6e8;cursor:grab;user-select:none;
+  display:inline-flex;align-items:center;gap:5px;max-width:100%}
+.chip.sel{outline:2px solid var(--blue);outline-offset:1px;background:#e3ebf3}
+.chip[data-conf="hesap"]{border-style:dotted}
+.chip[data-conf="cikarim"]{border-style:dashed;border-color:var(--gold)}
+.chip .k{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink2)}
+.chip.fresh{animation:pulse 1.2s ease-in-out 2}
+/* defter tablosu */
+table.ledger{border-collapse:collapse;width:100%;font-size:15px}
+table.ledger th{font-family:"IM Fell English",Georgia,serif;font-weight:400;font-size:16px;text-align:left;border-bottom:2px solid var(--ink);padding:4px 6px}
+table.ledger td{border-bottom:1px solid var(--line);padding:5px 4px;vertical-align:top}
+table.ledger td.num{width:36px;color:var(--ink2);font-style:italic}
+.slot{min-height:32px;border:1.5px dashed var(--line);border-radius:4px;padding:3px 5px;display:flex;align-items:center;cursor:pointer;background:rgba(255,255,255,.25)}
+.slot.over{border-color:var(--blue);background:#e3ebf3}
+.slot:empty::after{content:"—";color:var(--line)}
+.slot .chip{cursor:pointer}
+tr.locked .slot{border-style:solid;border-color:var(--green);background:rgba(47,93,58,.08);cursor:default}
+tr.locked td.num{color:var(--green);font-style:normal;font-weight:600}
+tr.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.emek{display:none;font-size:14px;color:var(--ink2);font-style:italic}
+.showEmek .emek{display:table-cell}
+th.emek{color:var(--red);font-style:normal}
+.showEmek th.emek{animation:inkin 1.6s ease-out}
+@keyframes inkin{from{opacity:0;letter-spacing:.4em}to{opacity:1}}
+tr.labour td{border-bottom:1.5px dashed var(--red)}
+tr.labour .slot{border-color:var(--red);border-style:dashed;cursor:default;background:rgba(139,42,31,.05)}
+tr.labour{animation:inkin 1.8s ease-out}
+.badge{font-size:11px;padding:0 5px;border-radius:2px;margin-left:4px;font-style:normal;white-space:nowrap}
+.b-k{border:1px solid var(--green);color:var(--green)}
+.b-h{border:1px dotted var(--blue);color:var(--blue)}
+.b-c{border:1px dashed var(--gold);color:var(--gold)}
+.b-x{border:1px solid var(--red);color:var(--red)}
+/* bozuk paralar */
+#tray{margin-top:12px;padding:10px 12px 8px;border-radius:4px;background:linear-gradient(#5a3f2b,#47311f);box-shadow:inset 0 2px 6px rgba(0,0,0,.45)}
+#tray .th{font-size:13px;font-style:italic;color:#e9dcc0;opacity:.85;margin:0 0 8px}
+#tray .piles{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
+.pile{display:flex;flex-direction:column;align-items:flex-start;min-width:60px}
+.pile .stack{display:flex;padding-left:9px;min-height:26px}
+.pile .plab{font-size:13px;color:#e9dcc0;margin-top:4px;line-height:1.25}
+.pile .plab b{font-family:"IM Fell English",Georgia,serif;font-weight:400;font-size:15px}
+.pile.counter.open .plab{color:#f2b7a6}
+.pile.counter.havana .stack{outline:1.5px dashed #d07a66;outline-offset:3px;border-radius:14px}
+.coin{width:24px;height:24px;border-radius:50%;margin-left:-9px;flex:0 0 auto;position:relative;
+  background:radial-gradient(circle at 35% 30%,#e0a46c,#a7622f 55%,#6e3b18);
+  box-shadow:inset 0 0 0 2px rgba(70,35,12,.55),inset 0 0 0 4px rgba(240,190,140,.25),0 1px 2px rgba(0,0,0,.55);
+  display:flex;align-items:center;justify-content:center;font-family:"IM Fell English",Georgia,serif;font-size:11px;color:#4a230c}
+.coin::after{content:"¼"}
+.pile.counter .coin:nth-child(odd){transform:rotate(-8deg)}
+/* tepkiler: kenar notu */
+#msg .re{display:block;font-family:"IM Fell English",Georgia,serif;font-style:italic;color:var(--red);font-size:17px;transform:rotate(-.7deg);margin-bottom:2px}
+/* hesap */
+#sum{margin-top:12px;border-top:2px solid var(--ink);padding-top:8px;font-size:16px}
+#sum .line{display:flex;justify-content:space-between;padding:2px 0}
+#sum .gap{font-size:20px;font-family:"IM Fell English",Georgia,serif}
+#sum .gap.open{color:var(--red)}
+#sum .gap.open b{animation:pulse 1.6s infinite}
+#pull{margin-top:10px;width:100%;padding:10px;font:inherit;font-size:18px;font-family:"IM Fell English",Georgia,serif;background:var(--ink);color:var(--paper);
+  border:none;border-radius:3px;cursor:pointer}
+#pull:disabled{background:#9b8f7a;cursor:not-allowed}
+#msg{font-size:15px;margin-top:8px;min-height:22px;color:var(--ink2);font-style:italic}
+/* final */
+#door{position:fixed;inset:0;background:rgba(20,12,6,.72);display:none;align-items:center;justify-content:center;z-index:9}
+#door.on{display:flex}
+#door .card{background:var(--paper);max-width:560px;padding:28px 34px;border-radius:3px;box-shadow:0 20px 60px rgba(0,0,0,.6);text-align:center}
+#door h2{font-size:30px;margin:0 0 6px}
+#door p{line-height:1.5}
+#door button{font:inherit;font-size:17px;padding:8px 18px;border:1px solid var(--ink);background:none;cursor:pointer;margin:6px}
+#qs{display:flex;flex-direction:column;gap:2px;margin:0 0 8px;font-size:15px;font-style:italic;color:var(--ink2)}
+#qs .done{color:var(--green);font-style:normal;text-decoration:line-through}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:8px 16px;border-radius:3px;
+  font-size:15px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:10;max-width:80%}
+.toast.on{opacity:1}
+.tool{border:1px solid var(--line);background:#fbf6e8;padding:12px 14px;margin:12px 0;border-radius:3px}
+.tool-h{font-family:"IM Fell English",Georgia,serif;font-size:19px;margin-bottom:8px}
+.tool-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.tool input,.tool select{font:inherit;font-size:16px;padding:3px 5px;border:1px solid var(--ink2);background:#fff;border-radius:2px}
+.tool input{width:64px}
+.tool-out{margin:10px 0;font-size:16px;line-height:1.5}
+.tool-out b{font-family:"IM Fell English",Georgia,serif;font-size:20px}
+.tbtn{font:inherit;font-size:15px;padding:5px 12px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px}
+.tbtn:disabled{background:#9b8f7a;border-color:#9b8f7a;cursor:not-allowed}
+/* intro */
+#intro{position:fixed;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:20px;
+  background:radial-gradient(ellipse at 50% 30%,#4a3526 0,#1c130c 75%)}
+#intro.off{display:none}
+#intro .card{background:var(--paper);max-width:640px;width:100%;padding:34px 42px;border-radius:3px;box-shadow:0 24px 70px rgba(0,0,0,.7);
+  max-height:92vh;overflow:auto}
+#intro .kicker{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+#intro h2{font-size:36px;margin:4px 0 14px;line-height:1.1}
+#intro p{line-height:1.55;margin:0 0 12px}
+#intro ol{padding-left:22px;line-height:1.5;margin:0 0 12px}
+#intro li{margin-bottom:6px}
+#intro .big{font-family:"IM Fell English",Georgia,serif;font-size:22px;text-align:center;margin:18px 0;line-height:1.4}
+#intro .nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+#intro .dots span{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--line);margin-right:6px}
+#intro .dots span.on{background:var(--ink)}
+#intro button,.hbtn{font:inherit;font-size:17px;padding:8px 18px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer;border-radius:2px}
+#intro button.ghost{background:none;color:var(--ink)}
+.hbtn{background:none;border-color:#e9dcc0;color:#e9dcc0;font-size:14px;padding:3px 10px}
+@media (max-width:1100px){#app{grid-template-columns:1fr;height:auto}#right{display:block}#notes{max-height:none;margin-bottom:14px}}
+@media (prefers-reduced-motion:reduce){.coin{transition:none!important}}
+
+/* scene 2 */
+.labh{margin:18px 0 6px;font-size:21px;color:var(--red);border-top:2px solid var(--ink);padding-top:12px}
+#lqs{display:flex;flex-direction:column;gap:2px;margin:0 0 8px;font-size:15px;font-style:italic;color:var(--ink2)}
+#lqs .done{color:var(--green);font-style:normal;text-decoration:line-through}
+#finalBox{margin-top:14px;padding:10px 12px;border:1.5px solid var(--ink);border-radius:4px;background:rgba(139,42,31,.05)}
+#finalBox .fq{font-family:"IM Fell English",Georgia,serif;font-size:18px;margin-bottom:6px}
+#finalBox.locked .slot{border-style:solid;border-color:var(--green);background:rgba(47,93,58,.08);cursor:default}
+#finalBox.shake{animation:shake .35s}
+.newtag{font-size:11px;color:var(--red);font-family:"EB Garamond",Georgia,serif;font-weight:600;vertical-align:middle;margin-left:4px}
+.coin.ghost{background:none;box-shadow:none;border:1.5px dashed #f2b7a6;color:#f2b7a6}
+.coin.ghost::after{content:"?"}
+.ghostpile .plab{color:#f2b7a6}
+.dials{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:10px 0 6px}
+.dial{display:flex;flex-direction:column;align-items:center;max-width:200px}
+.dial .dt{font-family:"IM Fell English",Georgia,serif;font-size:19px}
+.dial .ds{font-size:14px;color:var(--ink2);font-style:italic;line-height:1.3}
+.epi{font-family:"IM Fell English",Georgia,serif;font-style:italic;font-size:17px;color:var(--ink2)}
+.epi span{font-size:13px;font-family:"EB Garamond",Georgia,serif}
+#door .card{max-width:620px;max-height:94vh;overflow:auto}
+figure.plate{margin:4px 0 14px;text-align:center}
+figure.plate img{max-width:100%;max-height:260px;border:1px solid var(--line);filter:sepia(.35) contrast(1.05);background:#fbf6e8;box-shadow:2px 3px 0 rgba(0,0,0,.08)}
+figure.plate figcaption{font-size:13px;color:var(--ink2);font-style:italic;margin-top:4px}
+.nextbtn{display:inline-block;font:inherit;font-family:"IM Fell English",Georgia,serif;font-size:19px;padding:9px 20px;margin:6px;background:var(--ink);color:var(--paper);text-decoration:none;border-radius:2px}
+.nextbtn:hover{background:#4a3526}
+.snav{display:inline-flex;gap:4px}
+.snav a{font-size:13px;padding:2px 8px;border:1px solid rgba(233,220,192,.45);color:#e9dcc0;text-decoration:none;border-radius:2px}
+.snav a.on{background:#e9dcc0;color:var(--ink)}
+.snav a.done::after{content:" ✓"}
+header a.hbtn{text-decoration:none}
+/* reprinted receipt */
+.rhead{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);margin:18px 0 0}
+canvas.rc{display:block;width:100%;max-width:420px;height:auto;margin:10px auto 4px;transform:rotate(-.5deg);filter:drop-shadow(2px 4px 0 rgba(0,0,0,.15))}
+.rbtns{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+</style>
+</head>
+<body>
+<div id="intro"><div class="card" id="introCard"></div></div>
+<header>
+  <h1>A Cup of Tea</h1>
+  <span class="sub">Scene 2 · Havana, the harvest</span>
+  <span class="prog" id="prog"></span>
+  <span class="snav" id="snav" aria-label="Scenes"></span>
+  <a class="hbtn" href="/">Homo Ludens</a>
+  <button class="hbtn" id="sndBtn">Sound: on</button>
+  <button class="hbtn" id="hintBtn">Hint</button>
+  <button class="hbtn" id="helpBtn">Briefing</button>
+</header>
+<div id="app">
+  <aside class="panel" id="desk"><h2>The desk</h2><div id="tabs"></div>
+    <p class="hint" style="margin-top:14px">Click the <span class="c" style="cursor:default">dotted</span> words and figures in a document to copy them into your notebook.</p>
+  </aside>
+  <main class="panel" id="doc"></main>
+  <section class="panel" id="right">
+    <div id="notes">
+      <h3>Notebook</h3>
+      <p class="hint">Drag a note into the ledger, or click a note and then click an empty box.</p>
+      <div id="chips" class="chips"></div>
+    </div>
+    <div id="ledger">
+      <h3>Ledger: whose is the 1.75d?</h3>
+      <p class="hint">Fill the lines in any order. A line locks only when all three boxes are right; you'll be told how many are right, not which.</p>
+      <div id="qs"></div>
+      <table class="ledger" id="mtable"></table>
+      <div id="tray"></div>
+      <button id="work" class="tbtn" style="margin-top:10px;width:100%" disabled>Work it out</button>
+      <div id="workOut" class="tool-out" style="display:none"></div>
+      <button id="pull" disabled>Open the Labour page</button>
+      <div id="labourPage" style="display:none">
+        <h3 class="labh">Labour: who worked, how long, for what?</h3>
+        <p class="hint">The same rules. This page is kept in hours, not pence.</p>
+        <div id="lqs"></div>
+        <table class="ledger" id="ltable"></table>
+        <div id="finalBox">
+          <div class="fq">For this pound of sugar, the London shoemaker worked:</div>
+          <div class="slot" data-slot="f1.time" id="fslot"></div>
+        </div>
+      </div>
+      <div id="msg"></div>
+    </div>
+  </section>
+</div>
+<div id="door"><div class="card">
+  <div class="dtype">The second page is closed</div>
+  <h2>Two clocks</h2>
+  <div class="dials" id="dials"></div>
+  <p>The shoemaker gave three hours of a twelve-hour day for this pound of sugar. The woman who cut the cane gave a share of a day of eighteen or twenty hours, and was paid in nothing she could spend. Nobody wrote down how many of her minutes are in this pound.</p>
+  <p class="epi">"As an accompaniment, weak tea, with perhaps a little sugar, milk, or spirits, is universally drunk."<br><span>Engels, 1845</span></p>
+  <div class="rhead">The receipt, reprinted</div>
+  <canvas class="rc" id="rcpt" role="img" aria-label="The grocer's receipt, reprinted with every share of the 4½d and the hours of work"></canvas>
+  <div class="rbtns"><button id="rSave">Save the receipt</button><button id="rCopy">Copy as text</button></div>
+  <p>In East London the woman stirs the brown sugar into her tea. Next, the tea itself: 5d for two ounces, and more than half of what she paid for it was tax.</p>
+  <a class="nextbtn" href="/cupoftea/3/">Back to London, for the tea →</a>
+  <button onclick="document.getElementById('door').classList.remove('on')">Back to the ledger</button>
+</div></div>
+<div class="toast" id="toast"></div>
+<script>
+/* ===== INTRO ===== */
+const INTRO = [
+ `<div class="kicker">Havana · the harvest</div>
+  <h2>The thread leads south</h2>
+  <p>In East London, the woman stirs a spoonful of brown sugar into weak tea. She paid 4½d for the pound. You have found where 2.75d of it went: the grocer, Her Majesty's Customs, the shipowner.</p>
+  <p>The other <b>1.75d</b>, seven of her eighteen farthings, never reached London. The sugar was bought in bond as Havana sugar. The money stayed where the sugar was made.</p>
+  <p>Outside Havana the cane harvest, the <i>zafra</i>, has begun. The mills are running.</p>`,
+ `<div class="kicker">Your desk</div>
+  <h2>A ledger with two pages</h2>
+  <p>The first page is kept in money, like London's: <b>who</b> took a share of the 1.75d, <b>for what</b>, and <b>how much</b>.</p>
+  <p>The second page opens when the first is closed. It is kept in <b>hours</b>: who worked, how long a day, and what they were paid.</p>
+  <div class="big">"1 lb. Foreign Muscovado ... 4½d"</div>`,
+ `<div class="kicker">How to play</div>
+  <h2>Account for the time, too</h2>
+  <ol>
+   <li><b>Read and note.</b> As before, click dotted words and figures. Some papers are new; some you have seen in London.</li>
+   <li><b>First page: money.</b> Use the Conversion table. Its remainder now starts from 1.75d.</li>
+   <li><b>Second page: hours.</b> A new tool, the <b>Clock</b>, turns a weekly wage into pence per hour, and pence into hours of work.</li>
+   <li><b>Last question.</b> How many hours of a London worker's life are in this pound of sugar?</li>
+  </ol>`
+];
+let introStep=0;
+function renderIntro(){
+  const last=introStep===INTRO.length-1;
+  $("#introCard").innerHTML = INTRO[introStep] + `<div class="nav">
+    <div class="dots">${INTRO.map((_,i)=>`<span class="${i===introStep?"on":""}"></span>`).join("")}</div>
+    <div>${introStep>0?'<button class="ghost" data-go="-1">Back</button> ':''}<button data-go="${last?"start":"1"}">${last?"Sit down at the desk":"Continue"}</button></div></div>`;
+}
+document.getElementById("introCard").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-go]"); if(!b) return;
+  if(b.dataset.go==="start"){ $("#intro").classList.add("off"); bell(520,1,2.6,.1); startAmbience(); return; }
+  introStep+=+b.dataset.go; renderIntro();
+});
+document.getElementById("helpBtn").addEventListener("click",()=>{ introStep=INTRO.length-1; renderIntro(); $("#intro").classList.remove("off"); });
+
+/* ===== SCENE DATA =====
+   All figures from the research report (sections 3, 4, 7 Ledger A, 8). Assumption made by the game: a six-day working week. */
+const CLUES = {
+  // money page
+  planter:   {t:"The Cuban planter", cat:"who", conf:"sourced"},
+  merchant:  {t:"The Havana merchant", cat:"who", conf:"sourced"},
+  shipowner: {t:"The shipowner", cat:"who", conf:"sourced"},
+  w_grow:    {t:"Growing and boiling the cane", cat:"what", conf:"sourced"},
+  w_export:  {t:"Selling it on: export, commission, insurance, profit", cat:"what", conf:"sourced"},
+  w_freight: {t:"Freight across the Atlantic", cat:"what", conf:"sourced"},
+  d107: {t:"1.07d", cat:"share", conf:"calc", note:"10s per cwt"},
+  d064: {t:"0.64d", cat:"share", conf:"calc", note:"6s per cwt"},
+  d068: {t:"0.68d", cat:"share", conf:"inference", note:"Detective's inference: 1.75 − 1.07"},
+  // labour page
+  cutter:    {t:"An enslaved cane-cutter", cat:"who", conf:"sourced"},
+  shoemaker: {t:"A London shoemaker", cat:"who", conf:"sourced"},
+  widow:     {t:"A widowed shoe-binder", cat:"who", conf:"sourced"},
+  coal:      {t:"A coal-whipper", cat:"who", conf:"sourced"},
+  h12:   {t:"12 hours", cat:"hours", conf:"sourced"},
+  h1820: {t:"18–20 hours", cat:"hours", conf:"sourced"},
+  w9s:   {t:"9s a week", cat:"wage", conf:"sourced"},
+  w31:   {t:"3s 1½d a week", cat:"wage", conf:"sourced"},
+  wcoal: {t:"£39 6s 6d a year", cat:"wage", conf:"sourced"},
+  nowage:{t:"No wage: fed and clothed", cat:"wage", conf:"sourced"}
+};
+const CAT_LABEL = {who:"Who", what:"What for", share:"Share (pence)", hours:"Hours a day", wage:"Paid", time:"Hours of work"};
+const CONF_LABEL = {sourced:"sourced", calc:"calculated", inference:"inference"};
+
+const GROUPS = {
+  money:  {fields:["who","what","share"], heads:["Who","What for","Share"]},
+  labour: {fields:["who","hours","wage"], heads:["Who","Hours a day","Paid"]}
+};
+/* coins: farthings, rounded. 4 + 3 = 7 = the 1.75d left over from Scene 1. */
+const ROWS = [
+  {id:"m1", g:"money", q:"Who grew and boiled it?", ans:{who:"planter", what:"w_grow", share:"d107"}, coins:4},
+  {id:"m2", g:"money", q:"Who sold it out of Havana?", ans:{who:"merchant", what:"w_export", share:"d068"}, coins:3},
+  {id:"l1", g:"labour", q:"Who worked for this sugar in London?", ans:{who:"shoemaker", hours:"h12", wage:"w9s"}},
+  {id:"l2", g:"labour", q:"Who cut the cane?", ans:{who:"cutter", hours:"h1820", wage:"nowage"}}
+];
+const GAP = 1.75, RETAIL = 4.5, COUNTER = 7;
+
+/* ===== WRONG-ATTEMPT REACTIONS ===== */
+const WRONG_PAIR = {
+  "planter|w_export":"The planter sells at the mill. Somebody in Havana does the rest.",
+  "planter|w_freight":"The planter's sugar sails in another man's ship.",
+  "merchant|w_grow":"A Havana counting-house grows nothing but paper.",
+  "merchant|w_freight":"The merchant insures the ship. He does not sail it.",
+  "shipowner|w_grow":"Shipowners carry the sugar. Somebody else grows it.",
+  "shipowner|w_export":"The shipowner's account was settled in London. You have it already.",
+  "shipowner|w_freight":"Quite right, and already paid: the freight is in London's ledger, not in the 1.75d.",
+  "shoemaker|h1820":"Eighteen hours at a London bench? Mayhew says otherwise.",
+  "cutter|h12":"Twelve hours? Not at harvest. Read Madden.",
+  "shoemaker|nowage":"He is poor, not owned. Somebody pays him.",
+  "widow|nowage":"She is poor, not owned. Somebody pays her.",
+  "coal|nowage":"He is poor, not owned. Somebody pays him.",
+  "cutter|w9s":"Nobody paid her a wage.",
+  "cutter|w31":"Nobody paid her a wage.",
+  "cutter|wcoal":"Nobody paid her a wage.",
+  "widow|h12":"Mayhew does not give her hours.",
+  "coal|h12":"Nobody wrote down the coal-whipper's hours.",
+  "widow|h1820":"Those hours were written about Cuba, not London.",
+  "coal|h1820":"Those hours were written about Cuba, not London."
+};
+const WRONG_FIG = {
+  "0.64d":"The freight is already in the London ledger.",
+  "2.41d":"Jamaica's cost. This sugar came from Havana.",
+  "2.14d":"The West India planters' complaint, not the Cuban planter's cost.",
+  "1.69d":"Pakington's gap between slave and free labour. A difference, not a cost.",
+  "2.39d":"That is the whole price in bond. The 1.75d is only part of it.",
+  "2.47d":"Wilson's price from before the Act.",
+  "1.75d":"That is the whole question, not one man's share."
+};
+const WRONG_ANY = [
+  "The sums won't have it.",
+  "A Havana clerk would frown at that.",
+  "The ledger refuses it. Look again at the papers.",
+  "Not quite. Somebody in these papers would object."
+];
+let wrongN=0;
+function reaction(rid){
+  const g=rowOf(rid).g, f=GROUPS[g].fields, p=k=>S.place[rid+"."+k];
+  const who=p("who");
+  for(const k of f.slice(1)){ const key=who+"|"+p(k); if(WRONG_PAIR[key]) return WRONG_PAIR[key]; }
+  const sh=p("share"); if(sh && WRONG_FIG[CLUES[sh].t]) return WRONG_FIG[CLUES[sh].t];
+  return WRONG_ANY[(wrongN++)%WRONG_ANY.length];
+}
+
+const DOCS = [
+ {id:"london", tab:"Your London ledger", sub:"Scene 1", type:"Detective's notes · Scene 1, closed", title:"What London's ledger left open",
+  html:`<table class="t"><tr><th>Line</th><th>per lb</th></tr>
+   <tr><td>Price on the receipt</td><td>4.50d</td></tr>
+   <tr><td>Wholesaler and grocer</td><td>0.29d</td></tr>
+   <tr><td>HM Customs (duty, 17s per cwt)</td><td>1.82d</td></tr>
+   <tr><td>The shipowner (freight, 6s per cwt)</td><td>0.64d</td></tr>
+   <tr><td><b>Missing from the account</b></td><td><b>1.75d</b></td></tr></table>
+   <div class="note">Havana sugar cost 2.39d a pound in a London warehouse, before duty. Take away the freight (0.64d) and 1.75d is left: what the sugar was worth when it left Havana. Somebody on the island took every part of it.</div>`,
+  src:"Your own ledger from Scene 1. Wilson, Hansard 31 May 1850; Hansard 3 July 1848."},
+
+ {id:"bill", tab:"Shipping note", sub:"Game document", type:"Game document · invented shipping note, no figures recorded", title:"Shipped at Havana",
+  html:`<div class="receipt" style="max-width:380px">
+     <div style="text-align:center;font-size:19px">Shipped in good order at Havana</div>
+     <div style="text-align:center;font-size:14px;margin-bottom:8px">boxes of brown sugar, for London</div>
+     <div class="row"><span>Bought of the planter, at the mill</span><span>…</span></div>
+     <div class="row"><span>Export charges</span><span>…</span></div>
+     <div class="row"><span>Commission</span><span>…</span></div>
+     <div class="row"><span>Insurance</span><span>…</span></div>
+     <div class="row tot"><span>Signed for <span class="c" data-c="merchant">the merchant house</span></span><span></span></div>
+   </div>
+   <p>Between the mill and the ship, the sugar passed through a merchant house in Havana. It paid the planter, and charged for <span class="c" data-c="w_export">selling it on: export, commission, insurance, profit</span>.</p>
+   <div class="note">No paper on this desk gives these charges in figures. The planter's own profit on the sale is somewhere in this line too; nobody split it out. You will have to reckon this share, not read it.</div>`,
+  src:"Game document. The line items follow the research report, Ledger A: 'planter's profit + export costs + commission + insurance (remainder)'."},
+
+ {id:"h1848", img:{src:"https://commons.wikimedia.org/wiki/Special:FilePath/Ingenio_Flor_de_Cuba_casa_de_calderas_1857.jpg?width=640", cap:"The boiling house at Flor de Cuba, 1857. From Cantero and Laplante, <i>Los ingenios</i>."}, tab:"Hansard, 1848", sub:"House of Commons", type:"Parliament · House of Commons debate, 3 July 1848", title:"The cost of making sugar",
+  html:`<p>Figures put forward in the debate, per cwt:</p>
+   <table class="t"><tr><th>Item</th><th>per cwt</th></tr>
+   <tr><td>Cost of <span class="c" data-c="w_grow">growing and boiling the cane</span> in Cuba (paid by <span class="c" data-c="planter">the planter</span>)</td><td>≈ 10s</td></tr>
+   <tr><td>Cost of production in Jamaica</td><td>≈ 22s 6d</td></tr>
+   <tr><td><span class="c" data-c="w_freight">Freight</span> from either island (paid to <span class="c" data-c="shipowner">the shipowner</span>)</td><td>6s</td></tr></table>
+   <div class="quote">"cannot, on an average, be raised under 20s. per cwt"</div>
+   <p class="tr">A West India petition: our sugar cannot be produced for less than 20s per cwt.</p>
+   <p>Pakington put the difference in cost between slave and free labour at "about 15s. 9d." per cwt.</p>
+   <div class="quote">"60,000 slaves in 1846, and 63,000 in 1847"</div>
+   <p class="tr">Oswald: the numbers of enslaved people imported in those years.</p>`,
+  src:"Hansard HC 3 July 1848 (hansard.parliament.uk)."},
+
+ {id:"wilson", tab:"Hansard, 1850", sub:"House of Commons", type:"Parliament · James Wilson and others, House of Commons, 31 May 1850", title:"Havana sugar in bond",
+  html:`<p>Wilson's figures for the average price of Havana sugar in bond in London (before duty is paid):</p>
+   <table class="t"><tr><th>Period</th><th>per cwt</th></tr>
+   <tr><td>Three years before the 1846 Act</td><td>23s 1d</td></tr>
+   <tr><td>Three years since the Act</td><td>22s 4d</td></tr></table>
+   <p>Wilson's count of "slave-grown" sugar in Britain's consumption: 62,000 of 289,000 tons in 1847; 36,000 of 318,000 tons in 1850.</p>
+   <div class="quote">"the man who bought the sugar produced by the slave, was as bad as the man who bought the slave that produced the sugar"</div>
+   <p class="tr">Buxton, reporting the opposite view: buying slave-grown sugar is as bad as buying the slave.</p>`,
+  src:"Hansard HC 31 May 1850, \"Sugar duties\" (api.parliament.uk)."},
+
+ {id:"madden", img:{src:"https://commons.wikimedia.org/wiki/Special:FilePath/Ingenio_Flor_de_Cuba_1857.jpg?width=640", cap:"The Flor de Cuba sugar estate, 1857. From Cantero and Laplante, <i>Los ingenios</i> (Havana, 1857)."}, tab:"Madden, 1849", sub:"Book", type:"Book · R. R. Madden, The Island of Cuba, 1849", title:"The harvest season",
+  html:`<div class="quote">"the owners of slaves compel the latter to yield <span class="c" data-c="h1820">eighteen, and even twenty hours a day</span> during that season"</div>
+   <p class="tr">During the harvest (the <i>zafra</i>), enslaved people are forced to work eighteen to twenty hours a day.</p>
+   <div class="quote">"The owners of slaves say the mortality varies from three to seven per cent, a year"</div>
+   <p class="tr">By the owners' own account, three to seven in every hundred die each year.</p>
+   <div class="quote">"The slave-trade with this island now is as extensive as ever"</div>
+   <p class="tr">The British commissioner in Havana: the slave trade to Cuba goes on as before.</p>
+   <div class="note">The people who cut the cane are <span class="c" data-c="cutter">enslaved cane-cutters</span>. They are owned, not hired: the planter gives them food and clothing, and <span class="c" data-c="nowage">no wage</span>. What that food and clothing cost is not in any paper on this desk.</div>`,
+  src:"Madden 1849 (archive.org text). No page number; check against the original."},
+
+ {id:"mayhew", img:{src:"https://commons.wikimedia.org/wiki/Special:FilePath/Henry_Mayhew._from_a_daguerreotype_by_Beard.jpg?width=640", cap:"Henry Mayhew, from a daguerreotype by Beard. Frontispiece to <i>London Labour and the London Poor</i>, 1851."}, hidden:true, tab:"Mayhew, 1850", sub:"Newspaper letter · new", type:"Newspaper · Morning Chronicle, Letter XXXV, 14 February 1850", title:"Henry Mayhew among the shoemakers",
+  html:`<p>Mayhew's notes on what London's cheap shoe trade pays:</p>
+   <table class="t"><tr><th>Worker</th><th>Hours</th><th>Earnings</th></tr>
+   <tr><td><span class="c" data-c="shoemaker">A shoemaker</span> in the cheap trade</td><td><span class="c" data-c="h12">12 hours</span> a day</td><td><span class="c" data-c="w9s">9s a week</span></td></tr>
+   <tr><td><span class="c" data-c="widow">A widowed shoe-binder</span>, who had had no sugar for six months</td><td>not given</td><td><span class="c" data-c="w31">3s 1½d a week</span></td></tr></table>
+   <div class="quote">"neither the tea nor coffee stands him in a halfpenny a pint"</div>
+   <p class="tr">A coffee-stall keeper: a pint of tea costs him less than a halfpenny to make.</p>`,
+  src:"Mayhew, Morning Chronicle Letter XXXV, victorianlondon.org transcription."},
+
+ {id:"money", hidden:true, tab:"Wages of the poor", sub:"Reference · new", type:"Reference · Victorian London, 'Money'", title:"A coal-whipper's year",
+  html:`<p>The intro told you her husband unloads coal on the docks. A <span class="c" data-c="coal">coal-whipper</span> in steady work could earn:</p>
+   <div class="quote"><span class="c" data-c="wcoal">£39 6s 6d a year</span></div>
+   <p class="tr">About fifteen shillings a week, if the work never stopped.</p>
+   <div class="note">His hours are not given. The work came by the ship, not by the clock.</div>`,
+  src:"victorianlondon.org, 'Money'. Per week: calculated."},
+
+ {id:"table", tab:"Conversion table", sub:"Reckoner", type:"Detective's tool · exact conversions", title:"Money, weight, and now time",
+  html:`<p>£1 = 20 shillings (s) = 240 pence (d) · 1s = 12d · 1 cwt = 112 lb · 1 lb = 16 oz</p>
+   <div class="tool" id="reck">
+     <div class="tool-h">1 · Convert a price, or write your own</div>
+     <div class="tool-row">
+       <label>£ <input type="number" min="0" step="1" data-k="L" value="0"></label>
+       <label>s <input type="number" min="0" step="1" data-k="s" value="0"></label>
+       <label>d <input type="number" min="0" step="0.25" data-k="d" value="0"></label>
+       <label>per <select data-k="u"><option value="cwt">cwt</option><option value="lb">lb</option><option value="oz">oz</option><option value="none">(just money: write your own figure)</option></select></label>
+     </div>
+     <div class="tool-out" id="reckOut">Enter a figure from one of the papers.</div>
+     <button class="tbtn" id="reckNote" disabled>Copy to notebook</button>
+   </div>
+   <div class="tool" id="rem">
+     <div class="tool-h">2 · Reckon the remainder</div>
+     <p class="hint" style="margin:0 0 6px">Take a figure away from what stayed in Havana.</p>
+     <div class="tool-row">1.75d − <select data-r="a"></select></div>
+     <div class="tool-out" id="remOut"></div>
+     <button class="tbtn" id="remNote" disabled>Copy remainder to notebook</button>
+   </div>
+   <div class="tool clock" id="clock">
+     <div class="tool-h">3 · The Clock <span class="newtag">new</span></div>
+     <p class="hint" style="margin:0 0 6px">How long does a wage take to earn a sum? Assumes a six-day working week.</p>
+     <div class="tool-row">
+       <label>£ <input type="number" min="0" step="1" data-k="L" value="0"></label>
+       <label>s <input type="number" min="0" step="1" data-k="s" value="0"></label>
+       <label>d <input type="number" min="0" step="0.5" data-k="d" value="0"></label>
+       <label>a <select data-k="per"><option value="week">week</option><option value="year">year</option></select></label>
+       <label><input type="number" min="0" max="24" step="1" data-k="h" value="0"> hours a day</label>
+     </div>
+     <div class="tool-out" id="clockOut">Enter a wage and the hours worked.</div>
+     <button class="tbtn" id="clockNote" disabled>Copy to notebook</button>
+   </div>
+   <div class="note">Which figure belongs to what? Find out from the other papers first.</div>`,
+  src:"Exact arithmetic. Results are marked calculated; a remainder is the detective's inference. The six-day week is the game's assumption."}
+];
+
+/* ===== STATE ===== */
+const S = {got:new Set(), place:{}, locked:new Set(), cur:"london", sel:null, seen:new Set(["london"]), lockAns:{}, lockOrder:[],
+  coins:Array(COUNTER).fill("counter"), labour:false, ghost:false, done:false};
+function $(s){return document.querySelector(s)}
+const rowOf = id => ROWS.find(r=>r.id===id);
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove("on"),Math.max(2800,t.length*55))}
+function fmt(n){return n.toFixed(2)+"d"}
+const lockedIn = g => ROWS.filter(r=>r.g===g && S.locked.has(r.id)).length;
+const rowsIn = g => ROWS.filter(r=>r.g===g).length;
+
+/* ===== DESK ===== */
+function renderTabs(){
+  $("#tabs").innerHTML = DOCS.filter(d=>!d.hidden).map(d=>
+    `<button class="doctab ${d.id===S.cur?"on":""} ${d.fresh?"fresh":""}" data-d="${d.id}">${d.tab}<small>${d.sub}</small>${S.seen.has(d.id)?"":'<span class="new">new</span>'}</button>`).join("");
+}
+function renderDoc(){
+  const d = DOCS.find(x=>x.id===S.cur);
+  $("#doc").innerHTML = `<div class="dtype">${d.type}</div><h2>${d.title}</h2>${d.img?`<figure class="plate"><img src="${d.img.src}" alt="" loading="lazy" onerror="this.parentNode.remove()"><figcaption>${d.img.cap} Wikimedia Commons, public domain.</figcaption></figure>`:""}${d.html}<div class="src">Source: ${d.src}</div>`;
+  $("#doc").querySelectorAll(".c").forEach(e=>{ if(S.got.has(e.dataset.c)) e.classList.add("got") });
+  $("#doc").scrollTop=0;
+  if(d.id==="table"){ $("#clock").style.display=S.labour?"":"none"; fillRem(); calcReck(); calcClock(); }
+}
+$("#tabs").addEventListener("click",e=>{
+  const b=e.target.closest(".doctab"); if(!b) return;
+  S.cur=b.dataset.d; S.seen.add(S.cur); DOCS.find(x=>x.id===S.cur).fresh=false; renderTabs(); renderDoc();
+});
+$("#doc").addEventListener("click",e=>{
+  const c=e.target.closest(".c"); if(!c||!c.dataset.c) return;
+  collect(c.dataset.c); c.classList.add("got");
+});
+
+/* ===== NOTES ===== */
+function collect(id){
+  if(S.got.has(id)){ toast("Already in your notebook."); return; }
+  S.got.add(id); S.fresh=id; scratch();
+  toast(`Noted: ${CLUES[id].t}`);
+  renderChips(); progress(); fillRem(); renderQs();
+}
+
+/* ===== RECKONER ===== */
+function lsd(p){
+  const L=Math.floor(p/240), s=Math.floor((p-L*240)/12), d=+(p-L*240-s*12).toFixed(2);
+  return [L?`£${L}`:"", s?`${s}s`:"", (d||(!L&&!s))?`${d}d`:""].filter(Boolean).join(" ");
+}
+function shareClue(v,conf,note){
+  const t=v.toFixed(2)+"d";
+  let id=Object.keys(CLUES).find(k=>CLUES[k].cat==="share"&&CLUES[k].t===t);
+  if(!id){ id="x"+t.replace(".","_"); CLUES[id]={t,cat:"share",conf,note}; }
+  return id;
+}
+function hm(h){ const m=Math.round(h*60), H=Math.floor(m/60), M=m%60;
+  return M===0 ? `${H} hour${H===1?"":"s"}` : H===0 ? `${M} minutes` : `${H} h ${M} min`; }
+function timeClue(h,note){
+  const t=hm(h); const id = t==="3 hours" ? "t3h" : "t"+Math.round(h*60);
+  if(!CLUES[id]) CLUES[id]={t,cat:"time",conf:"calc",note};
+  return id;
+}
+let reckVal=null, remVal=null, clockVal=null;
+function calcReck(){
+  const r=$("#reck"); if(!r) return;
+  const g=k=>parseFloat(r.querySelector(`[data-k="${k}"]`).value)||0;
+  const u=r.querySelector('[data-k="u"]').value;
+  const pence=g("L")*240+g("s")*12+g("d");
+  const out=$("#reckOut"), btn=$("#reckNote");
+  if(!pence){ out.textContent="Enter a figure from one of the papers."; btn.disabled=true; reckVal=null; return; }
+  if(u==="none"){
+    out.innerHTML=`${lsd(pence)} = <b>${pence.toFixed(2)}d</b><br><span class="hint">Copies ${pence.toFixed(2)}d to your notebook as your own figure.</span>`;
+    reckVal={v:pence, note:"Your own figure", own:true}; btn.disabled=false; return;
+  }
+  const perLb = u==="cwt"? pence/112 : u==="lb"? pence : pence*16;
+  out.innerHTML=`${lsd(pence)} per ${u}<br>= <b>${perLb.toFixed(2)}d per lb</b> · ${lsd(perLb*112)} per cwt`;
+  reckVal={v:perLb, note:`${lsd(pence)} per ${u}`}; btn.disabled=false;
+}
+function fillRem(){
+  const r=$("#rem"); if(!r) return;
+  const opts=`<option value="">—</option>`+[...S.got].filter(id=>CLUES[id].cat==="share"&&CLUES[id].conf!=="inference")
+    .map(id=>`<option value="${id}">${CLUES[id].t}${CLUES[id].note?" ("+CLUES[id].note+")":""}</option>`).join("");
+  r.querySelectorAll("select").forEach(s=>{const v=s.value; s.innerHTML=opts; s.value=v;});
+  calcRem();
+}
+function calcRem(){
+  const r=$("#rem"); if(!r) return;
+  const a=r.querySelector("select").value, out=$("#remOut"), btn=$("#remNote");
+  if(!a){ out.innerHTML="Choose a figure from your notebook."; btn.disabled=true; remVal=null; return; }
+  const v=GAP-parseFloat(CLUES[a].t);
+  out.innerHTML=`1.75d − ${CLUES[a].t} = <b>${v.toFixed(2)}d</b> left over`;
+  remVal={v, note:`Inference: 1.75 − ${CLUES[a].t}`}; btn.disabled=v<=0;
+}
+function calcClock(){
+  const r=$("#clock"); if(!r) return;
+  const g=k=>parseFloat(r.querySelector(`[data-k="${k}"]`).value)||0;
+  const per=r.querySelector('[data-k="per"]').value;
+  const pence=g("L")*240+g("s")*12+g("d"), h=g("h");
+  const out=$("#clockOut"), btn=$("#clockNote");
+  if(!pence||!h){ out.textContent = pence&&!h ? "How many hours a day? Without the hours, the clock cannot run." : "Enter a wage and the hours worked."; btn.disabled=true; clockVal=null; return; }
+  const week = per==="year" ? pence/52 : pence;
+  const perHour = week/(6*h), need = RETAIL/perHour;
+  out.innerHTML=`${lsd(pence)} a ${per}${per==="year"?` ≈ ${lsd(week)} a week`:""} · ${h} hours a day, six days<br>
+    = <b>${perHour.toFixed(2)}d an hour</b><br>To earn the 4½d for a pound of sugar: <b>${hm(need)}</b>`;
+  clockVal={h:need, note:`${lsd(pence)} a ${per}, ${h} hours a day`}; btn.disabled=false;
+}
+$("#doc").addEventListener("input",e=>{ if(e.target.closest("#reck")) calcReck(); if(e.target.closest("#rem")) calcRem(); if(e.target.closest("#clock")) calcClock(); });
+$("#doc").addEventListener("change",e=>{ if(e.target.closest("#reck")) calcReck(); if(e.target.closest("#rem")) calcRem(); if(e.target.closest("#clock")) calcClock(); });
+$("#doc").addEventListener("click",e=>{
+  if(e.target.id==="reckNote"&&reckVal) collect(shareClue(reckVal.v,reckVal.own?"inference":"calc",reckVal.note));
+  if(e.target.id==="remNote"&&remVal){
+    const id=shareClue(remVal.v,"inference",remVal.note);
+    if(id==="d068") toast("Detective's inference: once the planter is paid, 0.68d is left for everything between the mill and the ship.");
+    collect(id);
+  }
+  if(e.target.id==="clockNote"&&clockVal) collect(timeClue(clockVal.h,clockVal.note));
+});
+
+function chipHTML(id,inSlot){
+  const c=CLUES[id];
+  return `<span class="chip ${!inSlot&&S.sel===id?"sel":""} ${!inSlot&&S.fresh===id?"fresh":""}" draggable="${!inSlot}" data-id="${id}" data-conf="${c.conf==="calc"?"hesap":c.conf==="inference"?"cikarim":"kaynak"}" title="${CONF_LABEL[c.conf]}${c.note?" · "+c.note:""}">${c.t}</span>`;
+}
+function renderChips(){
+  const groups={who:[],what:[],share:[],hours:[],wage:[],time:[]};
+  [...S.got].forEach(id=>groups[CLUES[id].cat].push(id));
+  $("#chips").innerHTML = Object.entries(groups).filter(([,v])=>v.length)
+    .map(([k,v])=>`<div class="grp">${CAT_LABEL[k]}</div>`+v.map(id=>chipHTML(id)).join("")).join("")
+    || `<span class="hint">No notes yet. Start with your London ledger and the papers.</span>`;
+  S.fresh=null;
+}
+$("#chips").addEventListener("click",e=>{
+  const c=e.target.closest(".chip"); if(!c) return;
+  S.sel = S.sel===c.dataset.id ? null : c.dataset.id; renderChips();
+});
+$("#chips").addEventListener("dragstart",e=>{
+  const c=e.target.closest(".chip"); if(!c) return; e.dataTransfer.setData("text/plain",c.dataset.id);
+});
+
+/* ===== LEDGERS ===== */
+function tableHTML(g){
+  const G=GROUPS[g];
+  let h=`<tr><th></th>${G.heads.map(x=>`<th>${x}</th>`).join("")}</tr>`;
+  ROWS.filter(r=>r.g===g).forEach((row,i)=>{
+    const lk=S.locked.has(row.id);
+    h+=`<tr id="${row.id}" class="${lk?"locked":""}"><td class="num">${lk?"✓":"No."+(i+1)}</td>`+
+      G.fields.map(f=>{ const v=S.place[row.id+"."+f];
+        return `<td><div class="slot" data-slot="${row.id}.${f}">${v?chipHTML(v,true):""}</div></td>`; }).join("")+`</tr>`;
+  });
+  return h;
+}
+function renderLedger(){
+  $("#mtable").innerHTML=tableHTML("money");
+  $("#ltable").innerHTML=tableHTML("labour");
+  $("#labourPage").style.display=S.labour?"":"none";
+  const f=S.place["f1.time"];
+  $("#fslot").innerHTML = f?chipHTML(f,true):"";
+  $("#finalBox").classList.toggle("locked",S.done);
+  $("#finalBox").style.display = lockedIn("labour")===rowsIn("labour") ? "" : "none";
+  renderQs(); renderTray();
+}
+
+/* ===== COINS ===== */
+function renderTray(){
+  const t=$("#tray"), before={};
+  t.querySelectorAll(".coin[data-i]").forEach(c=>before[c.dataset.i]=c.getBoundingClientRect());
+  const owners=["counter",...S.lockOrder.filter(id=>rowOf(id).g==="money")];
+  const left=S.coins.filter(w=>w==="counter").length;
+  const pile=o=>{
+    const coins=S.coins.map((w,i)=>w===o?`<span class="coin" data-i="${i}"></span>`:"").join("");
+    if(o==="counter"){
+      if(!left) return "";
+      return `<div class="pile counter havana"><div class="stack">${coins}</div><div class="plab"><b>Stayed in Havana</b><br>${S.locked.size?"Not yet accounted for":"1.75d"}</div></div>`;
+    }
+    const r=rowOf(S.lockAns[o]);
+    return `<div class="pile"><div class="stack">${coins}</div><div class="plab"><b>${CLUES[r.ans.who].t}</b><br>${CLUES[r.ans.share].t}</div></div>`;
+  };
+  const ghost = S.ghost ? `<div class="pile ghostpile"><div class="stack"><span class="coin ghost"></span></div><div class="plab"><b>The cane-cutter</b><br>Less than a farthing? Nobody recorded it.</div></div>` : "";
+  t.innerHTML=`<p class="th">The seven farthings that never reached London (¼d each). Each share is rounded to the nearest farthing.</p>
+    <div class="piles">${owners.map(pile).join("")}${ghost}</div>`;
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  let k=0;
+  t.querySelectorAll(".coin[data-i]").forEach(c=>{
+    const b=before[c.dataset.i]; if(!b) return;
+    const a=c.getBoundingClientRect(), dx=b.left-a.left, dy=b.top-a.top;
+    if(Math.abs(dx)<1&&Math.abs(dy)<1) return;
+    const rest=getComputedStyle(c).transform, base=rest==="none"?"":rest;
+    c.style.transition="none"; c.style.transform=`translate(${dx}px,${dy}px) ${base}`;
+    c.getBoundingClientRect();
+    c.style.transition=`transform .75s cubic-bezier(.3,.7,.25,1) ${k++*90}ms`;
+    c.style.transform="";
+  });
+}
+function moveCoins(rid,n){
+  const total=n;
+  for(let i=COUNTER-1;i>=0&&n>0;i--) if(S.coins[i]==="counter"){ S.coins[i]=rid; n--; }
+  for(let k=0;k<total;k++){
+    clink(.5+k*.09,.22);
+    if(Math.random()<.35) clink(.5+k*.09+.05+Math.random()*.04,.07);
+  }
+}
+
+/* ===== PLACING ===== */
+function placeAt(slot,id){
+  const [rid]=slot.split(".");
+  if(!CLUES[id]) return;
+  if(rid==="f1"){ if(S.done) return; S.place[slot]=id; S.sel=null; checkFinal(); renderLedger(); renderChips(); return; }
+  if(S.locked.has(rid)) return;
+  S.place[slot]=id; S.sel=null;
+  checkRow(rid); renderLedger(); renderChips(); progress();
+}
+function slotClick(e){
+  const s=e.target.closest(".slot[data-slot]"); if(!s) return;
+  const [rid]=s.dataset.slot.split(".");
+  if(S.locked.has(rid)||(rid==="f1"&&S.done)) return;
+  if(S.sel) placeAt(s.dataset.slot,S.sel);
+  else if(S.place[s.dataset.slot]){ delete S.place[s.dataset.slot]; renderLedger(); }
+  else toast("First pick a note from your notebook.");
+}
+["#mtable","#ltable","#finalBox"].forEach(sel=>{
+  const el=$(sel);
+  el.addEventListener("click",slotClick);
+  el.addEventListener("dragover",e=>{const s=e.target.closest(".slot[data-slot]"); if(s){e.preventDefault(); s.classList.add("over")}});
+  el.addEventListener("dragleave",e=>{const s=e.target.closest(".slot"); if(s) s.classList.remove("over")});
+  el.addEventListener("drop",e=>{const s=e.target.closest(".slot[data-slot]"); if(!s) return; e.preventDefault(); placeAt(s.dataset.slot,e.dataTransfer.getData("text/plain"));});
+});
+function checkRow(rid){
+  const row=rowOf(rid), F=GROUPS[row.g].fields;
+  if(F.some(f=>!S.place[rid+"."+f])) return;
+  const taken=Object.values(S.lockAns);
+  let best=0, hit=null;
+  ROWS.filter(r=>r.g===row.g && !taken.includes(r.id)).forEach(r=>{
+    const n=F.filter(f=>S.place[rid+"."+f]===r.ans[f]).length;
+    if(n>best) best=n; if(n===3) hit=r; });
+  if(hit){
+    S.locked.add(rid); S.lockAns[rid]=hit.id; S.lockOrder.push(rid); stamp(); $("#msg").textContent="";
+    if(hit.coins){ moveCoins(rid,hit.coins); toast(`Line locked. ${hit.coins} farthings to ${CLUES[hit.ans.who].t.replace(/^The /,"the ")}.`); }
+    else toast("Line locked.");
+    if(hit.id==="l2"){ S.ghost=true; setTimeout(()=>{ toast("Inside the planter's 1.07d: her food and clothing. Nobody wrote down what they cost."); renderTray(); },900); }
+    if(lockedIn("money")===rowsIn("money") && !S.labour) setTimeout(()=>{ toast("Every farthing is accounted for. But whose hands made the planter's 1.07d?"); checkPull(); },1400);
+    if(S.labour && lockedIn("labour")===rowsIn("labour")) setTimeout(()=>{ $("#msg").textContent="One question left, at the foot of the page."; },1400);
+  } else {
+    blots++;
+    setTimeout(()=>{const tr=document.getElementById(rid); if(tr){tr.classList.add("shake"); setTimeout(()=>tr.classList.remove("shake"),400)}},30);
+    $("#msg").innerHTML=`<span class="re">“${reaction(rid)}”</span>${best} of 3 boxes on that line are right.`;
+  }
+}
+function checkFinal(){
+  const id=S.place["f1.time"];
+  if(id==="t3h"){
+    S.done=true; $("#msg").textContent=""; toast("Three hours.");
+    stamp(); clink(.25,.18); showReceipt(); saveDone(SCENE);
+    setTimeout(()=>{ drawDials(); $("#door").classList.add("on"); },1300);
+  } else {
+    blots++;
+    const c=CLUES[id];
+    const line = c.cat!=="time" ? "The question asks for hours of work. Try the Clock."
+      : "That is somebody else's clock. Whose wage, and whose hours, did you put in?";
+    $("#msg").innerHTML=`<span class="re">“${line}”</span>Not the answer.`;
+    const b=$("#finalBox"); b.classList.add("shake"); setTimeout(()=>b.classList.remove("shake"),400);
+  }
+}
+function renderQs(){
+  const done=new Set(Object.values(S.lockAns));
+  const list=g=>ROWS.filter(r=>r.g===g).map(r=>`<span class="${done.has(r.id)?"done":""}">${done.has(r.id)?"✓":"☐"} ${r.q}</span>`).join("");
+  $("#qs").innerHTML=list("money"); $("#lqs").innerHTML=list("labour");
+  $("#work").disabled = !S.got.has("d107");
+}
+$("#work").addEventListener("click",()=>{
+  const o=$("#workOut"); o.style.display="block";
+  o.innerHTML=`1. What stayed in Havana: <b>1.75d</b><br>
+  2. The planter's cost of growing and boiling: <b>1.07d</b><br>
+  3. Take it away: 1.75d − 1.07d = <b>0.68d</b><br>
+  <span class="hint">That is everything between the mill and the ship: the merchant's charges and the planter's profit on the sale.</span>`;
+  if(!S.got.has("d068")) collect("d068");
+});
+function checkPull(){
+  const btn=$("#pull"), all=lockedIn("money")===rowsIn("money");
+  if(S.labour){ btn.style.display="none"; $("#work").style.display="none"; $("#workOut").style.display="none"; return; }
+  btn.disabled=!all;
+  if(all) $("#msg").textContent="The money page is closed. Open the Labour page.";
+}
+$("#pull").addEventListener("click",()=>{
+  if(S.labour) return;
+  S.labour=true; hush(2.5);
+  ["mayhew","money"].forEach(id=>{const d=DOCS.find(x=>x.id===id); d.hidden=false; d.fresh=true;});
+  const t=DOCS.find(x=>x.id==="table"); t.fresh=true; S.seen.delete("table");
+  renderLedger(); renderTabs(); checkPull(); if(S.cur==="table") renderDoc();
+  $("#msg").textContent="A second page has opened in the ledger. New papers are on the desk, and the Conversion table has a new tool: the Clock.";
+  setTimeout(()=>$("#labourPage").scrollIntoView({behavior:"smooth",block:"start"}),100);
+});
+function progress(){
+  const n=lockedIn("money")+lockedIn("labour");
+  $("#prog").textContent = `Notes ${S.got.size} · Lines ${n}/${ROWS.length}`;
+}
+
+/* ===== FINAL DIALS ===== */
+function arc(cx,cy,r,a0,a1){ // angles in turns, 0 = top, clockwise
+  const p=a=>[cx+r*Math.sin(a*2*Math.PI), cy-r*Math.cos(a*2*Math.PI)];
+  const [x0,y0]=p(a0),[x1,y1]=p(a1), large=(a1-a0)>.5?1:0;
+  return `M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${r},${r} 0 ${large} 1 ${x1.toFixed(1)},${y1.toFixed(1)} Z`;
+}
+function dial(title,sub,total,work,extra,dashTo){
+  const ticks=[...Array(total)].map((_,i)=>{const a=i/total*2*Math.PI;
+    return `<line x1="${60+50*Math.sin(a)}" y1="${60-50*Math.cos(a)}" x2="${60+45*Math.sin(a)}" y2="${60-45*Math.cos(a)}" stroke="var(--ink2)" stroke-width="1"/>`}).join("");
+  return `<div class="dial"><svg viewBox="0 0 120 120" width="150" height="150" aria-hidden="true">
+    <circle cx="60" cy="60" r="52" fill="#fbf6e8" stroke="var(--ink)" stroke-width="1.5"/>
+    ${dashTo?`<path d="${arc(60,60,44,0,dashTo/total)}" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-dasharray="3 3"/>`:""}
+    <path d="${arc(60,60,44,0,work/total)}" fill="${extra}" opacity=".85"/>
+    ${ticks}<circle cx="60" cy="60" r="2.5" fill="var(--ink)"/></svg>
+    <div class="dt">${title}</div><div class="ds">${sub}</div></div>`;
+}
+function drawDials(){
+  $("#dials").innerHTML =
+    dial("London","3 hours of a 12-hour day<br>for this pound of sugar",12,3,"var(--ink)") +
+    dial("Outside Havana","18–20 hours of a 24-hour day<br>at harvest, for no wage",24,18,"var(--red)",20);
+}
+
+/* ===== REPRINTED RECEIPT =====
+   At the end of the scene the receipt is printed again: every farthing assigned, and the hours it cost.
+   Drawn on a canvas so the player can save it as an image, or copy it as plain text. */
+let blots=0;
+function receiptData(){
+  return {
+    shop:"Grocer & Tea Dealer", place:"East London · March 1850 · by way of Havana", kicker:"REPRINTED: WHO GOT THE 4½d",
+    item:"1 lb. Foreign Muscovado", price:"4½d",
+    lines:[
+      {who:"Wholesaler and grocer", what:"Buying wholesale, selling retail", d:"0.29d", coins:1},
+      {who:"HM Customs", what:"Duty on foreign sugar, 17s per cwt", d:"1.82d", coins:7},
+      {who:"The shipowner", what:"Freight across the Atlantic", d:"0.64d", coins:3},
+      {who:"The Cuban planter", what:"Growing and boiling the cane", d:"1.07d", coins:4},
+      {who:"The Havana merchant", what:"Export, commission, insurance, profit", d:"0.68d", coins:3},
+      {who:"The cane-cutter", what:"Her food and clothing, inside the planter's 1.07d", d:"?", coins:1, ghost:true, open:true}
+    ],
+    timeHead:"PAID IN TIME",
+    time:[
+      {who:"A London shoemaker", v:"3 hours", sub:"of a 12-hour day, at 9s a week"},
+      {who:"An enslaved cane-cutter", v:"?", sub:"of an 18–20 hour day, for no wage", open:true}
+    ],
+    foot:"Nobody wrote down how many of her minutes are in this pound.",
+    sign:"A Cup of Tea · Scene 2 · Homo Ludens",
+    title:"A Cup of Tea · Scene 2 · Havana, the harvest",
+    file:"a-cup-of-tea-scene-2.png"
+  };
+}
+const FELL='"IM Fell English",Georgia,serif', GAR='"EB Garamond",Georgia,serif';
+function coinsAt(ctx,xr,y,n,ghost){
+  for(let i=0;i<n;i++){
+    const x=xr-7-i*10;
+    ctx.beginPath(); ctx.arc(x,y,6.5,0,Math.PI*2);
+    if(ghost){
+      ctx.save(); ctx.setLineDash([2,2]); ctx.strokeStyle="#8b2a1f"; ctx.lineWidth=1.2; ctx.stroke(); ctx.restore();
+      ctx.font=`11px ${FELL}`; ctx.fillStyle="#8b2a1f"; ctx.textAlign="center"; ctx.fillText("?",x,y+4);
+    } else {
+      const g=ctx.createRadialGradient(x-2,y-2,1,x,y,7);
+      g.addColorStop(0,"#e0a46c"); g.addColorStop(.6,"#a7622f"); g.addColorStop(1,"#6e3b18");
+      ctx.fillStyle=g; ctx.fill(); ctx.strokeStyle="rgba(70,35,12,.6)"; ctx.lineWidth=1; ctx.stroke();
+    }
+  }
+}
+function paintReceipt(cv,R){
+  const W=600, M=24, L=62, X=W-62, INK="#2a1f17", INK2="#5a4a3a", RED="#8b2a1f";
+  const go=(ctx,dry)=>{
+    const T=(s,x,y,font,col,al)=>{ if(dry) return; ctx.font=font; ctx.fillStyle=col||INK; ctx.textAlign=al||"left"; ctx.fillText(s,x,y); };
+    const rule=(y,solid)=>{ if(dry) return; ctx.save(); ctx.strokeStyle=solid?INK:"#c9b78f"; ctx.lineWidth=solid?1.5:1;
+      if(!solid) ctx.setLineDash([2,4]); ctx.beginPath(); ctx.moveTo(L,y); ctx.lineTo(X,y); ctx.stroke(); ctx.restore(); };
+    const wrap=(s,y,font,col)=>{ ctx.font=font; let line="";
+      for(const w of s.split(" ")){ const t=line?line+" "+w:w;
+        if(ctx.measureText(t).width>X-L&&line){ T(line,W/2,y,font,col,"center"); y+=24; line=w; } else line=t; }
+      T(line,W/2,y,font,col,"center"); return y; };
+    let y=M+50;
+    T(R.shop,W/2,y,`28px ${FELL}`,null,"center");
+    y+=24; T(R.place,W/2,y,`italic 15px ${GAR}`,INK2,"center");
+    y+=30; T(R.kicker,W/2,y,`600 12px ${GAR}`,RED,"center");
+    y+=32; T(R.item,L,y,`20px ${FELL}`); T(R.price,X,y,`20px ${FELL}`,null,"right");
+    y+=14; rule(y,true);
+    for(const ln of R.lines){
+      const c=ln.open?RED:null;
+      y+=28; T(ln.who,L,y,`18px ${FELL}`,c); T(ln.d,X,y,`18px ${FELL}`,c,"right");
+      y+=21; T(ln.what,L+12,y,`italic 14px ${GAR}`,INK2);
+      if(!dry&&ln.coins) coinsAt(ctx,X,y-5,ln.coins,ln.ghost);
+      y+=13; rule(y);
+    }
+    y+=32; T("Total",L,y,`22px ${FELL}`); T(R.price,X,y,`22px ${FELL}`,null,"right");
+    if(R.time){
+      y+=42; T(R.timeHead,W/2,y,`600 12px ${GAR}`,RED,"center"); y+=10; rule(y,true);
+      for(const ln of R.time){
+        const c=ln.open?RED:null;
+        y+=28; T(ln.who,L,y,`18px ${FELL}`,c); T(ln.v,X,y,`18px ${FELL}`,c,"right");
+        y+=21; T(ln.sub,L+12,y,`italic 14px ${GAR}`,INK2); y+=13; rule(y);
+      }
+    }
+    y+=42; y=wrap(R.foot,y,`italic 19px ${FELL}`,RED);
+    y+=36; T(`Blots in the ledger: ${blots}`,W/2,y,`14px ${GAR}`,INK2,"center");
+    y+=22; T(R.sign,W/2,y,`13px ${GAR}`,INK2,"center");
+    return y+M+34;
+  };
+  const H=go(document.createElement("canvas").getContext("2d"),true), k=2;
+  cv.width=W*k; cv.height=H*k;
+  const ctx=cv.getContext("2d"); ctx.setTransform(k,0,0,k,0,0);
+  ctx.fillStyle="#3b2a1e"; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="#fbf6e8"; ctx.beginPath(); ctx.moveTo(M,M); ctx.lineTo(W-M,M);
+  for(let x=W-M,i=0; x>=M; x-=8,i++) ctx.lineTo(x,H-M-(i%2?7:0)); // torn bottom edge
+  ctx.closePath(); ctx.fill();
+  go(ctx,false);
+}
+function receiptText(R){
+  const out=[R.title, `${R.item}: ${R.price}`];
+  R.lines.forEach(l=>out.push(`${(l.ghost?"?":(l.open?"○":"●").repeat(l.coins)).padEnd(8)}${l.d.padStart(6)}  ${l.who}`));
+  if(R.time) R.time.forEach(l=>out.push(`${l.who}: ${l.v} (${l.sub})`));
+  out.push(R.foot, `Blots in the ledger: ${blots}`, "{{SITE}}/cupoftea/");
+  return out.join("\n");
+}
+function showReceipt(){
+  const R=receiptData(), cv=$("#rcpt");
+  const fonts = document.fonts ? Promise.all([`20px "IM Fell English"`,`italic 19px "IM Fell English"`,`italic 14px "EB Garamond"`,`600 12px "EB Garamond"`,`14px "EB Garamond"`]
+    .map(f=>document.fonts.load(f))) : Promise.resolve();
+  fonts.catch(()=>{}).then(()=>paintReceipt(cv,R));
+}
+$("#rSave").addEventListener("click",()=>{
+  const R=receiptData();
+  $("#rcpt").toBlob(b=>{ if(!b){ toast("Could not save the image."); return; }
+    const a=document.createElement("a"); a.href=URL.createObjectURL(b); a.download=R.file; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),3000); });
+});
+$("#rCopy").addEventListener("click",()=>{
+  const t=receiptText(receiptData());
+  (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>toast("Copied to the clipboard."),()=>toast("Could not copy. Your browser blocked the clipboard."));
+});
+
+/* ===== HINTS ===== */
+const HINTS = {
+  planter:"Who grew the cane? The 1848 debate names him.",
+  w_grow:"What did the planter's money pay for? See the 1848 debate.",
+  d107:"The planter's cost: the 1848 debate gives a figure per cwt for Cuba. Convert it in the Conversion table.",
+  merchant:"Who stood between the mill and the ship? Look at the shipping note.",
+  w_export:"What was charged in Havana? The shipping note lists it, without figures.",
+  d068:"Nobody wrote down the merchant's share. Once you have the planter's cost, press 'Work it out' under the ledger.",
+  shoemaker:"Who in London worked for a wage you can measure in hours? Read Mayhew, 1850.",
+  h12:"How long was the shoemaker's day? Mayhew gives it.",
+  w9s:"What was the shoemaker paid? Mayhew gives it.",
+  cutter:"Who cut the cane? Read Madden's note.",
+  h1820:"How long was a harvest day in Cuba? Madden says.",
+  nowage:"What was a cane-cutter paid? Read Madden's note to the end.",
+  t3h:"Put the shoemaker's wage and hours into the Clock, in the Conversion table."
+};
+document.getElementById("hintBtn").addEventListener("click",()=>{
+  if(S.done){ toast("This scene is solved."); return; }
+  const g = S.labour ? "labour" : "money";
+  if(!S.labour && lockedIn("money")===rowsIn("money")){ toast("Press 'Open the Labour page'."); return; }
+  if(S.labour && lockedIn("labour")===rowsIn("labour")){ toast(S.got.has("t3h")?"Put '3 hours' in the last box.":HINTS.t3h); return; }
+  const taken=Object.values(S.lockAns);
+  for(const r of ROWS.filter(r=>r.g===g && !taken.includes(r.id))){
+    const need = r.ans.share==="d068" ? ["merchant","w_export","d107","d068"] : Object.values(r.ans);
+    const miss=need.find(id=>!S.got.has(id));
+    if(miss){ toast(HINTS[miss]); return; }
+  }
+  const r=ROWS.find(r=>r.g===g && !taken.includes(r.id));
+  toast(`You have every note for "${r.q}" Try: ${Object.values(r.ans).map(id=>CLUES[id].t).join(" · ")}.`);
+});
+
+/* ===== SOUND (Web Audio, no files) ===== */
+let AC=null, muted=false;
+function ac(){
+  if(!AC){ try{ AC=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
+  if(AC.state==="suspended") AC.resume();
+  return AC;
+}
+function clink(when=0, vol=.22){
+  const a=ac(); if(!a||muted) return;
+  const t=a.currentTime+when, f=1500+Math.random()*700, nyq=a.sampleRate/2-500;
+  const out=a.createGain(); out.gain.value=vol; out.connect(a.destination);
+  [[1,1,.16],[2.76,.55,.09],[5.40,.28,.05],[8.93,.12,.03]].forEach(([r,g,d])=>{
+    const fr=f*r*(1+(Math.random()-.5)*.012); if(fr>nyq) return;
+    const o=a.createOscillator(), e=a.createGain(); o.type="sine"; o.frequency.value=fr;
+    const dd=d*(.8+Math.random()*.6);
+    e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(g,t+.002); e.gain.exponentialRampToValueAtTime(.0001,t+dd);
+    o.connect(e); e.connect(out); o.start(t); o.stop(t+dd+.05);
+  });
+  const len=Math.floor(a.sampleRate*.018), buf=a.createBuffer(1,len,a.sampleRate), ch=buf.getChannelData(0);
+  for(let i=0;i<len;i++) ch[i]=(Math.random()*2-1)*Math.pow(1-i/len,3);
+  const n=a.createBufferSource(), hp=a.createBiquadFilter(), ng=a.createGain();
+  n.buffer=buf; hp.type="highpass"; hp.frequency.value=2500; ng.gain.value=.5;
+  n.connect(hp); hp.connect(ng); ng.connect(out); n.start(t);
+}
+const AMB={hp:120, lp:700, bed:.05, tick:(a,d)=>cricketTick(a,d)}; // Havana: warm night wind, crickets
+/* ===== AMBIENCE AND EFFECTS (Web Audio, no files) =====
+   Ambience: a looped noise bed plus small scheduled events (rain drops in London, crickets in Havana).
+   Effects: shop bell, pen on paper (a note is taken), stamp (a line locks), and a hush when Labour opens. */
+let amb=null;
+function noiseBuf(a,sec){ const len=Math.floor(a.sampleRate*sec), b=a.createBuffer(1,len,a.sampleRate), c=b.getChannelData(0);
+  for(let i=0;i<len;i++) c[i]=Math.random()*2-1; return b; }
+function startAmbience(){
+  const a=ac(); if(!a||amb) return;
+  const g=a.createGain(); g.gain.value=0; g.connect(a.destination);
+  const src=a.createBufferSource(); src.buffer=noiseBuf(a,4); src.loop=true;
+  const hp=a.createBiquadFilter(); hp.type="highpass"; hp.frequency.value=AMB.hp;
+  const lp=a.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=AMB.lp;
+  const bed=a.createGain(); bed.gain.value=AMB.bed;
+  src.connect(hp); hp.connect(lp); lp.connect(bed); bed.connect(g); src.start();
+  amb={g, level:1, timer:setInterval(()=>{ if(AC&&!muted) AMB.tick(AC,g); },250)};
+  g.gain.setValueAtTime(0,a.currentTime); g.gain.linearRampToValueAtTime(muted?0:1,a.currentTime+3);
+}
+function setAmb(v,sec){ if(!amb||!AC) return; const t=AC.currentTime, p=amb.g.gain;
+  p.cancelScheduledValues(t); p.setValueAtTime(p.value,t); p.linearRampToValueAtTime(muted?0:v,t+sec); }
+function hush(hold){ // the ambience drops away, holds, and slowly returns
+  if(!amb||!AC) return; const t=AC.currentTime, p=amb.g.gain;
+  p.cancelScheduledValues(t); p.setValueAtTime(p.value,t); p.linearRampToValueAtTime(0,t+.4);
+  p.setValueAtTime(0,t+.4+hold); p.linearRampToValueAtTime(muted?0:1,t+.4+hold+2.5);
+}
+function rainTick(a,dest){
+  for(let i=0;i<4;i++) if(Math.random()<.55){
+    const t=a.currentTime+Math.random()*.25, o=a.createOscillator(), e=a.createGain();
+    o.frequency.value=1800+Math.random()*3500; e.gain.setValueAtTime(.012+Math.random()*.012,t); e.gain.exponentialRampToValueAtTime(.0001,t+.018);
+    o.connect(e); e.connect(dest); o.start(t); o.stop(t+.03);
+  }
+}
+function cricketTick(a,dest){
+  if(Math.random()>.45) return;
+  const t0=a.currentTime+Math.random()*.2, f=4100+Math.random()*500, n=2+Math.floor(Math.random()*3);
+  for(let i=0;i<n;i++){ const t=t0+i*.045, o=a.createOscillator(), e=a.createGain();
+    o.frequency.value=f; e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(.018,t+.005); e.gain.exponentialRampToValueAtTime(.0001,t+.03);
+    o.connect(e); e.connect(dest); o.start(t); o.stop(t+.04); }
+}
+function bell(f0=1750,strikes=3,decay=.9,vol=.12){ // a shop-door bell on its spring; low f0 + one strike = a distant mill bell
+  const a=ac(); if(!a||muted) return;
+  for(let s=0;s<strikes;s++){
+    const t=a.currentTime+.05+s*(.11+Math.random()*.05), f=f0*(1+(Math.random()-.5)*.02), v=vol*(1-s*.25);
+    [[1,1],[2.0,.45],[2.76,.3],[5.4,.12]].forEach(([r,g])=>{
+      const o=a.createOscillator(), e=a.createGain(); o.frequency.value=f*r;
+      e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(g*v,t+.003); e.gain.exponentialRampToValueAtTime(.0001,t+decay/r**.5);
+      o.connect(e); e.connect(a.destination); o.start(t); o.stop(t+decay+.1);
+    });
+  }
+}
+function scratch(){ // a pen on paper: two short, rough strokes of filtered noise
+  const a=ac(); if(!a||muted) return;
+  for(let k=0;k<2;k++){
+    const t=a.currentTime+k*(.12+Math.random()*.05), d=.07+Math.random()*.06;
+    const n=a.createBufferSource(); n.buffer=noiseBuf(a,.2);
+    const bp=a.createBiquadFilter(); bp.type="bandpass"; bp.frequency.value=2800+Math.random()*1500; bp.Q.value=1.5;
+    const e=a.createGain(); e.gain.setValueAtTime(0,t); e.gain.linearRampToValueAtTime(.09,t+.01);
+    for(let j=1;j<6;j++) e.gain.setValueAtTime(.03+Math.random()*.07,t+d*j/6);
+    e.gain.linearRampToValueAtTime(0,t+d);
+    n.connect(bp); bp.connect(e); e.connect(a.destination); n.start(t); n.stop(t+d+.02);
+  }
+}
+function stamp(){ // a rubber stamp on the ledger: a dull thud and a short slap
+  const a=ac(); if(!a||muted) return;
+  const t=a.currentTime+.02, o=a.createOscillator(), e=a.createGain();
+  o.frequency.setValueAtTime(120,t); o.frequency.exponentialRampToValueAtTime(45,t+.14);
+  e.gain.setValueAtTime(.5,t); e.gain.exponentialRampToValueAtTime(.0001,t+.18);
+  o.connect(e); e.connect(a.destination); o.start(t); o.stop(t+.2);
+  const n=a.createBufferSource(); n.buffer=noiseBuf(a,.06);
+  const lp=a.createBiquadFilter(); lp.type="lowpass"; lp.frequency.value=1200;
+  const ng=a.createGain(); ng.gain.setValueAtTime(.35,t); ng.gain.exponentialRampToValueAtTime(.0001,t+.05);
+  n.connect(lp); lp.connect(ng); ng.connect(a.destination); n.start(t);
+}
+document.getElementById("sndBtn").addEventListener("click",e=>{
+  muted=!muted; e.target.textContent=muted?"Sound: off":"Sound: on";
+  if(!muted){ clink(0,.2); if(!amb) startAmbience(); }
+  setAmb(muted?0:1,.6);
+});
+
+/* ===== PROGRESS (this browser only) AND ANALYTICS ===== */
+const SCENE=2;
+function teaStore(){ try{ return JSON.parse(localStorage.getItem("cupoftea.v1"))||{}; }catch(e){ return {}; } }
+function teaSave(s){ try{ localStorage.setItem("cupoftea.v1",JSON.stringify(s)); }catch(e){} }
+function track(ev,p){ try{ if(window.posthog) posthog.capture(ev,Object.assign({game:"cupoftea"},p||{})); }catch(e){} }
+function saveDone(k){
+  const s=teaStore(); s.done=s.done||[]; s.blots=s.blots||{};
+  if(!s.done.includes(k)) s.done.push(k);
+  s.blots[k]=blots; s.cur=k; s.t=Date.now(); teaSave(s); renderSnav();
+  track("tea_scene_done",{scene:k,blots});
+}
+function renderSnav(){
+  const s=teaStore(), done=s.done||[];
+  document.getElementById("snav").innerHTML=[1,2,3].map(k=>`<a href="/cupoftea/${k>1?k+"/":""}" class="${k===SCENE?"on":""} ${done.includes(k)?"done":""}" title="Scene ${k}">${["I","II","III"][k-1]}</a>`).join("");
+}
+(function(){ const s=teaStore(); s.cur=SCENE; s.t=Date.now(); teaSave(s); renderSnav(); track("tea_scene_start",{scene:SCENE}); })();
+
+renderIntro(); renderTabs(); renderDoc(); renderChips(); renderLedger(); checkPull(); progress();
+</script>
+</body>
+</html>
