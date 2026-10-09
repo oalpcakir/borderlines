@@ -24,6 +24,13 @@ Build sources behind the published site (the repo's `public/` folder holds the b
 - `build_cupoftea.py` — adds the shared head (meta tags, icon, analytics, feedback button) and writes `public/cupoftea/` (scene 1), `public/cupoftea/2/`, `public/cupoftea/3/`, plus `public/og-cupoftea.png` and the portal plate.
 - Progress is kept in the player's browser under `cupoftea.v1` (scenes solved, blots per scene); the portal reads it for the "Continue" card.
 
+## polder/ (No. 4)
+- `polder.html` — the whole game in one self-contained page (canvas, Web Audio sound and music, the Netherlands menu map, the Chronicle).
+- `build_polder.py` — adds the shared head (meta tags, icon, analytics, feedback button) and writes `public/polder/`, `public/og-polder.png` and the portal plate.
+- `nlmap_gen.py` — regenerates the menu map's region outlines (needs Natural Earth via the `world-atlas` npm package and shapely); paste its output into `NLGEO` in `polder.html`.
+- Kept in the player's browser: `polder.progress.v1` (stars and best fields per region, Chronicle pages `_seen`, achievements `_ach`, `_campaign`), `polder.run.v1` (the game in progress), `polder.settings.v1` (sound, music). The portal reads the first two.
+- PostHog events: polder_menu, polder_level_start, polder_resume, polder_goal, polder_upgrade, polder_storm, polder_level_end, polder_quit, polder_share, polder_book, polder_achievement, polder_reset.
+
 ## Deploy & feedback
 - `wrangler.jsonc` deploys `public/` to Cloudflare Workers; pushes to main redeploy.
 - `worker.js` adds one route, `/api/feedback`: checks messages (Turnstile, rate limit) and posts them to Discord.

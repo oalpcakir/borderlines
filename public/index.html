@@ -166,6 +166,14 @@ footer a { color: var(--ink-soft); }
       </div>
       <a class="btn" id="rvPlay" href="/retourvloot/" data-from="today">Continue</a>
     </div>
+    <div class="today" id="polToday" hidden>
+      <div>
+        <div class="eyebrow">Polder · Your dikes</div>
+        <h2 id="polTitle">Friesland</h2>
+        <div class="meta" id="polMeta"></div>
+      </div>
+      <a class="btn" id="polGo" href="/polder/" data-from="today">Continue</a>
+    </div>
     <div class="today" id="teaToday" hidden>
       <div>
         <div class="eyebrow">A Cup of Tea · Your investigation</div>
@@ -219,11 +227,24 @@ footer a { color: var(--ink-soft); }
           <span class="cap">1857 · A Cuban sugar estate</span>
         </a>
         <div class="body">
-          <span class="numeral">No. 3 · New</span>
+          <span class="numeral">No. 3</span>
           <h3>A Cup of Tea</h3>
           <p>A grocer's receipt from East London, 1850: a pound of sugar and two ounces of tea. Read the papers of the day, do the sums, and find out who got every farthing, from the Customs House to a sugar estate outside Havana.</p>
           <div class="tags"><span class="tag">Detective</span><span class="tag">Scene by scene</span><span class="tag">Desktop</span></div>
           <div class="row"><a class="btn" id="teaPlay" href="/cupoftea/" data-from="card">Play</a></div>
+        </div>
+      </article>
+      <article class="game wide">
+        <a class="plate" href="/polder/" data-from="card" aria-label="Play Polder">
+          <img src="/polder/img/portal-plate.jpg" alt="A polder landscape from the game: windmills, tulip fields, sheep and two lakes still waiting to be drained" loading="lazy">
+          <span class="cap">1635 · Tulip mania in North Holland</span>
+        </a>
+        <div class="body">
+          <span class="numeral">No. 4 · New</span>
+          <h3>Polder</h3>
+          <p>Build dikes, close them into rings and drain the sea, from the terp mounds of 1200 to the North Sea flood of 1953. Four regions of the Netherlands, each with its own storms, lakes and drowned villages.</p>
+          <div class="tags"><span class="tag">Puzzle</span><span class="tag">15-minute regions</span><span class="tag">Desktop</span></div>
+          <div class="row"><a class="btn" href="/polder/" data-from="card">Play</a></div>
         </div>
       </article>
     </div>
@@ -370,6 +391,29 @@ footer a { color: var(--ink-soft); }
   }
   document.querySelectorAll("a[href^='/cupoftea/']").forEach(function (a) {
     a.addEventListener("click", function () { track("portal_play", { game: "cupoftea", from: a.getAttribute("data-from") }); });
+  });
+
+  // Polder: a game in progress and progress across regions (kept in this browser by the game)
+  var PR = get("polder.run.v1"), PP = get("polder.progress.v1") || {};
+  var PNAMES = { friesland: "Friesland", zeeland: "Zeeland", holland: "Holland", zuiderzee: "Zuiderzee", free: "Free play" };
+  var PTURNS = { friesland: 25, zeeland: 24, holland: 24, zuiderzee: 24, free: 50 };
+  if (PR && PR.S && PNAMES[PR.lv]) {
+    document.getElementById("polTitle").textContent = PNAMES[PR.lv] + ", " + PR.S.year;
+    var pf = (PR.G || []).filter(function (v) { return v === 6; }).length;
+    document.getElementById("polMeta").innerHTML = "Turn <b>" + Math.min(PR.S.piece + 1, PTURNS[PR.lv]) + "</b> of " + PTURNS[PR.lv] + " · <b>" + pf + "</b> fields won";
+    document.getElementById("polToday").hidden = false;
+  }
+  var pWon = 0, pStars = 0;
+  ["friesland", "zeeland", "holland", "zuiderzee"].forEach(function (k) { var st = (PP[k] && PP[k].stars) || 0; pStars += st; if (st >= (k === "friesland" ? 4 : 3)) pWon++; });
+  var pPages = Object.keys(PP._seen || {}).length;
+  if (pStars || pPages) {
+    tiles.push(["<b>" + pWon + "/4</b><span>Polder regions won</span><small>" + pStars + " ★ in total</small>"]);
+    tiles.push(["<b>" + pPages + "</b><span>Chronicle pages</span><small>of 67 found</small>"]);
+    tiles.push(["<b>" + Object.keys(PP._ach || {}).length + "/12</b><span>Polder achievements</span><small>" + (PP._campaign ? "campaign complete" : "see the Chronicle") + "</small>"]);
+    if (tiles.length) { document.getElementById("record").innerHTML = tiles.map(function (x) { return "<div>" + x[0] + "</div>"; }).join(""); document.getElementById("recordSec").hidden = false; }
+  }
+  document.querySelectorAll("a[href='/polder/']").forEach(function (a) {
+    a.addEventListener("click", function () { track("portal_play", { game: "polder", from: a.getAttribute("data-from") }); });
   });
 
   // New games by email (shown only when the server side is configured)
