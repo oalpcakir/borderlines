@@ -1,5 +1,5 @@
 /* Homo Ludens feedback button. Include with:
-   <script src="/feedback.js" defer data-game="portal|borderlines|retourvloot"></script>
+   <script src="/feedback.js" defer data-game="portal|borderlines|retourvloot|cupoftea|polder"></script>
    A page can set window.HL_FEEDBACK_CONTEXT = () => "short text" to attach game state. */
 (function () {
   var SITE_KEY = '0x4AAAAAAFRMZwiuLLLgZLqX'; // Turnstile site key (public)
@@ -11,6 +11,9 @@
   var css = '\
 .hlfb-btn{position:fixed;right:18px;bottom:18px;z-index:9000;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.02em;padding:10px 14px;border-radius:20px;border:1px solid rgba(31,43,74,.25);background:#1f2b4a;color:#f7f6f2;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)}\
 .hlfb-btn:hover{filter:brightness(1.15)}\
+.hlfb-dc{position:fixed;right:118px;bottom:18px;z-index:9000;display:flex;align-items:center;gap:6px;font:500 13px/1 system-ui,-apple-system,"Segoe UI",sans-serif;letter-spacing:.02em;padding:9px 13px;border-radius:20px;background:#5865f2;color:#fff;text-decoration:none;box-shadow:0 4px 14px rgba(0,0,0,.18)}\
+.hlfb-dc:hover{filter:brightness(1.1)}\
+.hlfb-dc svg{width:16px;height:16px;fill:currentColor}\
 .hlfb-btn:focus-visible,.hlfb-box :focus-visible{outline:2px solid #b07a1e;outline-offset:2px}\
 .hlfb-ov{position:fixed;inset:0;z-index:9001;background:rgba(10,14,22,.5);display:flex;align-items:center;justify-content:center;padding:16px}\
 .hlfb-ov[hidden]{display:none}\
@@ -41,6 +44,7 @@
     var ov = el('<div class="hlfb-ov" hidden><form class="hlfb-box" role="dialog" aria-modal="true" aria-labelledby="hlfb-t" novalidate>' +
       '<h2 id="hlfb-t">Send feedback</h2>' +
       '<p id="hlfb-intro">Ideas, bugs, a historical mistake? This goes straight to the person who makes these games.</p>' +
+      '<p style="margin-top:-8px">Or chat with other players on the <a href="https://discord.gg/7PcDfAMdr5" target="_blank" rel="noopener">Homo Ludens Discord</a>.</p>' +
       '<fieldset class="hlfb-kinds"><legend class="hlfb-hp">Kind</legend>' +
       '<label><input type="radio" name="hlfb-kind" value="idea" checked>Idea</label>' +
       '<label><input type="radio" name="hlfb-kind" value="bug">Bug</label>' +
@@ -55,7 +59,9 @@
       '<div class="hlfb-st" id="hlfb-st" role="status"></div>' +
       '<div class="hlfb-act"><button type="button" class="hlfb-cancel">Cancel</button><button type="submit" class="hlfb-send">Send</button></div>' +
       '</form></div>');
-    document.body.appendChild(btn); document.body.appendChild(ov);
+    var dc = el('<a class="hlfb-dc" href="https://discord.gg/7PcDfAMdr5" target="_blank" rel="noopener" aria-label="Join the Homo Ludens Discord"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.3 4.4A19.6 19.6 0 0 0 15.4 3l-.6 1.3a18.3 18.3 0 0 0-5.6 0L8.6 3a19.5 19.5 0 0 0-4.9 1.5C.6 9.1-.3 13.6.1 18.1A19.7 19.7 0 0 0 6.1 21l1.3-2a12.8 12.8 0 0 1-2-1l.5-.4a14 14 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.6 19.6 0 0 0 6-3c.5-5.2-.9-9.7-3.6-13.6zM8 15.3c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.5 8 10.5s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4z"/></svg>Discord</a>');
+    dc.addEventListener('click', function () { try { if (window.posthog && window.posthog.capture) window.posthog.capture('discord_click', { game: GAME, page: location.pathname }); } catch (e) {} });
+    document.body.appendChild(dc); document.body.appendChild(btn); document.body.appendChild(ov);
     var form = ov.querySelector('form'), msg = ov.querySelector('#hlfb-msg'), status = ov.querySelector('#hlfb-st'), send = ov.querySelector('.hlfb-send');
     var lastFocus = null, extraContext = '';
     var title = ov.querySelector('#hlfb-t'), intro = ov.querySelector('#hlfb-intro');

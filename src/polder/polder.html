@@ -38,6 +38,7 @@ body{background:var(--bg);color:var(--ink);font-family:Fredoka,system-ui,sans-se
 .chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{font-size:12px;background:#eef7f1;border-radius:99px;padding:2px 9px;color:var(--ink)}
 .btns button[hidden]{display:none}
+.hlfb-btn,.hlfb-dc{display:none!important}
 .sharebtn{font-size:14px;padding:6px 12px;margin-top:8px}
 .menurow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .linkbtn{background:none;padding:2px 0;color:var(--muted);font-size:12.5px;text-decoration:underline}
@@ -193,7 +194,7 @@ button.primary:hover{background:#cf5843}
     </div>
     <div class="keys">Click to place · Right-click, R or scroll to rotate · Space to wait</div>
     <div class="row"><button id="muteBtn">♪ Sound on</button><button id="musicBtn">♫ Music on</button><button id="restartBtn">Restart</button></div>
-    <div class="keys"><a href="#" id="fbLink" style="color:var(--muted)">Report a problem</a></div>
+    <div class="keys"><a href="#" id="fbLink" style="color:var(--muted)">Report a problem</a> · <a href="https://discord.gg/7PcDfAMdr5" target="_blank" rel="noopener" id="dcLink" style="color:#5865f2">Discord</a></div>
   </aside>
 </div>
 <div id="modal" class="hidden"><div class="mbox" id="mbox"></div></div>
@@ -1301,6 +1302,7 @@ function levelSelect(){
    <div class="menurow">${run?`<button class="primary" id="contBtn">Continue · ${LEVELS.find(l=>l.id===run.lv).name}, ${run.S.year}</button>`:''}<button class="${run?'':'primary'}" id="freeBtn">Free play</button></div>
    ${pr._campaign?'<p style="font-size:14px;margin:10px 0 0"><b>Campaign complete.</b> You built the Netherlands.</p>':''}
    <p style="font-size:13px;color:var(--muted);margin-top:10px">Click a region on the map to play it.${run?' Starting a region replaces the game in progress.':''}</p>
+   <p style="font-size:13px;margin:8px 0 4px">Share your maps and talk history on the <a href="https://discord.gg/7PcDfAMdr5" target="_blank" rel="noopener" style="color:#5865f2">Homo Ludens Discord</a>.</p>
    <button class="linkbtn" id="resetBtn">Reset all progress</button>
   </div></div>`;
   m.classList.remove('hidden');
@@ -1350,6 +1352,7 @@ function setBtns(){ $('muteBtn').textContent=muted?'♪ Sound off':'♪ Sound on
 $('muteBtn').onclick=()=>{ muted=!muted; SET.sfx=!muted; saveSet(); setBtns(); };
 $('musicBtn').onclick=()=>{ SET.music=!SET.music; saveSet(); setBtns(); audioInit(); if(SET.music) musicStart(); else musicStop(); };
 $('fbLink').onclick=e=>{ e.preventDefault(); if(window.HomoLudensFeedback) window.HomoLudensFeedback.open({context:`polder ${LV?LV.id:''} ${S?S.year:''} turn ${S?S.piece+1:''}`}); else toast('Feedback works on the website.'); };
+$('dcLink').onclick=()=>track('discord_click',{from:'sidebar'});
 setBtns();
 let musicTimer=null, musicGain=null;
 const CHORDS=[[174.61,220,261.63,329.63],[220,261.63,329.63,392],[146.83,174.61,220,261.63],[196,246.94,293.66,349.23]];
