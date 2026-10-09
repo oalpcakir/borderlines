@@ -76,6 +76,7 @@ body{background:var(--bg);color:var(--ink);font-family:Fredoka,system-ui,sans-se
 .btns button[hidden]{display:none}
 .hlfb-btn,.hlfb-dc{display:none!important}
 .sharebtn{font-size:14px;padding:6px 12px;margin-top:8px}
+.diffrow{display:flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;color:var(--muted)}.diffrow span{margin-right:4px;text-transform:uppercase;letter-spacing:1px;font-weight:600;font-size:12px}.diffrow button{font-size:13px;padding:5px 12px}.diffrow button.on{background:#24414a;color:#fff}
 .menurow{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .linkbtn{background:none;padding:2px 0;color:var(--muted);font-size:12.5px;text-decoration:underline}
 .ach b{display:block}.src a{color:#2f7fa3}
@@ -200,7 +201,7 @@ button.primary:hover{background:#cf5843}
   <aside>
     <h1>Polder<small>The sea gives. The sea takes.</small></h1>
     <div>
-      <div class="year"><b id="yearLbl">1200</b><span id="eraLbl">Age of Mounds</span><span id="turnLbl" style="margin-left:auto;font-size:13px;white-space:nowrap;background:#eef7f6;border-radius:8px;padding:1px 7px"></span></div>
+      <div class="year"><b id="yearLbl">1200</b><span id="eraLbl">Age of Mounds</span><span id="diffLbl" style="font-size:12px;color:#c0392b;font-weight:600"></span><span id="turnLbl" style="margin-left:auto;font-size:13px;white-space:nowrap;background:#eef7f6;border-radius:8px;padding:1px 7px"></span></div>
       <div class="tl" id="tl"><div class="fill" id="tlFill"></div></div>
     </div>
     <div class="card goal" id="goal"></div>
@@ -270,57 +271,59 @@ const UNLOCKS=[
 const GEN=y=>({year:y,str:4,generic:true,name:'Winter storm',text:'Not every storm makes the history books. This one still tests every dike you have.'});
 const MANDRENKE={year:1362,str:4,name:'The Grote Mandrenke',text:"On 16 January 1362 a storm surge swept the coasts of England, the Low Countries, Germany and Denmark. People remembered it as the Grote Mandrenke, the great drowning of men. The trading town of Rungholt vanished into the sea."};
 const SY=y=>STORMS.find(s=>s.year===y);
+const HARDNOTE={friesland:'every storm strikes one extra time.',zeeland:'every storm strikes two extra times.',holland:'storms strike three extra times, waves on the lakes hit lake-facing dikes too, the waterwolf grows twice as fast, mill gangs drain only 24 squares, and the storms of 1836 join in.',zuiderzee:'storms strike three extra times and come more often, pumps drain at most 30 squares, and closing the Zuiderzee only softens them a little.',free:'every storm strikes one extra time.'};
+const HMEER={year:1836,str:4,name:'The Haarlemmermeer storms',text:"Two storms in late 1836 drove the water of the Haarlemmermeer up to the edges of Amsterdam and Leiden. Soon after, the decision was made to drain the lake for good."};
 const surviveGoal=(y,name,f)=>({text:`Survive ${name} (${y}) with ${f}+ fields and no breach`,hint:`Have at least ${f} fields when the storm comes. Plug every crack and put a second row of dike on the sea side.`,val:()=>S.surv[y]===0&&(S.survF[y]||0)>=f?1:0,target:()=>1,by:y});
 const LEVELS=[
- {id:'friesland',name:'Friesland',sub:'The terp lands',start:1200,end:1575,step:15,turns:25,map:'friesland',fingers:1,need:4,
+ {id:'friesland',name:'Friesland',sub:'The terp lands',start:1200,end:1575,step:15,turns:25,map:'friesland',fingers:1,need:4,hardBonus:1,
   intro:"The north, around 1200. Frisians live on terpen, mounds raised above the tides, scattered across the mudflats behind a row of islands.",
   rules:['Start small: rings of up to 6 squares drain with a sluice.','Windmills arrive in 1408.'],
   storms:()=>[SY(1287),MANDRENKE,GEN(1440),SY(1570)],
-  goals:()=>[
+  goals:h=>[
    {tut:1,text:'Build a dike next to your village',hint:'Place a dike piece touching the glowing mound with the houses.',val:()=>S.dikes>0?1:0,target:()=>1},
    {tut:1,text:'Drain your first field',hint:'Close a ring of dikes around a bit of water, against the shore or a mound.',val:()=>countFields(),target:()=>1},
    {text:'Win 8 fields',hint:'Only rings of 6 squares or fewer drain for now. A bigger ring stays a lake until 1408.',val:()=>countFields(),target:()=>8,by:1350,reward:'finger'},
    surviveGoal(1362,'the Grote Mandrenke',6),
    {text:'Link every terp to the mainland',hint:'Connect each mound to the shore with dikes or polder land.',val:()=>linkedTerps(),target:()=>TERPS.length,by:1530},
   ]},
- {id:'zeeland',name:'Zeeland',sub:'Islands in the storm',start:1380,end:1740,step:15,turns:24,map:'zeeland',fingers:2,stormBonus:1,ruins:1,
+ {id:'zeeland',name:'Zeeland',sub:'Islands in the storm',start:1380,end:1740,step:15,turns:24,map:'zeeland',fingers:2,stormBonus:1,hardBonus:2,ruins:1,
   intro:"The southwest, around 1380. Zeeland is a scatter of islands between the great river mouths. Deep channels cannot be diked, and the storms here are the worst in the land.",
   rules:['Storms hit harder here.','Deep channels (striped) cannot be diked.','Great floods drown villages. Ring a drowned village with dikes to win it back.'],
   storms:()=>[SY(1404),SY(1421),SY(1530),SY(1570),GEN(1630),GEN(1700)],
-  goals:()=>[
+  goals:h=>[
    {text:'Win 10 fields',hint:'Build out from the islands. Every island is an anchor.',val:()=>countFields(),target:()=>10,by:1450},
    {text:'Link Schouwen and Zuid-Beveland',hint:'Join the two villages in the middle with dikes or polder land.',val:()=>linked(0,1)?1:0,target:()=>1,by:1560,reward:'finger'},
    {text:'Reclaim 2 drowned villages',hint:'Church towers stick out of the water where a village drowned. Enclose one and drain it to bring the village back.',val:()=>S.ruins.filter(r=>r.ok).length,target:()=>2,by:1720,reward:'finger'},
    surviveGoal(1570,"the All Saints' Flood",12),
    {text:'Keep 15 animals',hint:'Floods wash them away. Keep your polders dry to the end.',val:()=>animalCount(),target:()=>15,by:1740},
   ]},
- {id:'holland',name:'Holland',sub:'The waterwolf',start:1550,end:1910,step:15,turns:24,map:'holland',fingers:2,wolf:4,
+ {id:'holland',name:'Holland',sub:'The waterwolf',start:1550,end:1910,step:15,turns:24,map:'holland',fingers:2,wolf:4,normBonus:1,hardBonus:3,hardCapPre:24,
   intro:"North Holland, around 1550. Peat digging has left great lakes behind, and they keep eating the land. People call the biggest one, the Haarlemmermeer, the waterwolf.",
-  rules:['The Haarlemmermeer grows every decade.','Too big to drain? Split a lake with a dike across it.','Close the inlets to the Zuiderzee first.'],
-  storms:()=>[SY(1570),SY(1717),GEN(1790)],
-  goals:()=>[
+  rules:['The Haarlemmermeer grows every decade.','Storms hit harder than in Friesland or Zeeland.','Too big to drain? Split a lake with a dike across it.','Close the inlets to the Zuiderzee first.'],
+  storms:h=>h?[SY(1570),SY(1717),GEN(1790),HMEER]:[SY(1570),SY(1717),GEN(1790)],
+  goals:h=>[
    {text:'Drain the Purmer',hint:'Close its inlet to the Zuiderzee, then the windmills do the rest.',val:()=>lakeDone(3),target:()=>1,by:1625},
-   {text:'Drain the Beemster',hint:'Too big for windmills alone. Split it, or wait for the mill gangs of 1612.',val:()=>lakeDone(2),target:()=>1,by:1640,reward:'finger'},
+   {text:'Drain the Beemster',hint:'Too big for windmills alone. Split it, or wait for the mill gangs of 1612.',val:()=>lakeDone(2),target:()=>1,by:h?1615:1640,reward:'finger'},
    {text:'Drain the Schermer',hint:'Bigger than a mill gang can handle. Split it in two with a dike.',val:()=>lakeDone(1),target:()=>1,by:1700},
    surviveGoal(1717,'the Christmas Flood',25),
    {text:'Tame the waterwolf before steam: drain the Haarlemmermeer',hint:'Leeghwater dreamed of draining it with 160 windmills. Split it into pieces of 40 or less and beat the steam engines of 1849.',val:()=>lakeDone(4),target:()=>1,by:1840},
   ]},
- {id:'zuiderzee',name:'Zuiderzee',sub:'Closing the inland sea',start:1855,end:1951,step:4,turns:24,map:'zuiderzee',fingers:2,capMax:45,
+ {id:'zuiderzee',name:'Zuiderzee',sub:'Closing the inland sea',start:1855,end:1951,step:4,turns:24,map:'zuiderzee',fingers:2,capMax:45,hardCap:30,normBonus:2,hardBonus:3,
   intro:"1855. The Zuiderzee cuts deep into the country, and its storms keep flooding the towns around it. The engineers have a bold plan: shut it off, then drain it piece by piece.",
-  rules:['Each turn is 4 years.','Deep water can be diked.','Even steam pumps manage only 45 squares at once.'],
-  storms:()=>[GEN(1875),GEN(1895),SY(1916)],final:FINAL,
-  goals:()=>[
+  rules:['Each turn is 4 years.','Storms here are the strongest yet.','Deep water can be diked.','Even steam pumps manage only 45 squares at once.'],
+  storms:h=>h?[GEN(1865),GEN(1875),GEN(1895),SY(1916),GEN(1925)]:[GEN(1875),GEN(1895),SY(1916),GEN(1925)],final:FINAL,
+  goals:h=>[
    {text:'Drain a polder of 15+ at once',hint:'Like the Wieringermeer, drained in 1930.',val:()=>S.maxDrain,target:()=>15,by:1930},
    {text:'Close off the Zuiderzee',hint:'Build a dam across the mouth in the north, like the Afsluitdijk.',val:()=>zzClosed()?1:0,target:()=>1,by:1935,reward:'finger'},
    {text:'Drain a polder of 30+ at once',hint:'Like the Noordoostpolder, dry in 1942.',val:()=>S.maxDrain,target:()=>30,by:1945},
-   {text:'Win 40 fields',hint:'Split the new lake into polders.',val:()=>countFields(),target:()=>40,by:1951},
+   {text:`Win ${h?55:40} fields`,hint:'Split the new lake into polders.',val:()=>countFields(),target:()=>h?55:40,by:1951},
    surviveGoal(1953,'the North Sea Flood',30),
   ]},
  {id:'free',name:'Free play',sub:'A random coast',start:1200,end:1950,step:15,turns:50,map:null,fingers:1,free:1,
   intro:"A random stretch of coast and seven and a half centuries of history. No region, no rules, just you and the sea.",
   rules:['A new random map every time.'],
-  storms:()=>STORMS.slice(),final:FINAL,
-  goals:()=>[
+  storms:()=>STORMS.slice(),final:FINAL,hardBonus:1,
+  goals:h=>[
    {text:'Win 12 fields',hint:'Storms crack sea-facing dikes. Put a second row on the sea side.',val:()=>countFields(),target:()=>12,by:1400},
    {text:'Drain a lake of 7+ squares',hint:'The windmill arrives in 1408.',val:()=>S.maxDrain,target:()=>7,by:1520,reward:'finger'},
    {text:'Keep 15 animals',hint:'Every drained field brings sheep and cows.',val:()=>animalCount(),target:()=>15,by:1650},
@@ -332,7 +335,7 @@ const LEVELS=[
 ];
 let QUESTS=[], ZZMARK=0;
 function track(name,props){ try{ if(window.posthog&&window.posthog.capture) window.posthog.capture(name,Object.assign({game:'polder'},props||{})); }catch(e){} }
-let SET={sfx:true,music:true}; try{ Object.assign(SET,JSON.parse(localStorage.getItem('polder.settings.v1')||'{}')); }catch(e){}
+let SET={sfx:true,music:true,diff:'normal'}; try{ Object.assign(SET,JSON.parse(localStorage.getItem('polder.settings.v1')||'{}')); }catch(e){}
 function saveSet(){ try{ localStorage.setItem('polder.settings.v1',JSON.stringify(SET)); }catch(e){} }
 let MEMRUN=null;
 function saveRun(){ if(!S||S.over||!LV) return; const d={v:1,lv:LV.id,G:Array.from(G),crack:Array.from(crack),armor:Array.from(armor),tag:Array.from(tag),fv:Array.from(fieldVar),TERPS,LN:LAKENAMES,ZZ:ZZMARK,structs:structs.map(z=>({c:z.c,kind:z.kind})),houses,sheep:sheep.filter(a=>!a.drown).map(a=>({x:+a.x.toFixed(2),y:+a.y.toFixed(2),k:a.kind})),S:Object.assign({},S,{busy:false}),fc:firstCrackShown,hs:hansShown};
@@ -341,7 +344,7 @@ function loadRun(){ try{ const v=localStorage.getItem('polder.run.v1'); if(v) re
 function clearRun(){ MEMRUN=null; try{ localStorage.removeItem('polder.run.v1'); }catch(e){} }
 function resumeRun(d){
   LV=LEVELS.find(l=>l.id===d.lv); START=LV.start; STEP=LV.step; LAST_PIECE=LV.turns; ENDY=LV.final?LV.final.year:LV.end;
-  LV._storms=LV.storms(); QUESTS=LV.goals();
+  const H=!!(d.S&&d.S.hard); LV._storms=LV.storms(H); QUESTS=LV.goals(H);
   const seed=(Math.random()*4294967296)>>>0; rngP=mulberry32(seed^0xA5A5); rngS=mulberry32(seed^0x5A5A);
   G=Uint8Array.from(d.G); crack=Uint8Array.from(d.crack); armor=Uint8Array.from(d.armor); tag=Uint8Array.from(d.tag); fieldVar=Uint8Array.from(d.fv);
   TERPS=d.TERPS; LAKENAMES=d.LN||{}; ZZMARK=d.ZZ||0;
@@ -349,7 +352,7 @@ function resumeRun(d){
   d.sheep.forEach(a=>{ spawnAnimal(idx(a.x|0,a.y|0)); const b=sheep[sheep.length-1]; b.x=b.tx=a.x; b.y=b.ty=a.y; b.kind=a.k; });
   S=d.S; S.busy=false; S.over=false; firstCrackShown=d.fc; hansShown=d.hs;
   open=computeOpen(G); computeLakes(); preview=null; ghost=null; $('chron').innerHTML='';
-  buildTimeline(); updateUI(); track('polder_resume',{level:LV.id,year:S.year});
+  buildTimeline(); updateUI(); $('diffLbl').textContent=S.hard?'Hard':''; track('polder_resume',{level:LV.id,year:S.year});
 }
 const ACH=[
  {id:'first',name:'First field',desc:'Drain your first field.',test:()=>countFields()>0},
@@ -363,14 +366,16 @@ const ACH=[
  {id:'dry',name:'Not a drop',desc:'Finish a region with no breaches and 15+ fields.',end:true,test:()=>S.breaches===0&&countFields()>=15},
  {id:'perfect',name:'Perfect region',desc:'Get every ★ in a region.',end:true,test:()=>!LV.free&&S.stars.every(v=>v===1)},
  {id:'nl',name:'The Netherlands',desc:'Win all four regions.',test:()=>['friesland','zeeland','holland','zuiderzee'].every(perkOn)},
+ {id:'hardwin',name:'Storm-proof',desc:'Win a region on Hard.',end:true,test:()=>S.hard&&!LV.free&&S.stars.filter(v=>v===1).length>=(LV.need||UNLOCK_AT)},
+ {id:'hardall',name:'Iron dikes',desc:'Win all four regions on Hard.',test:()=>['friesland','zeeland','holland','zuiderzee'].every(id=>{ const L=LEVELS.find(l=>l.id===id); return (loadProg()[id]?.hard||0)>=(L.need||UNLOCK_AT); })},
  {id:'book',name:'Bookworm',desc:'Find half of the Chronicle.',test:()=>Object.keys(loadProg()._seen||{}).length>=34},
 ];
 function achCheck(atEnd){ if(!S||!LV) return; const pr=loadProg(); pr._ach=pr._ach||{}; let ch=false;
   for(const a of ACH){ if(pr._ach[a.id]||(a.end&&!atEnd)) continue; let ok=false; try{ ok=!!a.test(); }catch(e){} if(ok){ pr._ach[a.id]=Date.now(); ch=true; toast(`<span class="yb">Achievement</span><b>${a.name}</b> · ${a.desc}`,4200); track('polder_achievement',{id:a.id,level:LV.id}); } }
   if(ch) saveProg(pr); }
-const PERKS={friesland:{name:'Terp builders',desc:'+1 finger at the start of every region.'},zeeland:{name:'Zeeland willow-work',desc:'Start every region with Willow mattresses.'},holland:{name:"Leeghwater's plans",desc:'All drainage limits +3.'},zuiderzee:{name:'Delta engineers',desc:'Start every region with 3 free swaps.'}};
+const PERKS={friesland:{name:'Terp builders',desc:'+1 finger at the start of every region.'},zeeland:{name:'Zeeland willow-work',desc:'Start every region with Willow mattresses (on Hard: stone facing on your first 6 dikes).'},holland:{name:"Leeghwater's plans",desc:'All drainage limits +3.'},zuiderzee:{name:'Delta engineers',desc:'Start every region with 3 free swaps.'}};
 function perkOn(id){ const L=LEVELS.find(l=>l.id===id); return (loadProg()[id]?.stars||0)>=(L.need||UNLOCK_AT); }
-function applyPerks(){ S.perkCap=0; if(perkOn('friesland')){ S.fingers++; } if(perkOn('zeeland')) S.up.mattress=1; if(perkOn('holland')) S.perkCap=3; if(perkOn('zuiderzee')){ S.up.sods=1; S.swaps+=3; } }
+function applyPerks(){ S.perkCap=0; if(perkOn('friesland')){ S.fingers++; } if(perkOn('zeeland')){ if(S.hard) S.stoneFree=6; else S.up.mattress=1; } if(perkOn('holland')) S.perkCap=3; if(perkOn('zuiderzee')){ S.up.sods=1; S.swaps+=3; } }
 const UNLOCK_AT=3;
 let MEMPROG={};
 function loadProg(){ try{ const v=localStorage.getItem('polder.progress.v1'); if(v) return Object.assign({},MEMPROG,JSON.parse(v)); }catch(e){} return Object.assign({},MEMPROG); }
@@ -650,12 +655,12 @@ let hover=null, ghost=null, preview=null, shake=0, flash=0, stormK=0, T=0;
 function newGame(lid){
   LV=LEVELS.find(l=>l.id===lid)||LEVELS[0];
   START=LV.start; STEP=LV.step; LAST_PIECE=LV.turns; ENDY=LV.final?LV.final.year:LV.end;
-  LV._storms=LV.storms(); QUESTS=LV.goals();
+  const H=SET.diff==='hard'; LV._storms=LV.storms(H); QUESTS=LV.goals(H);
   const seed=(Math.random()*4294967296)>>>0;
   rngP=mulberry32(seed^0xA5A5); rngS=mulberry32(seed^0x5A5A);
   if(LV.map){ blankMap(mulberry32(seed)); MAPS[LV.map](mulberry32(seed^77)); } else { genMap(mulberry32(seed)); tag=new Uint8Array(N); LAKENAMES={}; }
   structs=[];houses=[];sheep=[];parts=[];floats=[];lakes=[];
-  S={piece:0,year:START,fingers:LV.fingers||1,queue:[],rot:0,busy:false,over:false,storms:0,breaches:0,drowned:0,qi:0,maxFields:0,cameos:{},deepFx:0,xp:0,lvl:0,up:{},maxF:3,swaps:0,hold:null,surv:{},survF:{},ruins:[],stars:QUESTS.map(()=>0),dikes:0,maxDrain:0,finalBreaches:0};
+  S={piece:0,year:START,fingers:LV.fingers||1,queue:[],rot:0,busy:false,over:false,storms:0,breaches:0,drowned:0,qi:0,maxFields:0,cameos:{},deepFx:0,xp:0,lvl:0,up:{},maxF:3,swaps:0,hold:null,surv:{},survF:{},ruins:[],hard:H,stoneFree:0,stars:QUESTS.map(()=>0),dikes:0,maxDrain:0,finalBreaches:0};
   firstCrackShown=false; hansShown=false;
   for(let k=0;k<3;k++) S.queue.push(genPiece());
   open=computeOpen(G); for(let i=0;i<N;i++) if(!open[i]&&(G[i]===SEA||G[i]===DEEP)) G[i]=LAKE; computeLakes();
@@ -735,8 +740,8 @@ function comps(pred){
   }
   return out;
 }
-function cap(y=S.year){ const b=5*upLv('sluice')+((S&&S.perkCap)||0); const c=y>=1849?Infinity:(y>=1612?40:y>=1408?16:6)+b; return LV&&LV.capMax?Math.min(c,LV.capMax+b):c; }
-function needLabel(n){ if(LV&&LV.capMax&&n>cap()) return 'too big · split it with dikes'; const m=n-5*upLv('sluice'); const t=m<=16?(S.year<1408?'windmills · 1408':null):m<=40?(S.year<1612?'mill gang · 1612':null):(S.year<1849?'steam · 1849':null); return t?('needs '+t+(S.year>=1408?', or split it':'')):'split it with dikes'; }
+function cap(y=S.year){ const b=5*upLv('sluice')+((S&&S.perkCap)||0); const c=y>=1849?Infinity:(y>=1612?40:y>=1408?16:6)+b; let cm=LV&&(S&&S.hard&&LV.hardCap||LV.capMax); if(LV&&S&&S.hard&&LV.hardCapPre&&y<1849) cm=Math.min(cm||Infinity,LV.hardCapPre); return cm?Math.min(c,cm+b):c; }
+function needLabel(n){ if(LV&&(LV.capMax||LV.hardCap||(S&&S.hard&&LV.hardCapPre&&S.year>=1612&&S.year<1849))&&n>cap()) return 'too big · split it with dikes'; const m=n-5*upLv('sluice'); const t=m<=16?(S.year<1408?'windmills · 1408':null):m<=40?(S.year<1612?'mill gang · 1612':null):(S.year<1849?'steam · 1849':null); return t?('needs '+t+(S.year>=1408?', or split it':'')):'split it with dikes'; }
 
 async function resolve(quiet){
   open=computeOpen(G);
@@ -840,7 +845,7 @@ function computePreview(){
 async function place(){
   if(!ghost||!ghost.ok) { sfx.nope(); return; }
   S.busy=true; const cells=ghost.cells; ghost=null; preview=null;
-  for(const[x,y]of cells){ const i=idx(x,y); G[i]=DIKE; crack[i]=0; armor[i]=upLv('stone')?1:0; S.dikes++; for(let k=0;k<3;k++) parts.push(P(x+.5,y+.5,'dust')); }
+  for(const[x,y]of cells){ const i=idx(x,y); G[i]=DIKE; crack[i]=0; armor[i]=upLv('stone')?1:(S.stoneFree>0?(S.stoneFree--,1):0); S.dikes++; for(let k=0;k<3;k++) parts.push(P(x+.5,y+.5,'dust')); }
   sfx.pop();
   S.queue.shift(); S.queue.push(genPiece()); S.rot=0;
   await sleep(120);
@@ -870,7 +875,7 @@ async function advance(){
     if(cr.length){ const i=cr[(rngS()*cr.length)|0]; crack[i]=0; floatText(cx(i)+.5,cy(i)+.3,'repaired','#3d7a2a'); for(let k=0;k<5;k++) parts.push(P(cx(i)+.5,cy(i)+.5,'spark')); } }
   updateUI();
   for(const u of UNLOCKS) if(u.year>old&&u.year<=S.year&&!(LV.id==='zuiderzee'&&u.year===1932)){ sfx.chime(); seeEntry('u'+u.year); await card({yr:u.year,art:u.art,title:u.title,text:u.text,eff:u.eff,btn:'Onward'}); updateUI(); if(u.drain){ await resolve(); } if(u.year===1849){ S.deepFx=T; sfx.chime(); winBanner('The deep water is open!'); } }
-  if(LV.wolf){ const lc=[]; for(let i=0;i<N;i++) if(tag[i]===LV.wolf&&G[i]===LAKE) lc.push(i);
+  for(let wg=0;wg<(S.hard?2:1);wg++) if(LV.wolf){ const lc=[]; for(let i=0;i<N;i++) if(tag[i]===LV.wolf&&G[i]===LAKE) lc.push(i);
     if(lc.length){ const cand=[]; lc.forEach(i=>D4.forEach(([dx,dy])=>{ const nx=cx(i)+dx,ny=cy(i)+dy; if(inb(nx,ny)&&G[idx(nx,ny)]===LAND&&nx>2&&!D4.some(([ex,ey])=>{ const j=idx(Math.min(COLS-1,Math.max(0,nx+ex)),Math.min(ROWS-1,Math.max(0,ny+ey))); return open[j]&&isWater(G[j]); })) cand.push(idx(nx,ny)); }));
       if(cand.length){ const j=cand[(rngS()*cand.length)|0]; G[j]=LAKE; tag[j]=LV.wolf; houses=houses.filter(h=>h!==j); for(let m=0;m<6;m++) parts.push(P(cx(j)+.5,cy(j)+.5,'splash')); floatText(cx(j)+.5,cy(j)+.2,'the waterwolf grows','#2f6f8a'); open=computeOpen(G); computeLakes(); } } }
   for(const s of LV._storms) if(s.year>old&&s.year<=S.year){ await storm(s); if(LV.ruins&&(s.year===1421||s.year===1530)) spawnRuin(); }
@@ -888,17 +893,17 @@ async function advance(){
   }
 }
 
-function stormVar(s){ return s.final?'final':({1362:'roofs',1287:'dune',1404:'boat',1421:'church',1530:'roofs',1570:'cow',1686:'lantern',1717:'xmas',1825:'ice',1916:'botter'})[s.year]||'wave'; }
+function stormVar(s){ return s.final?'final':({1836:'boat',1362:'roofs',1287:'dune',1404:'boat',1421:'church',1530:'roofs',1570:'cow',1686:'lantern',1717:'xmas',1825:'ice',1916:'botter'})[s.year]||'wave'; }
 async function storm(s){
   if(!s.generic) seeEntry('s'+s.year);
   banner(`⛈ ${s.year} · ${s.name}`); sfx.thunder(); stormTarget=1;
   await sleep(1300);
   open=computeOpen(G);
   const facing=()=>{const c=[];for(let i=0;i<N;i++){ if(G[i]!==DIKE)continue; const x=cx(i),y=cy(i);
-    if(D4.some(([dx,dy])=>{const nx=x+dx,ny=y+dy; if(!inb(nx,ny)) return true; const j=idx(nx,ny); return open[j]&&isWater(G[j]);})) c.push(i);} return c;};
+    if(D4.some(([dx,dy])=>{const nx=x+dx,ny=y+dy; if(!inb(nx,ny)) return true; const j=idx(nx,ny); return (open[j]&&isWater(G[j]))||(S.hard&&LV.id==='holland'&&G[j]===LAKE);})) c.push(i);} return c;};
   let cand=facing();
-  let hits=s.str+(LV.stormBonus||0)+Math.floor(cand.length/10);
-  if((LV.id==='zuiderzee'?zzClosed():S.year>=1932)&&!s.final) hits=Math.ceil(hits/2);
+  let hits=s.str+(LV.stormBonus||0)+(S.hard?(LV.hardBonus||0):(LV.normBonus||0))+Math.floor(cand.length/10);
+  if(LV.id==='zuiderzee'){ if(zzClosed()&&!s.final) hits=S.hard?hits-1:Math.ceil(hits/2); } else if(S.year>=1932&&!s.final) hits=Math.ceil(hits/2);
   hits=Math.max(1,hits-upLv('mattress')); let slept=false;
   const breached=[];
   for(let k=0;k<hits&&cand.length;k++){
@@ -929,15 +934,15 @@ function end(){
   const qlist='<ul class="qlist">'+QUESTS.map((q,k)=>`<li class="${S.stars[k]===1?'w':'x'}">${q.text}</li>`).join('')+'</ul>';
   const pr=loadProg(), old=pr[LV.id]||{stars:0,fields:0}, li=LEVELS.indexOf(LV), nextL=LEVELS[li+1]&&!LEVELS[li+1].free?LEVELS[li+1]:null;
   const wasLocked=nextL&&!isUnlocked(li+1), hadPerk=PERKS[LV.id]&&perkOn(LV.id);
-  if(!LV.free) pr[LV.id]={stars:Math.max(old.stars||0,st),fields:Math.max(old.fields||0,fields)}; saveProg(pr); clearRun();
-  track('polder_level_end',{level:LV.id,stars:st,fields,breaches:S.breaches,upgrades:Object.keys(S.up).length,animals});
+  if(!LV.free) pr[LV.id]={stars:Math.max(old.stars||0,st),fields:Math.max(old.fields||0,fields),hard:Math.max(old.hard||0,S.hard?st:0)}; saveProg(pr); clearRun();
+  track('polder_level_end',{level:LV.id,diff:S.hard?'hard':'normal',stars:st,fields,breaches:S.breaches,upgrades:Object.keys(S.up).length,animals});
   achCheck(true);
   const pr2=loadProg(), epi=['friesland','zeeland','holland','zuiderzee'].every(perkOn)&&!pr2._campaign; if(epi){ pr2._campaign=1; saveProg(pr2); }
-  const shareTxt=`Polder · ${LV.name} ${'★'.repeat(st)}${'☆'.repeat(nq-st)} · ${fields} fields\n${(location.protocol.startsWith('http')?location.origin:'https://homoludens.oalpcakir.workers.dev')}/polder/`;
+  const shareTxt=`Polder · ${LV.name}${S.hard?' (Hard)':''} ${'★'.repeat(st)}${'☆'.repeat(nq-st)} · ${fields} fields\n${(location.protocol.startsWith('http')?location.origin:'https://homoludens.oalpcakir.workers.dev')}/polder/`;
   const nowOpen=nextL&&isUnlocked(li+1), newPerk=PERKS[LV.id]&&!hadPerk&&perkOn(LV.id);
   let msg=''; if(nextL){ msg=nowOpen?(wasLocked?`<b>${nextL.name} unlocked!</b>`:`Next up: <b>${nextL.name}</b>.`):`Get ${LV.need||UNLOCK_AT} ★ here to unlock <b>${nextL.name}</b>.`; }
   if(newPerk) msg+=`<br>Legacy earned: <b>${PERKS[LV.id].name}</b>. ${PERKS[LV.id].desc}`;
-  card({yr:`${ENDY} · ${LV.name}`,art:'end',title,
+  card({yr:`${ENDY} · ${LV.name}${S.hard?' · Hard':''}`,art:'end',title,
     text:`<span class="stars" style="font-size:30px">${'<span class=w>★</span>'.repeat(st)}${'★'.repeat(nq-st)}</span><br><b>${st} of ${nq} goals</b>${st>(old.stars||0)&&old.stars?' · new best!':''}`+
       `<div class="res"><div><b>${fields}</b><span>fields won</span></div><div><b>${animals}</b><span>animals</span></div><div><b>${S.breaches}</b><span>breaches</span></div></div>`+msg,
     eff:'Roughly a sixth of today\'s Netherlands was once sea, lake or marsh. "God created the world, but the Dutch created the Netherlands."',
@@ -1322,7 +1327,7 @@ function nlMapSVG(pr){
     let shapes;
     if(L.id==='zuiderzee'){ shapes=`<path d="${NLGEO.zzwater}" fill="${lk?'url(#hatch)':'#86cfe4'}" stroke="${lk?'#9fb8b2':'#5fa9c4'}" stroke-width="1.5"/><path d="${NLGEO.zzland}" fill="${lk?'url(#hatch)':done?'url(#fields)':'#86cfe4'}" stroke="${done?'#6fae4f':'#5fa9c4'}" stroke-width="1.2" ${done?'':'stroke-dasharray="3 3"'}/>`; }
     else shapes=`<path d="${NLGEO[L.id]}" fill="${lk?'url(#hatch)':done?'url(#fields)':'#f4f8e8'}" stroke="${done?'#6fae4f':'#9fb8b2'}" stroke-width="1.5" stroke-linejoin="round"/>`;
-    g+=`<g class="rg ${!lk&&!done?'open':''}" data-k="${k}">${shapes}<text x="${lx}" y="${ly}" text-anchor="middle">${lk?'🔒 ':''}${L.name}</text><text class="st" x="${lx}" y="${ly+16}" text-anchor="middle">${'★'.repeat(st)}<tspan fill="#cfd6d2">${'★'.repeat(n-st)}</tspan></text></g>`; });
+    g+=`<g class="rg ${!lk&&!done?'open':''}" data-k="${k}">${shapes}<text x="${lx}" y="${ly}" text-anchor="middle">${lk?'🔒 ':''}${L.name}</text><text class="st" x="${lx}" y="${ly+16}" text-anchor="middle">${'★'.repeat(st)}<tspan fill="#cfd6d2">${'★'.repeat(n-st)}</tspan></text>${pr[L.id]?.hard?`<text class="st" x="${lx}" y="${ly+30}" text-anchor="middle" style="fill:#c0392b;font-size:10.5px">hard ${'★'.repeat(pr[L.id].hard)}</text>`:''}</g>`; });
   return `<svg class="nlmap" viewBox="0 0 ${NLGEO.vb[0]} ${NLGEO.vb[1]}"><defs><pattern id="hatch" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="8" height="8" fill="#dcdcd4"/><line x1="0" y1="0" x2="0" y2="8" stroke="#cbcbc2" stroke-width="3"/></pattern>
   <pattern id="fields" width="10" height="10" patternUnits="userSpaceOnUse"><rect width="10" height="5" fill="#b4de85"/><rect y="5" width="10" height="5" fill="#c9e59a"/><rect y="4.2" width="10" height="1.2" fill="#86cde0"/></pattern></defs>
   <path d="${NLGEO.rest}" fill="#e3e9d3" stroke="#c9d3c0" stroke-width="1"/>${g}
@@ -1335,6 +1340,8 @@ function levelSelect(){
   <div class="nlwrap"><div>${nlMapSVG(pr)}</div><div>
    <div class="perks"><h3 style="margin:0 0 4px;font-size:13px;letter-spacing:1px;color:var(--muted);text-transform:uppercase">Your legacy</h3>${LEVELS.filter(L=>!L.free).map(L=>`<div class="${perkOn(L.id)?'on':''}">${perkOn(L.id)?'✓':'○'} <b>${PERKS[L.id].name}</b> · ${PERKS[L.id].desc}${perkOn(L.id)?'':` <i>(win ${L.name})</i>`}</div>`).join('')}</div>
    <div class="card" style="margin-top:12px;cursor:pointer" id="bookBtn"><h3>The Chronicle</h3><div class="bar2"><div style="width:${seen/total*100}%"></div></div><div style="font-size:13px;color:var(--muted)">${seen} of ${total} pages found. Storms, inventions and moments you met on the way.</div></div>
+   <div class="diffrow"><span>Difficulty</span><button data-d="normal" class="${SET.diff!=='hard'?'on':''}">Normal</button><button data-d="hard" class="${SET.diff==='hard'?'on':''}">Hard</button></div>
+   <p style="font-size:12.5px;color:var(--muted);margin:4px 0 0">${SET.diff==='hard'?'Harder storms in every region, growing region by region, plus tighter limits later on.':'The relaxed way to build the Netherlands.'}</p>
    <div class="menurow">${run?`<button class="primary" id="contBtn">Continue · ${LEVELS.find(l=>l.id===run.lv).name}, ${run.S.year}</button>`:''}<button class="${run?'':'primary'}" id="freeBtn">Free play</button></div>
    ${pr._campaign?'<p style="font-size:14px;margin:10px 0 0"><b>Campaign complete.</b> You built the Netherlands.</p>':''}
    <p style="font-size:13px;color:var(--muted);margin-top:10px">Click a region on the map to play it.${run?' Starting a region replaces the game in progress.':''}</p>
@@ -1343,6 +1350,7 @@ function levelSelect(){
   </div></div>`;
   m.classList.remove('hidden');
   b.querySelectorAll('.rg').forEach(el=>el.onclick=()=>{ const k=+el.dataset.k; if(!isUnlocked(k)){ sfx.nope(); toast(`Win ${LEVELS[k-1].name} first (${LEVELS[k-1].need||UNLOCK_AT} ★).`); return; } m.classList.add('hidden'); b.className='mbox'; audioInit(); musicStart(); startLevel(LEVELS[k].id); });
+  b.querySelectorAll('.diffrow button').forEach(x=>x.onclick=()=>{ SET.diff=x.dataset.d; saveSet(); track('polder_diff',{diff:SET.diff}); levelSelect(); });
   if(run) $('contBtn').onclick=()=>{ m.classList.add('hidden'); b.className='mbox'; audioInit(); musicStart(); resumeRun(run); };
   $('resetBtn').onclick=async()=>{ const r=await card({title:'Reset all progress?',text:'Stars, unlocked regions, your legacy, the Chronicle and achievements will all be wiped. This cannot be undone.',btn:'Keep my progress',btn2:'Reset everything'}); if(r===2){ MEMPROG={}; clearRun(); try{ localStorage.removeItem('polder.progress.v1'); }catch(e){} track('polder_reset',{}); } levelSelect(); };
   $('freeBtn').onclick=()=>{ m.classList.add('hidden'); b.className='mbox'; audioInit(); musicStart(); startLevel('free'); };
@@ -1350,7 +1358,7 @@ function levelSelect(){
 }
 function bookEntries(){
   const E=[];
-  [...STORMS,MANDRENKE,FINAL].forEach(st=>E.push({k:'s'+st.year,year:st.year,cat:'storm',title:st.name,text:st.text,art:'storm',v:stormVar(st)}));
+  [...STORMS,MANDRENKE,HMEER,FINAL].forEach(st=>E.push({k:'s'+st.year,year:st.year,cat:'storm',title:st.name,text:st.text,art:'storm',v:stormVar(st)}));
   UNLOCKS.forEach(u=>E.push({k:'u'+u.year,year:u.year,cat:'inv',title:u.title,text:u.text,art:u.art}));
   Object.keys(CHRON).forEach(y=>E.push({k:'c'+y,year:+y,cat:'chron',title:null,text:CHRON[y]}));
   E.push({k:'hans',year:1865,cat:'chron',title:'The boy at the dike',text:"The boy who saves his town with a finger in the dike comes from an 1865 American novel, <i>Hans Brinker, or the Silver Skates</i> by Mary Mapes Dodge. He isn't even called Hans.",art:'finger'});
@@ -1378,9 +1386,9 @@ function openBook(tab){
   b.querySelectorAll('.more').forEach(x=>x.onclick=async()=>{ const e=E.find(z=>z.k===x.dataset.k); b.className='mbox'; await card({yr:e.year,art:e.art,v:e.v,title:e.title||e.year,text:e.text,btn:'Back to the Chronicle'}); openBook(tab); });
 }
 function startLevel(id){
-  clearRun(); newGame(id); S.busy=true; track('polder_level_start',{level:id});
+  clearRun(); newGame(id); S.busy=true; $('diffLbl').textContent=S.hard?'Hard':''; track('polder_level_start',{level:id,diff:SET.diff});
   card({yr:`${LV.start}–${LV.final?LV.final.year:LV.end}`,art:'intro',title:`${LV.name} · ${LV.sub}`,text:LV.intro,
-    list:`<ul>${LV.rules.map(r=>`<li>${r}</li>`).join('')}<li><b>Goals:</b> ${QUESTS.map(q=>q.text.toLowerCase()).join('; ')}.</li></ul>`+(LV.id==='friesland'?`<ul><li><b>Place dikes</b> next to land. Rotate with right-click, R or scroll.</li><li><b>Close a ring</b> around water and it drains into fields.</li><li><b>Storms</b> crack sea-facing dikes. Click a crack to plug it.</li><li><b>Drain fields</b> to earn upgrades.</li></ul>`:''),
+    list:`<ul>${LV.rules.map(r=>`<li>${r}</li>`).join('')}${S.hard?`<li><b>Hard:</b> ${HARDNOTE[LV.id]||'storms hit harder.'}</li>`:''}<li><b>Goals:</b> ${QUESTS.map(q=>q.text.toLowerCase()).join('; ')}.</li></ul>`+(LV.id==='friesland'?`<ul><li><b>Place dikes</b> next to land. Rotate with right-click, R or scroll.</li><li><b>Close a ring</b> around water and it drains into fields.</li><li><b>Storms</b> crack sea-facing dikes. Click a crack to plug it.</li><li><b>Drain fields</b> to earn upgrades.</li></ul>`:''),
     btn:'Begin'}).then(()=>{ audioInit(); musicStart(); S.busy=false; });
 }
 let muted=!SET.sfx;

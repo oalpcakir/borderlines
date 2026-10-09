@@ -379,8 +379,8 @@ footer a { color: var(--ink-soft); }
   var pPages = Object.keys(PP._seen || {}).length;
   if (pStars || pPages) {
     tiles.push(["<b>" + pWon + "/4</b><span>Polder regions won</span><small>" + pStars + " ★ in total</small>"]);
-    tiles.push(["<b>" + pPages + "</b><span>Chronicle pages</span><small>of 67 found</small>"]);
-    tiles.push(["<b>" + Object.keys(PP._ach || {}).length + "/12</b><span>Polder achievements</span><small>" + (PP._campaign ? "campaign complete" : "see the Chronicle") + "</small>"]);
+    tiles.push(["<b>" + pPages + "</b><span>Chronicle pages</span><small>found so far</small>"]);
+    tiles.push(["<b>" + Object.keys(PP._ach || {}).length + "/14</b><span>Polder achievements</span><small>" + (PP._campaign ? "campaign complete" : "see the Chronicle") + "</small>"]);
     if (tiles.length) { document.getElementById("record").innerHTML = tiles.map(function (x) { return "<div>" + x[0] + "</div>"; }).join(""); document.getElementById("recordSec").hidden = false; }
   }
   document.querySelectorAll("a[href='/polder/']").forEach(function (a) {
